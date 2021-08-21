@@ -1,6 +1,6 @@
 import { setFailed } from "@actions/core"
+import { run } from "./run"
 
-const run = async () => {}
 const handleError = (err: unknown) => {
   setFailed(`Unhandled error: ${err}`)
 }

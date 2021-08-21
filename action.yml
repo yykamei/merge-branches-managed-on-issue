@@ -1,0 +1,17 @@
+name: Merge Branches Managed on Issue
+description: This actions is responsible for merging listed branches on the specified GitHub issue.
+inputs:
+  issue-number:
+    description: The GitHub issue number in which the branches are listed.
+    required: true
+branding:
+  icon: git-merge
+  color: red
+outputs:
+  diff:
+    description: The output of git-diff(1) between the default branch and the head of the merged branch.
+  diffstat:
+    description: The output of git-diff(1) with `--stat` between the default branch and the head of the merged branch.
+runs:
+  using: node12
+  main: dist/index.js
