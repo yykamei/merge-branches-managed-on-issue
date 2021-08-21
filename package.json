@@ -1,0 +1,19 @@
+{
+  "name": "merge-branches-managed-on-issue",
+  "version": "0.1.0",
+  "description": "Merge branches managed on an issue",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "ncc build src/main.ts",
+    "fmt": "prettier --write .",
+    "fmt:check": "prettier --check .",
+    "lint": "eslint .",
+    "test": "jest"
+  },
+  "author": "Yutaka Kamei",
+  "license": "MIT",
+  "dependencies": {
+    "@actions/core": "^1.5.0",
+    "@actions/github": "^5.0.0"
+  }
+}
