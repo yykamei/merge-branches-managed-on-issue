@@ -1,7 +1,7 @@
 import * as core from "@actions/core"
-import { Inputs } from "../src/inputs"
+import { getInputs } from "../src/inputs"
 
-describe("Inputs", () => {
+describe("getInputs", () => {
   let getInput: any
 
   beforeEach(() => {
@@ -16,7 +16,7 @@ describe("Inputs", () => {
   })
 
   it("creates an instance of Inputs", () => {
-    const inputs = new Inputs()
+    const inputs = getInputs()
     expect(inputs.token).toStrictEqual("my-secret")
     expect(inputs.issueNumber).toStrictEqual(89)
     expect(getInput).toHaveBeenCalledWith("token", { required: true })
