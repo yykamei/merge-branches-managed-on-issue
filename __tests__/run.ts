@@ -1,10 +1,13 @@
 import * as core from "@actions/core"
 import { context } from "@actions/github"
 import { run } from "../src/run"
+import * as inputs from "../src/inputs"
+import * as github from "../src/github"
 
 describe("run", () => {
   beforeAll(() => {
     jest.spyOn(core, "debug").mockImplementation(jest.fn)
+    jest.spyOn(inputs, "getInputs").mockImplementation(() => ({ token: "token", issueNumber: 73 }))
   })
 
   describe("when the event is workflow_dispatch", () => {
@@ -13,7 +16,9 @@ describe("run", () => {
     })
 
     it("succeeds", async () => {
+      const fetchIssue = jest.spyOn(github, "fetchIssue").mockResolvedValueOnce({ body: "special issue" } as any)
       await run()
+      expect(fetchIssue).toHaveBeenCalledWith({ token: "token", issueNumber: 73 })
     })
   })
 
