@@ -4,6 +4,10 @@ inputs:
   issue-number:
     description: The GitHub issue number in which the branches are listed.
     required: true
+  token:
+    description: The GitHub token used to create an authenticated client
+    required: false
+    default: ${{ github.token }}
 branding:
   icon: git-merge
   color: red
