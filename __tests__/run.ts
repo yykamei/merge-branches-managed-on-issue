@@ -16,7 +16,22 @@ describe("run", () => {
     })
 
     it("succeeds", async () => {
-      const fetchIssue = jest.spyOn(github, "fetchIssue").mockResolvedValueOnce({ body: "special issue" } as any)
+      const body = `This is a markdown body.
+
+## staging
+| branch                | author   | PR   | Note                                        |
+| --------------------- | -------- | ---- | ------------------------------------------- |
+| branch1               | @yykamei | #123 | This will be used until the end of October. |
+| feature/add-something | @yykamei | #138 |                                             |
+
+## strawberry
+| branch                | author   | PR   | Note                                        |
+| --------------------- | -------- | ---- | ------------------------------------------- |
+| feature/add-something | @yykamei | #138 |                                             |
+| branch2               | @yykamei | #139 |                                             |
+| branch3               | @yykamei | #140 |                                             |
+`
+      const fetchIssue = jest.spyOn(github, "fetchIssue").mockResolvedValueOnce({ body } as any)
       await run()
       expect(fetchIssue).toHaveBeenCalledWith({ token: "token", issueNumber: 73 })
     })
