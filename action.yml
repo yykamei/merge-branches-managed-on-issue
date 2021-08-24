@@ -4,6 +4,9 @@ inputs:
   issue-number:
     description: The GitHub issue number in which the branches are listed.
     required: true
+  path:
+    description: Relative path under $GITHUB_WORKSPACE to place the repository
+    required: false
   token:
     description: The GitHub token used to create an authenticated client
     required: false

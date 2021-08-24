@@ -2,7 +2,7 @@ import * as core from "@actions/core"
 import { context, getOctokit } from "@actions/github"
 import type { Inputs } from "./inputs"
 
-export const fetchIssue = async ({ token, issueNumber }: Inputs): Promise<Issue> => {
+export const fetchIssue = async ({ token, issueNumber }: Pick<Inputs, "token" | "issueNumber">): Promise<Issue> => {
   core.debug("Start fetchIssue()")
 
   const { owner, repo } = context.repo

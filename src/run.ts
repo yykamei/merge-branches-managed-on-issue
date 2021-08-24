@@ -23,9 +23,9 @@ export const run = async (): Promise<void> => {
   }
 }
 
-const handleWorkflowDispatch = async (inputs: Inputs) => {
+const handleWorkflowDispatch = async ({ token, issueNumber }: Inputs) => {
   // 1. Fetch issue
-  const issue = await fetchIssue(inputs)
+  const issue = await fetchIssue({ token, issueNumber })
   // 2. Parse issue body
   const result = parse(issue.body)
   console.log(JSON.stringify(result))

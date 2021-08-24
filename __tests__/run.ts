@@ -7,7 +7,11 @@ import * as github from "../src/github"
 describe("run", () => {
   beforeAll(() => {
     jest.spyOn(core, "debug").mockImplementation(jest.fn)
-    jest.spyOn(inputs, "getInputs").mockImplementation(() => ({ token: "token", issueNumber: 73 }))
+    jest.spyOn(inputs, "getInputs").mockImplementation(() => ({
+      token: "token",
+      issueNumber: 73,
+      workingDirectory: "/foo",
+    }))
   })
 
   describe("when the event is workflow_dispatch", () => {
