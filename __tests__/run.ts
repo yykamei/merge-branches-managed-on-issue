@@ -14,6 +14,7 @@ describe("run", () => {
       workingDirectory: "/foo",
       shell: ["bash", "-eo", "pipefail"],
       beforeMerge: null,
+      afterMerge: null,
       inputsParamBaseBranch: "base-branch",
       inputsParamForce: "force",
     }))
@@ -53,6 +54,7 @@ describe("run", () => {
         workingDirectory: "/foo",
         shell: ["bash", "-eo", "pipefail"],
         beforeMerge: null,
+        afterMerge: null,
         baseBranch: "staging",
         targetBranches: ["branch1", "feature/add-something"],
         defaultBranch: "main",

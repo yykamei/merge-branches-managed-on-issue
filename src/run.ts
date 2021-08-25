@@ -31,6 +31,7 @@ const handleWorkflowDispatch = async ({
   workingDirectory,
   shell,
   beforeMerge,
+  afterMerge,
   inputsParamBaseBranch,
   inputsParamForce,
 }: Inputs) => {
@@ -55,6 +56,7 @@ const handleWorkflowDispatch = async ({
     workingDirectory,
     shell,
     beforeMerge,
+    afterMerge,
     baseBranch,
     targetBranches: targetBranches.map((t) => t.name),
     defaultBranch,

@@ -24,7 +24,7 @@ describe("buildExec", () => {
     })
 
     it("exits with non-zero status", async () => {
-      const result = await exec("cat", ["nonexistent"], true)
+      const result = await exec("cat", ["nonexistent"], {}, true)
       expect(result).toEqual({ exitCode: 1, stdout: "" })
     })
   })
@@ -52,7 +52,7 @@ echo Done
     })
 
     it("exits with non-zero status", async () => {
-      const result = await script("cat nonexistent", true)
+      const result = await script("cat nonexistent", {}, true)
       expect(result).toEqual({ exitCode: 1, stdout: "" })
     })
   })

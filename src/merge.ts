@@ -10,6 +10,7 @@ interface Params {
   readonly targetBranches: string[]
   readonly force?: boolean
   readonly beforeMerge?: string | null
+  readonly afterMerge?: string | null
 }
 
 export const merge = async ({
@@ -20,6 +21,7 @@ export const merge = async ({
   targetBranches,
   force = false,
   beforeMerge,
+  afterMerge,
 }: Params): Promise<string> => {
   const exec = buildExec({ workingDirectory, shell })
   await checkout(exec, baseBranch)
@@ -30,11 +32,16 @@ export const merge = async ({
   }
 
   if (beforeMerge != null) {
-    await runScriptBeforeMerge(exec, beforeMerge, [...targetBranches, baseBranch])
+    await runScriptForBranches(exec, beforeMerge, [...targetBranches, baseBranch])
     await exec.exec("git", ["checkout", baseBranch])
   }
 
   await mergeTargets(exec, baseBranch, targetBranches)
+
+  if (afterMerge != null) {
+    await runScriptForBranches(exec, afterMerge, [...targetBranches, baseBranch])
+    await exec.exec("git", ["checkout", baseBranch])
+  }
 
   if (force) {
     await exec.exec("git", ["push", "--force", "origin", baseBranch])
@@ -61,16 +68,16 @@ const configureGit = async ({ exec }: Exec): Promise<void> => {
   await exec("git", ["config", "user.email", "github-actions@github.com"])
 }
 
-const runScriptBeforeMerge = async ({ exec, script }: Exec, beforeMerge: string, branches: string[]) => {
+const runScriptForBranches = async ({ exec, script }: Exec, source: string, branches: string[]) => {
   for (const branch of branches) {
     await exec("git", ["checkout", branch])
-    await script(beforeMerge)
+    await script(source, { CURRENT_BRANCH: branch })
   }
 }
 
 const mergeTargets = async ({ exec }: Exec, baseBranch: string, targetBranches: string[]) => {
   for (const target of targetBranches) {
-    const { exitCode } = await exec("git", ["merge", "--no-ff", "--no-edit", `origin/${target}`], true)
+    const { exitCode } = await exec("git", ["merge", "--no-ff", "--no-edit", `origin/${target}`], {}, true)
     if (exitCode !== 0) {
       throw new Error(`The branch "${target}" could not be merged into "${baseBranch}"
 You might be able to resolve conflicts on your local machine 💻 with these commands:

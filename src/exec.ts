@@ -9,8 +9,12 @@ import path from "path"
 import type { Inputs } from "./inputs"
 
 export interface Exec {
-  readonly exec: (command: string, args: string[], ignoreReturnCode?: boolean) => Promise<Result>
-  readonly script: (source: string, ignoreReturnCode?: boolean) => Promise<Result>
+  readonly exec: (command: string, args: string[], env?: Env, ignoreReturnCode?: boolean) => Promise<Result>
+  readonly script: (source: string, env?: Env, ignoreReturnCode?: boolean) => Promise<Result>
+}
+
+interface Env {
+  readonly [k: string]: string
 }
 
 interface Result {
@@ -24,19 +28,19 @@ interface Params {
 }
 
 export const buildExec = ({ workingDirectory: cwd, shell }: Params): Exec => {
-  const env = {
+  const defaultEnv = {
     ...process.env,
     GIT_TERMINAL_PROMPT: "0", // Disable git prompt
     GCM_INTERACTIVE: "Never", // Disable prompting for git credential manager
   }
 
   return {
-    async exec(command: string, args: string[], ignoreReturnCode = false): Promise<Result> {
+    async exec(command: string, args: string[], env: Env = {}, ignoreReturnCode = false): Promise<Result> {
       const buffers: string[] = []
 
       const options = {
         cwd,
-        env,
+        env: { ...defaultEnv, ...env },
         ignoreReturnCode,
         listeners: {
           stdout: (data: Buffer) => {
@@ -49,12 +53,12 @@ export const buildExec = ({ workingDirectory: cwd, shell }: Params): Exec => {
       return { exitCode, stdout }
     },
 
-    async script(source: string, ignoreReturnCode = false): Promise<Result> {
+    async script(source: string, env: Env = {}, ignoreReturnCode = false): Promise<Result> {
       const buffers: string[] = []
 
       const options = {
         cwd,
-        env,
+        env: { ...defaultEnv, ...env },
         ignoreReturnCode,
         listeners: {
           stdout: (data: Buffer) => {
