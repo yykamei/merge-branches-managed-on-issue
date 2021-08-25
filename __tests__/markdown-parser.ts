@@ -1,6 +1,11 @@
 import { parse } from "../src/markdown-parser"
+import * as core from "@actions/core"
 
 describe("parse", () => {
+  beforeAll(() => {
+    jest.spyOn(core, "debug").mockImplementation(jest.fn)
+  })
+
   it("parses the basic markdown body", () => {
     const basic = `This is a markdown body.
 

@@ -5,6 +5,10 @@ import { fetchData } from "../src/github"
 describe("fetchData", () => {
   const octokit: any = { graphql: jest.fn() }
 
+  beforeAll(() => {
+    jest.spyOn(core, "debug").mockImplementation(jest.fn)
+  })
+
   beforeEach(() => {
     jest.spyOn(core, "debug").mockImplementation(jest.fn)
     jest.spyOn(github.context, "repo", "get").mockReturnValue({ owner: "foo", repo: "bar" })
