@@ -36,6 +36,8 @@ const handleWorkflowDispatch = async ({
   inputsParamForce,
 }: Inputs) => {
   const payload = context.payload as WorkflowDispatchEvent
+  core.debug(`We got the workflow_dispatch event with this payload: ${payload}.`)
+
   if (payload.inputs == null || !(inputsParamBaseBranch in payload.inputs) || !(inputsParamForce in payload.inputs)) {
     throw new Error(
       `"${inputsParamBaseBranch}" and "${inputsParamForce}" must be configured as inputs of the workflow_dispatch event in your GitHub workflow`

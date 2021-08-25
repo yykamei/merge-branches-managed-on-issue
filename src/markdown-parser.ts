@@ -5,6 +5,7 @@
 import unified from "unified"
 import remarkParse from "remark-parse"
 import remarkGfm from "remark-gfm"
+import * as core from "@actions/core"
 
 interface MergedBranches {
   [baseBranch: string]: TargetBranch[]
@@ -18,17 +19,22 @@ interface TargetBranch {
 }
 
 export const parse = (body: string): MergedBranches => {
+  core.debug("Start parse()")
   let currentBaseBranch: string | null = null
   const mergedBranches: MergedBranches = {}
 
   const result: any = unified().use(remarkParse).use(remarkGfm).parse(body)
+  core.debug("We got the parsed markdown.")
+
   result.children.forEach((node: any) => {
     switch (node.type) {
       case "heading": {
+        core.debug("We found the heading node.")
         currentBaseBranch = extractText(node)
         return
       }
       case "table": {
+        core.debug("We found the table node.")
         if (currentBaseBranch != null) {
           mergedBranches[currentBaseBranch] = tableToTargetBranch(node)
         }
@@ -42,6 +48,8 @@ export const parse = (body: string): MergedBranches => {
 }
 
 const tableToTargetBranch = (node: any): TargetBranch[] => {
+  core.debug(`Start tableToTargetBranch()`)
+
   const rows = node.children.map((child: any) => {
     switch (child.type) {
       case "tableRow":
@@ -51,6 +59,8 @@ const tableToTargetBranch = (node: any): TargetBranch[] => {
     }
   })
   const headers = rows[0]
+  core.debug(`We could get the headers with these values: ${headers}`)
+
   return rows.slice(1).map((row: any) => {
     let name: string | null = null
     const extras: any = {}
@@ -75,6 +85,8 @@ const tableToTargetBranch = (node: any): TargetBranch[] => {
 }
 
 const tableRowToArray = (node: any): (string | null)[] => {
+  core.debug(`Start tableRowToArray()`)
+
   return node.children.map((child: any) => {
     switch (child.type) {
       case "tableCell":
@@ -92,16 +104,23 @@ const tableRowToArray = (node: any): (string | null)[] => {
  * @param node
  */
 const extractText = (node: any): string | null => {
+  core.debug(`Start extractText()`)
+
   if ("children" in node) {
     const result = node.children
       .map((child: any) => extractText(child))
       .filter((v: unknown) => v != null)
       .join("")
-    return result.length > 0 ? result : null
+    const text = result.length > 0 ? result : null
+    core.debug(`We could extract the text value: "${text}"`)
+    return text
   }
   if (node.type === "text") {
     const result = node.value
-    return result.length > 0 ? result : null
+    const text = result.length > 0 ? result : null
+    core.debug(`We could extract the text value: "${text}"`)
+    return text
   }
+  core.debug("We could not extract the text value")
   return null
 }
