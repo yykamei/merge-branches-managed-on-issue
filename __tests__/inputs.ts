@@ -12,6 +12,10 @@ describe("getInputs", () => {
         ({
           token: "my-secret",
           "issue-number": "89",
+          shell: "bash -euxo pipefail",
+          "before-merge": `echo OK
+ls -al
+date`,
         }[name] as any)
     )
   })
@@ -21,9 +25,34 @@ describe("getInputs", () => {
     expect(inputs.token).toStrictEqual("my-secret")
     expect(inputs.issueNumber).toStrictEqual(89)
     expect(inputs.workingDirectory).toStrictEqual("/path/to/w")
+    expect(inputs.shell).toStrictEqual(["bash", "-euxo", "pipefail"])
+    expect(inputs.beforeMerge).toStrictEqual(`echo OK\nls -al\ndate`)
+  })
+
+  it("calls getInput()", () => {
+    getInputs()
     expect(getInput).toHaveBeenCalledWith("token", { required: true })
     expect(getInput).toHaveBeenCalledWith("issue-number", { required: true })
     expect(getInput).toHaveBeenCalledWith("path")
+    expect(getInput).toHaveBeenCalledWith("shell")
+    expect(getInput).toHaveBeenCalledWith("before-merge")
+  })
+
+  describe("when before-merge is not set", () => {
+    beforeEach(() => {
+      getInput = jest
+        .spyOn(core, "getInput")
+        .mockImplementation((name) => ({ token: "my-secret", "issue-number": "89", "before-merge": "" }[name] as any))
+    })
+
+    it("creates an instance of Inputs with beforeMerge being null", () => {
+      const inputs = getInputs()
+      expect(inputs.token).toStrictEqual("my-secret")
+      expect(inputs.issueNumber).toStrictEqual(89)
+      expect(inputs.workingDirectory).toStrictEqual("/path/to/w")
+      expect(inputs.shell).toStrictEqual(["bash", "-eo", "pipefail"])
+      expect(inputs.beforeMerge).toBeNull()
+    })
   })
 
   describe("when GITHUB_WORKSPACE is not set", () => {

@@ -11,6 +11,8 @@ describe("run", () => {
       token: "token",
       issueNumber: 73,
       workingDirectory: "/foo",
+      shell: ["bash", "eo", "pipefail"],
+      beforeMerge: null,
     }))
   })
 

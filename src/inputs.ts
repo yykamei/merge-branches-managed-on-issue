@@ -5,6 +5,8 @@ export interface Inputs {
   readonly token: string
   readonly issueNumber: number
   readonly workingDirectory: string
+  readonly shell: string[]
+  readonly beforeMerge: string | null
 }
 
 export const getInputs = (): Inputs => {
@@ -12,6 +14,8 @@ export const getInputs = (): Inputs => {
     token: getInput("token", { required: true }),
     issueNumber: Number(getInput("issue-number", { required: true })),
     workingDirectory: resolvedWorkingDirectory(),
+    shell: getShell(),
+    beforeMerge: getInput("before-merge") || null, // NOTE: Make the value `null` if it seems falsy.
   }
 }
 
@@ -27,4 +31,10 @@ const resolvedWorkingDirectory = (): string => {
     throw new Error(`The specified path "${relative}" is not under "${githubWorkspacePath}"`)
   }
   return workingDirectory
+}
+
+const getShell = (): string[] => {
+  // TODO: Consider platform differences between Linux and Windows.
+  const shell = getInput("shell") || "bash -eo pipefail" // NOTE: Handle an empty string as "."
+  return shell.split(/\s+/)
 }

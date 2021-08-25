@@ -7,6 +7,12 @@ inputs:
   path:
     description: Relative path under $GITHUB_WORKSPACE to place the repository
     required: false
+  shell:
+    description: The shell command to invoke a specified source code. This is typically used for `before-merge` option. The default is `bash -eo pipefail` on Linux. Currently, the Windows platform is not supported. Note this value will be just splitted by whitespaces.
+    required: false
+  before-merge:
+    description: Script that will be run before merging each target branch through the `shell` option.
+    required: false
   token:
     description: The GitHub token used to create an authenticated client
     required: false
