@@ -21,6 +21,7 @@
     "unified": "^9.2.2"
   },
   "devDependencies": {
+    "@octokit/webhooks-types": "^4.3.0",
     "@types/jest": "^27.0.1",
     "@types/node": "^16.7.1",
     "@types/unist": "^2.0.6",

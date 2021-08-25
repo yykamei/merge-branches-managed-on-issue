@@ -20,12 +20,7 @@ describe("run", () => {
   })
 
   describe("when the event is workflow_dispatch", () => {
-    beforeEach(() => {
-      Object.defineProperty(context, "eventName", { value: "workflow_dispatch" })
-    })
-
-    it("succeeds", async () => {
-      const body = `This is a markdown body.
+    const body = `This is a markdown body.
 
 ## staging
 | branch                | author   | PR   | Note                                        |
@@ -40,22 +35,64 @@ describe("run", () => {
 | branch2               | @yykamei | #139 |                                             |
 | branch3               | @yykamei | #140 |                                             |
 `
-      const fetchIssue = jest.spyOn(github, "fetchData").mockResolvedValueOnce({
+    beforeEach(() => {
+      Object.defineProperty(context, "eventName", { value: "workflow_dispatch" })
+      Object.defineProperty(context, "payload", { value: { inputs: { "base-branch": "staging", force: "false" } } })
+    })
+
+    it("calls fetchData and merge", async () => {
+      const fetchData = jest.spyOn(github, "fetchData").mockResolvedValueOnce({
         issue: { body },
         defaultBranch: "main",
       } as any)
       const callMerge = jest.spyOn(merge, "merge").mockResolvedValueOnce("git-log")
+
       await run()
-      expect(fetchIssue).toHaveBeenCalledWith({ token: "token", issueNumber: 73 })
+      expect(fetchData).toHaveBeenCalledWith({ token: "token", issueNumber: 73 })
       expect(callMerge).toHaveBeenCalledWith({
         workingDirectory: "/foo",
         shell: ["bash", "-eo", "pipefail"],
         beforeMerge: null,
-        baseBranch: "base",
-        targetBranches: ["b1", "b2"],
+        baseBranch: "staging",
+        targetBranches: ["branch1", "feature/add-something"],
         defaultBranch: "main",
         force: false,
       })
+    })
+
+    it("throws an error because of the lack of force in inputs", async () => {
+      Object.defineProperty(context, "payload", { value: { inputs: { "base-branch": "staging" } } })
+      try {
+        await run()
+      } catch (e: any) {
+        expect(e.message).toEqual(
+          '"base-branch" and "force" must be configured as inputs of the workflow_dispatch event in your GitHub workflow'
+        )
+      }
+    })
+
+    it("throws an error because of the lack of base-branch in inputs", async () => {
+      Object.defineProperty(context, "payload", { value: { inputs: { force: "true" } } })
+      try {
+        await run()
+      } catch (e: any) {
+        expect(e.message).toEqual(
+          '"base-branch" and "force" must be configured as inputs of the workflow_dispatch event in your GitHub workflow'
+        )
+      }
+    })
+
+    it("throws an error because the specified base-branch does not exist in the issue", async () => {
+      Object.defineProperty(context, "payload", { value: { inputs: { "base-branch": "something", force: "true" } } })
+      jest.spyOn(github, "fetchData").mockResolvedValueOnce({
+        issue: { body },
+        defaultBranch: "main",
+      } as any)
+      try {
+        await run()
+      } catch (e: any) {
+        expect(e.message).toEqual('The specified base-branch "something" is not defined in the body of the issue #73')
+      }
     })
   })
 
