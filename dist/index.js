@@ -19217,12 +19217,12 @@ const merge = ({ workingDirectory, shell, defaultBranch, baseBranch, targetBranc
         yield exec.exec("git", ["reset", "--hard", `origin/${defaultBranch}`]);
     }
     if (beforeMerge != null) {
-        yield runScriptForBranches(exec, beforeMerge, [...targetBranches, baseBranch]);
+        yield runScriptForBranches(exec, beforeMerge, baseBranch, [...targetBranches, baseBranch]);
         yield exec.exec("git", ["checkout", baseBranch]);
     }
     yield mergeTargets(exec, baseBranch, targetBranches);
     if (afterMerge != null) {
-        yield runScriptForBranches(exec, afterMerge, [...targetBranches, baseBranch]);
+        yield runScriptForBranches(exec, afterMerge, baseBranch, [...targetBranches, baseBranch]);
         yield exec.exec("git", ["checkout", baseBranch]);
     }
     if (force) {
@@ -19248,10 +19248,10 @@ const configureGit = ({ exec }) => merge_awaiter(void 0, void 0, void 0, functio
     yield exec("git", ["config", "user.name", "github-actions"]);
     yield exec("git", ["config", "user.email", "github-actions@github.com"]);
 });
-const runScriptForBranches = ({ exec, script }, source, branches) => merge_awaiter(void 0, void 0, void 0, function* () {
+const runScriptForBranches = ({ exec, script }, source, baseBranch, branches) => merge_awaiter(void 0, void 0, void 0, function* () {
     for (const branch of branches) {
         yield exec("git", ["checkout", branch]);
-        yield script(source, { CURRENT_BRANCH: branch });
+        yield script(source, { CURRENT_BRANCH: branch, BASE_BRANCH: baseBranch });
     }
 });
 const mergeTargets = ({ exec }, baseBranch, targetBranches) => merge_awaiter(void 0, void 0, void 0, function* () {

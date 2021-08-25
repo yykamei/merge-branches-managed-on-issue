@@ -32,14 +32,14 @@ export const merge = async ({
   }
 
   if (beforeMerge != null) {
-    await runScriptForBranches(exec, beforeMerge, [...targetBranches, baseBranch])
+    await runScriptForBranches(exec, beforeMerge, baseBranch, [...targetBranches, baseBranch])
     await exec.exec("git", ["checkout", baseBranch])
   }
 
   await mergeTargets(exec, baseBranch, targetBranches)
 
   if (afterMerge != null) {
-    await runScriptForBranches(exec, afterMerge, [...targetBranches, baseBranch])
+    await runScriptForBranches(exec, afterMerge, baseBranch, [...targetBranches, baseBranch])
     await exec.exec("git", ["checkout", baseBranch])
   }
 
@@ -68,10 +68,10 @@ const configureGit = async ({ exec }: Exec): Promise<void> => {
   await exec("git", ["config", "user.email", "github-actions@github.com"])
 }
 
-const runScriptForBranches = async ({ exec, script }: Exec, source: string, branches: string[]) => {
+const runScriptForBranches = async ({ exec, script }: Exec, source: string, baseBranch: string, branches: string[]) => {
   for (const branch of branches) {
     await exec("git", ["checkout", branch])
-    await script(source, { CURRENT_BRANCH: branch })
+    await script(source, { CURRENT_BRANCH: branch, BASE_BRANCH: baseBranch })
   }
 }
 
