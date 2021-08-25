@@ -57,7 +57,7 @@ const tableToTargetBranch = (node: any): TargetBranch[] => {
 
     row.forEach((v: any, idx: number) => {
       extras[headers[idx]] = v
-      if (headers[idx] === "branch") {
+      if (headers[idx]?.toLowerCase() === "branch") {
         if (v == null) {
           throw new Error("Branch must exist in the table row")
         }

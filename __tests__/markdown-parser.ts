@@ -11,7 +11,7 @@ describe("parse", () => {
 | feature/add-something | @yykamei | #138 |                                             |
 
 ## strawberry
-| branch                | author   | PR   | Note                                        |
+| Branch                | author   | PR   | Note                                        |
 | --------------------- | -------- | ---- | ------------------------------------------- |
 | feature/add-something | @yykamei | #138 |                                             |
 | branch2               | @yykamei | #139 |                                             |
@@ -37,15 +37,15 @@ describe("parse", () => {
       strawberry: [
         {
           name: "feature/add-something",
-          extras: { branch: "feature/add-something", author: "@yykamei", PR: "#138", Note: null },
+          extras: { Branch: "feature/add-something", author: "@yykamei", PR: "#138", Note: null },
         },
         {
           name: "branch2",
-          extras: { branch: "branch2", author: "@yykamei", PR: "#139", Note: null },
+          extras: { Branch: "branch2", author: "@yykamei", PR: "#139", Note: null },
         },
         {
           name: "branch3",
-          extras: { branch: "branch3", author: "@yykamei", PR: "#140", Note: null },
+          extras: { Branch: "branch3", author: "@yykamei", PR: "#140", Note: null },
         },
       ],
     })
