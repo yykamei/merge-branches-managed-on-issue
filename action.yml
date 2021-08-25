@@ -11,7 +11,7 @@ inputs:
     description: The shell command to invoke a specified source code. This is typically used for `before-merge` option. The default is `bash -eo pipefail` on Linux. Currently, the Windows platform is not supported. Note this value will be just splitted by whitespaces.
     required: false
   before-merge:
-    description: Script that will be run before merging each target branch through the `shell` option.
+    description: Script that will be run before merging through the `shell` option. This will be invoked after checkingout to each target and the base branch, so you can modify commits for each branch. This is useful to avoid possible merge conflicts.
     required: false
   token:
     description: The GitHub token used to create an authenticated client

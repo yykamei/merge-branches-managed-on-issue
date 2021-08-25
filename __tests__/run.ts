@@ -3,6 +3,7 @@ import { context } from "@actions/github"
 import { run } from "../src/run"
 import * as inputs from "../src/inputs"
 import * as github from "../src/github"
+import * as merge from "../src/merge"
 
 describe("run", () => {
   beforeAll(() => {
@@ -11,7 +12,7 @@ describe("run", () => {
       token: "token",
       issueNumber: 73,
       workingDirectory: "/foo",
-      shell: ["bash", "eo", "pipefail"],
+      shell: ["bash", "-eo", "pipefail"],
       beforeMerge: null,
     }))
   })
@@ -38,8 +39,18 @@ describe("run", () => {
 | branch3               | @yykamei | #140 |                                             |
 `
       const fetchIssue = jest.spyOn(github, "fetchIssue").mockResolvedValueOnce({ body } as any)
+      const callMerge = jest.spyOn(merge, "merge").mockResolvedValueOnce("git-log")
       await run()
       expect(fetchIssue).toHaveBeenCalledWith({ token: "token", issueNumber: 73 })
+      expect(callMerge).toHaveBeenCalledWith({
+        workingDirectory: "/foo",
+        shell: ["bash", "-eo", "pipefail"],
+        beforeMerge: null,
+        baseBranch: "base",
+        targetBranches: ["b1", "b2"],
+        defaultBranch: "main",
+        force: false,
+      })
     })
   })
 
