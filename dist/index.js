@@ -19258,7 +19258,15 @@ const mergeTargets = ({ exec }, baseBranch, targetBranches) => merge_awaiter(voi
     for (const target of targetBranches) {
         const { exitCode } = yield exec("git", ["merge", "--no-ff", "--no-edit", `origin/${target}`], {}, true);
         if (exitCode !== 0) {
+            const { stdout: status } = yield exec("git", ["status"], {}, true);
+            const { stdout: diff } = yield exec("git", ["diff"], {}, true);
             throw new Error(`The branch "${target}" could not be merged into "${baseBranch}"
+git-status(1):
+${status}
+
+git-diff(1):
+${diff}
+
 You might be able to resolve conflicts on your local machine 💻 with these commands:
 
 git fetch

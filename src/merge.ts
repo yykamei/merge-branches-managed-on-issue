@@ -79,7 +79,15 @@ const mergeTargets = async ({ exec }: Exec, baseBranch: string, targetBranches: 
   for (const target of targetBranches) {
     const { exitCode } = await exec("git", ["merge", "--no-ff", "--no-edit", `origin/${target}`], {}, true)
     if (exitCode !== 0) {
+      const { stdout: status } = await exec("git", ["status"], {}, true)
+      const { stdout: diff } = await exec("git", ["diff"], {}, true)
       throw new Error(`The branch "${target}" could not be merged into "${baseBranch}"
+git-status(1):
+${status}
+
+git-diff(1):
+${diff}
+
 You might be able to resolve conflicts on your local machine 💻 with these commands:
 
 git fetch
