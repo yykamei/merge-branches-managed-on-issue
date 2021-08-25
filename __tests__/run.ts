@@ -14,6 +14,8 @@ describe("run", () => {
       workingDirectory: "/foo",
       shell: ["bash", "-eo", "pipefail"],
       beforeMerge: null,
+      inputsParamBaseBranch: "base-branch",
+      inputsParamForce: "force",
     }))
   })
 

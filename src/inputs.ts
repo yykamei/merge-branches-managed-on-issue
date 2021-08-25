@@ -7,6 +7,8 @@ export interface Inputs {
   readonly workingDirectory: string
   readonly shell: string[]
   readonly beforeMerge: string | null
+  readonly inputsParamBaseBranch: string
+  readonly inputsParamForce: string
 }
 
 export const getInputs = (): Inputs => {
@@ -16,6 +18,8 @@ export const getInputs = (): Inputs => {
     workingDirectory: resolvedWorkingDirectory(),
     shell: getShell(),
     beforeMerge: getInput("before-merge") || null, // NOTE: Make the value `null` if it seems falsy.
+    inputsParamBaseBranch: getInput("inputs-param-base-branch") || "base-branch", // NOTE: Make the value `null` if it seems falsy.
+    inputsParamForce: getInput("inputs-param-force") || "force", // NOTE: Make the value `null` if it seems falsy.
   }
 }
 

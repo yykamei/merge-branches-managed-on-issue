@@ -27,6 +27,8 @@ date`,
     expect(inputs.workingDirectory).toStrictEqual("/path/to/w")
     expect(inputs.shell).toStrictEqual(["bash", "-euxo", "pipefail"])
     expect(inputs.beforeMerge).toStrictEqual(`echo OK\nls -al\ndate`)
+    expect(inputs.inputsParamBaseBranch).toStrictEqual("base-branch")
+    expect(inputs.inputsParamForce).toStrictEqual("force")
   })
 
   it("calls getInput()", () => {
@@ -36,6 +38,8 @@ date`,
     expect(getInput).toHaveBeenCalledWith("path")
     expect(getInput).toHaveBeenCalledWith("shell")
     expect(getInput).toHaveBeenCalledWith("before-merge")
+    expect(getInput).toHaveBeenCalledWith("inputs-param-base-branch")
+    expect(getInput).toHaveBeenCalledWith("inputs-param-force")
   })
 
   describe("when before-merge is not set", () => {
