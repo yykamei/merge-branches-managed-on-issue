@@ -2,7 +2,12 @@ import * as core from "@actions/core"
 import { context, getOctokit } from "@actions/github"
 import type { Inputs } from "./inputs"
 
-export const fetchIssue = async ({ token, issueNumber }: Pick<Inputs, "token" | "issueNumber">): Promise<Issue> => {
+interface Data {
+  readonly issue: Issue
+  readonly defaultBranch: string
+}
+
+export const fetchData = async ({ token, issueNumber }: Pick<Inputs, "token" | "issueNumber">): Promise<Data> => {
   core.debug("Start fetchIssue()")
 
   const { owner, repo } = context.repo
@@ -11,6 +16,9 @@ export const fetchIssue = async ({ token, issueNumber }: Pick<Inputs, "token" | 
     `
 query($owner: String!, $repo: String!, $issueNumber: Int!) { 
   repository(owner: $owner, name: $repo) { 
+    defaultBranchRef {
+      name
+    }
     issue(number: $issueNumber) {
       body
       locked
@@ -24,7 +32,10 @@ query($owner: String!, $repo: String!, $issueNumber: Int!) {
   )
 
   core.debug(`Finish fetchIssue() with this response:\n${result}`)
-  return result.repository.issue
+  return {
+    issue: result.repository.issue,
+    defaultBranch: result.repository.defaultBranchRef.name,
+  }
 }
 
 export interface Issue {
@@ -38,5 +49,8 @@ export interface Issue {
 interface IssueResponse {
   readonly repository: {
     readonly issue: Issue
+    readonly defaultBranchRef: {
+      readonly name: string
+    }
   }
 }

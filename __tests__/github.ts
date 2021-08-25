@@ -1,8 +1,8 @@
 import * as core from "@actions/core"
 import * as github from "@actions/github"
-import { fetchIssue } from "../src/github"
+import { fetchData } from "../src/github"
 
-describe("fetchIssue", () => {
+describe("fetchData", () => {
   const octokit: any = { graphql: jest.fn() }
 
   beforeEach(() => {
@@ -21,13 +21,19 @@ describe("fetchIssue", () => {
           state: "OPEN",
           title: "My issue",
         },
+        defaultBranchRef: {
+          name: "main",
+        },
       },
     })
-    const result = await fetchIssue({ token: "secret", issueNumber: 832 })
+    const result = await fetchData({ token: "secret", issueNumber: 832 })
     expect(octokit.graphql).toHaveBeenCalledWith(
       `
 query($owner: String!, $repo: String!, $issueNumber: Int!) { 
   repository(owner: $owner, name: $repo) { 
+    defaultBranchRef {
+      name
+    }
     issue(number: $issueNumber) {
       body
       locked
@@ -40,11 +46,14 @@ query($owner: String!, $repo: String!, $issueNumber: Int!) {
       { owner: "foo", repo: "bar", issueNumber: 832 }
     )
     expect(result).toStrictEqual({
-      body: "body",
-      locked: false,
-      number: 832,
-      state: "OPEN",
-      title: "My issue",
+      issue: {
+        body: "body",
+        locked: false,
+        number: 832,
+        state: "OPEN",
+        title: "My issue",
+      },
+      defaultBranch: "main",
     })
   })
 })

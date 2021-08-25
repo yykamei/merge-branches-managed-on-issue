@@ -38,7 +38,10 @@ describe("run", () => {
 | branch2               | @yykamei | #139 |                                             |
 | branch3               | @yykamei | #140 |                                             |
 `
-      const fetchIssue = jest.spyOn(github, "fetchIssue").mockResolvedValueOnce({ body } as any)
+      const fetchIssue = jest.spyOn(github, "fetchData").mockResolvedValueOnce({
+        issue: { body },
+        defaultBranch: "main",
+      } as any)
       const callMerge = jest.spyOn(merge, "merge").mockResolvedValueOnce("git-log")
       await run()
       expect(fetchIssue).toHaveBeenCalledWith({ token: "token", issueNumber: 73 })
