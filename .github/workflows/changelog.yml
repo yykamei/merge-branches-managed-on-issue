@@ -17,3 +17,12 @@ jobs:
           commit-message: Update CHANGELOG.md
           branch: update-changelog
           force: 'true'
+      - uses: yykamei/actions-gh-pr-create@main
+        with:
+          branch: update-changelog
+          title: Update CHANGELOG.md
+          label: chore
+          body: |
+            *This pull request was automatically created to make CHANGELOG.md the latest*.
+
+            Check the files changes and merge if the changes make sense.
