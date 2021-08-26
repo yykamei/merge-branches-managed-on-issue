@@ -1,3 +1,4 @@
+import * as core from "@actions/core"
 import { buildExec } from "./exec"
 import type { Exec } from "./exec"
 import type { Inputs } from "./inputs"
@@ -33,12 +34,15 @@ const checkout = async (
   { exec }: Exec,
   { baseBranch, targetBranches, modifiedBranchSuffix }: Params
 ): Promise<void> => {
+  core.debug("Start checkout()")
   for (const target of targetBranches) {
+    core.debug(`  checkout to ${target}...`)
     const branch = modifiedBranch(target, modifiedBranchSuffix)
     await exec("git", ["checkout", target])
 
     const { stdout } = await exec("git", ["branch", "--remotes", "--list", `origin/${branch}`])
     if (stdout.trim().length === 0) {
+      core.debug(`  creating to ${branch}...`)
       await exec("git", ["checkout", "-b", branch])
       await exec("git", ["push", "origin", branch])
     }
@@ -46,22 +50,30 @@ const checkout = async (
 
   const { stdout } = await exec("git", ["branch", "--remotes", "--list", `origin/${baseBranch}`])
   if (stdout.trim().length === 0) {
+    core.debug(`  creating ${baseBranch}...`)
     await exec("git", ["checkout", "-b", baseBranch])
   } else {
+    core.debug(`  checkout to ${baseBranch}...`)
     await exec("git", ["checkout", baseBranch])
   }
+  core.debug("Finish checkout()")
 }
 
 const reset = async ({ exec }: Exec, { force, defaultBranch }: Params) => {
+  core.debug("Start reset()")
   if (force) {
+    core.debug("  reset!")
     await exec("git", ["reset", "--hard", `origin/${defaultBranch}`])
   }
+  core.debug("Finish reset()")
 }
 
 const configureGit = async ({ exec }: Exec): Promise<void> => {
+  core.debug("Start configureGit()")
   // TODO: `name` and `email` should be configurable.
   await exec("git", ["config", "user.name", "github-actions"])
   await exec("git", ["config", "user.email", "github-actions@github.com"])
+  core.debug("Finish configureGit()")
 }
 
 const runScriptForBranches =
@@ -70,22 +82,32 @@ const runScriptForBranches =
     { exec, script }: Exec,
     { beforeMerge, afterMerge, targetBranches, baseBranch, modifiedBranchSuffix }: Params
   ) => {
+    core.debug("Start runScriptForBranches()")
     const source = when === "before" ? beforeMerge : afterMerge
     if (source == null) {
+      core.debug("Finish runScriptForBranches() without executing")
       return
     }
     for (const target of targetBranches) {
       const branch = modifiedBranch(target, modifiedBranchSuffix)
       await exec("git", ["checkout", branch])
+
+      core.debug(`  running the script on the branch "${branch}"...`)
       await script(source, { CURRENT_BRANCH: branch, BASE_BRANCH: baseBranch })
+
+      core.debug(`  pushing ${branch}...`)
       await exec("git", ["push", "origin", branch])
     }
     await exec("git", ["checkout", baseBranch])
+
+    core.debug(`  running the script on the branch "${baseBranch}"...`)
     await script(source, { CURRENT_BRANCH: baseBranch, BASE_BRANCH: baseBranch })
     // NOTE: baseBranch can be modified directly because it is managed by this action.
+    core.debug("Finish runScriptForBranches()")
   }
 
 const mergeTargets = async ({ exec }: Exec, { baseBranch, targetBranches, modifiedBranchSuffix }: Params) => {
+  core.debug("Start mergeTargets()")
   for (const target of targetBranches) {
     const branch = modifiedBranch(target, modifiedBranchSuffix)
     const { exitCode } = await exec("git", ["merge", "--no-ff", "--no-edit", branch], {}, true)
@@ -114,14 +136,17 @@ After pushing the merge commit, Run this workflow again 💪
 `)
     }
   }
+  core.debug("Finish mergeTargets()")
 }
 
 const push = async ({ exec }: Exec, { force, baseBranch }: Params) => {
+  core.debug("Start push()")
   if (force) {
     await exec("git", ["push", "--force", "origin", baseBranch])
   } else {
     await exec("git", ["push", "origin", baseBranch])
   }
+  core.debug("Finish push()")
 }
 
 const output = async ({ exec }: Exec, { defaultBranch }: Params): Promise<string> => {
