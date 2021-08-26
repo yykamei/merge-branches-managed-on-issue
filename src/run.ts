@@ -34,6 +34,7 @@ const handleWorkflowDispatch = async ({
   afterMerge,
   inputsParamBaseBranch,
   inputsParamForce,
+  modifiedBranchSuffix,
 }: Inputs) => {
   const payload = context.payload as WorkflowDispatchEvent
   core.debug(`We got the workflow_dispatch event with this payload: ${payload}.`)
@@ -61,6 +62,7 @@ const handleWorkflowDispatch = async ({
     afterMerge,
     baseBranch,
     targetBranches: targetBranches.map((t) => t.name),
+    modifiedBranchSuffix,
     defaultBranch,
     force,
   })

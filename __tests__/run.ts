@@ -58,6 +58,7 @@ describe("run", () => {
         afterMerge: null,
         baseBranch: "staging",
         targetBranches: ["branch1", "feature/add-something"],
+        modifiedBranchSuffix: ".modified",
         defaultBranch: "main",
         force: false,
       })
