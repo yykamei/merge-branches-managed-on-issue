@@ -19240,6 +19240,7 @@ const checkout = ({ exec }, { baseBranch, targetBranches, modifiedBranchSuffix }
     if (stdout.trim().length === 0) {
         core.debug(`  creating ${baseBranch}...`);
         yield exec("git", ["checkout", "-b", baseBranch]);
+        yield exec("git", ["push", "origin", baseBranch]);
     }
     else {
         core.debug(`  checkout to ${baseBranch}...`);

@@ -52,6 +52,7 @@ const checkout = async (
   if (stdout.trim().length === 0) {
     core.debug(`  creating ${baseBranch}...`)
     await exec("git", ["checkout", "-b", baseBranch])
+    await exec("git", ["push", "origin", baseBranch])
   } else {
     core.debug(`  checkout to ${baseBranch}...`)
     await exec("git", ["checkout", baseBranch])
