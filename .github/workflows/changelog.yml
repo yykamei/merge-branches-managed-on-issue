@@ -16,7 +16,7 @@ jobs:
         with:
           commit-message: Update CHANGELOG.md
           branch: update-changelog
-          force: 'true'
+          force: "true"
       - uses: yykamei/actions-gh-pr-create@main
         with:
           branch: update-changelog
