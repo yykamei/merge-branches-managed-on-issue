@@ -10,6 +10,7 @@ export interface Inputs {
   readonly afterMerge: string | null
   readonly inputsParamBaseBranch: string
   readonly inputsParamForce: string
+  readonly modifiedBranchSuffix: string
 }
 
 export const getInputs = (): Inputs => {
@@ -22,6 +23,7 @@ export const getInputs = (): Inputs => {
     afterMerge: getInput("after-merge") || null, // NOTE: Make the value `null` if it seems falsy.
     inputsParamBaseBranch: getInput("inputs-param-base-branch") || "base-branch", // NOTE: Make the value `null` if it seems falsy.
     inputsParamForce: getInput("inputs-param-force") || "force", // NOTE: Make the value `null` if it seems falsy.
+    modifiedBranchSuffix: getInput("modified-branch-suffix") || ".modified", // NOTE: Make the value `null` if it seems falsy.
   }
 }
 

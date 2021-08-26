@@ -22,6 +22,9 @@ inputs:
   inputs-param-force:
     description: The name for force option in the workflow_dispatch action. The default is "force"
     required: false
+  modified-branch-suffix:
+    description: The suffix for the modified branch. If you don't set `before-merge` or `after-merge`, the modified branch and the original branch will be the same. The default is ".modified"
+    required: false
   token:
     description: The GitHub token used to create an authenticated client
     required: false

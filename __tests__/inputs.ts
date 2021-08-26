@@ -30,6 +30,7 @@ date`,
     expect(inputs.afterMerge).toStrictEqual(null)
     expect(inputs.inputsParamBaseBranch).toStrictEqual("base-branch")
     expect(inputs.inputsParamForce).toStrictEqual("force")
+    expect(inputs.modifiedBranchSuffix).toStrictEqual(".modified")
   })
 
   it("calls getInput()", () => {
@@ -42,6 +43,7 @@ date`,
     expect(getInput).toHaveBeenCalledWith("after-merge")
     expect(getInput).toHaveBeenCalledWith("inputs-param-base-branch")
     expect(getInput).toHaveBeenCalledWith("inputs-param-force")
+    expect(getInput).toHaveBeenCalledWith("modified-branch-suffix")
   })
 
   describe("when before-merge is not set", () => {

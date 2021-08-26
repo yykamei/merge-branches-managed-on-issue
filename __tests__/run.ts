@@ -17,6 +17,7 @@ describe("run", () => {
       afterMerge: null,
       inputsParamBaseBranch: "base-branch",
       inputsParamForce: "force",
+      modifiedBranchSuffix: ".modified",
     }))
   })
 
