@@ -19,6 +19,7 @@ jobs:
           force: "true"
       - uses: yykamei/actions-gh-pr-create@main
         with:
+          token: ${{ secrets.GITHUB_TOKEN }}
           branch: update-changelog
           title: Update CHANGELOG.md
           label: chore
