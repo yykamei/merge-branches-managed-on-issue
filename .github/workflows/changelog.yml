@@ -16,7 +16,6 @@ jobs:
         with:
           commit-message: Update CHANGELOG.md
           branch: update-changelog
-          force: "true"
       - uses: yykamei/actions-gh-pr-create@main
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
