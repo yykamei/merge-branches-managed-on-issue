@@ -2,19 +2,19 @@ name: Merge Branches Managed on Issue
 description: This actions is responsible for merging listed branches on the specified GitHub issue.
 inputs:
   issue-number:
-    description: The GitHub issue number in which the branches are listed.
+    description: The GitHub issue number in which the branches are listed
     required: true
   path:
     description: Relative path under $GITHUB_WORKSPACE to place the repository
     required: false
   shell:
-    description: The shell command to invoke a specified source code. This is typically used for `before-merge` option. The default is `bash -eo pipefail` on Linux. Currently, the Windows platform is not supported. Note this value will be just splitted by whitespaces.
+    description: The shell command to invoke a specified source code. This is typically used for `before-merge` option. The default is `bash -eo pipefail` on Linux. Currently, the Windows platform is not supported. Note this value will be just splitted by whitespaces
     required: false
   before-merge:
-    description: Script that will be run before merging through the `shell` option. This will be invoked after checking out to each target and the base branch, so you can modify commits for each branch. This is useful to avoid possible merge conflicts.
+    description: Script that will be run before merging through the `shell` option. This will be invoked after checking out to each target and the base branch, so you can modify commits for each branch. This is useful to avoid possible merge conflicts
     required: false
   after-merge:
-    description: Script that will be run after merging through the `shell` option. This will be invoked after checking out to each target and the base branch, so you can modify commits for each branch.
+    description: Script that will be run after merging through the `shell` option. This will be invoked after checking out to each target and the base branch, so you can modify commits for each branch
     required: false
   inputs-param-base-branch:
     description: The name for a base branch in the workflow_dispatch action. The default is "base-branch"
