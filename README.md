@@ -111,7 +111,8 @@ jobs:
 
 After configuring the workflow, go to the GitHub Actions page and select the workflow name, which is "Merge Branches Managed on Issue" in this example, and trigger the workflow with the branch name.
 
-TODO: Picture!
+<img width="280" alt="Trigger the workflow through workflow_dispatch" src="https://user-images.githubusercontent.com/13130705/131052572-37b7a95a-d514-4100-a28d-eece6693aaf4.png">
+
 
 You should get the merged branch! That's it 🚀
 
