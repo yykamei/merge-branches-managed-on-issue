@@ -135,6 +135,13 @@ These are all available inputs.
 
 ### What should I do when some of branches listed change?
 
+TBD
+
+### What should I do when some of branches listed are deleted?
+
+TBD
+
+
 ## Contributing
 
 Please take a look at
