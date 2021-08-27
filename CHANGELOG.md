@@ -1,5 +1,14 @@
 # Changelog
 
+## [Unreleased](https://github.com/yykamei/merge-branches-managed-on-issue/tree/HEAD)
+
+[Full Changelog](https://github.com/yykamei/merge-branches-managed-on-issue/compare/v0.1.0...HEAD)
+
+**Merged pull requests:**
+
+- Bump typescript from 4.3.5 to 4.4.2 [\#10](https://github.com/yykamei/merge-branches-managed-on-issue/pull/10) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump @octokit/webhooks-types from 4.3.0 to 4.3.1 [\#9](https://github.com/yykamei/merge-branches-managed-on-issue/pull/9) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## [v0.1.0](https://github.com/yykamei/merge-branches-managed-on-issue/tree/v0.1.0) (2021-08-27)
 
 [Full Changelog](https://github.com/yykamei/merge-branches-managed-on-issue/compare/d9aa589be56bd8ac0c84c4189f7b2eb1333ebdd5...v0.1.0)
