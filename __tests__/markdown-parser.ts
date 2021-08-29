@@ -27,30 +27,37 @@ describe("parse", () => {
       staging: [
         {
           name: "branch1",
+          author: "@yykamei",
+          pull: "#123",
           extras: {
-            branch: "branch1",
-            author: "@yykamei",
-            PR: "#123",
             Note: "This will be used until the end of October.",
           },
         },
         {
           name: "feature/add-something",
-          extras: { branch: "feature/add-something", author: "@yykamei", PR: "#138", Note: null },
+          author: "@yykamei",
+          pull: "#138",
+          extras: { Note: null },
         },
       ],
       strawberry: [
         {
           name: "feature/add-something",
-          extras: { Branch: "feature/add-something", author: "@yykamei", PR: "#138", Note: null },
+          author: "@yykamei",
+          pull: "#138",
+          extras: { Note: null },
         },
         {
           name: "branch2",
-          extras: { Branch: "branch2", author: "@yykamei", PR: "#139", Note: null },
+          author: "@yykamei",
+          pull: "#139",
+          extras: { Note: null },
         },
         {
           name: "branch3",
-          extras: { Branch: "branch3", author: "@yykamei", PR: "#140", Note: null },
+          author: "@yykamei",
+          pull: "#140",
+          extras: { Note: null },
         },
       ],
     })
@@ -70,11 +77,15 @@ Hi, it's staging branch.
       staging: [
         {
           name: "branch2",
-          extras: { branch: "branch2", author: "@yykamei", PR: "#993", Note: null },
+          author: "@yykamei",
+          pull: "#993",
+          extras: { Note: null },
         },
         {
           name: "branch3",
-          extras: { branch: "branch3", author: "@yykamei", PR: "#998", Note: null },
+          author: "@yykamei",
+          pull: "#998",
+          extras: { Note: null },
         },
       ],
     })
@@ -83,15 +94,17 @@ Hi, it's staging branch.
   it("parses the markdown body including the heading with strong and en", () => {
     const headingWithStrong = `
 ## <strong>feature</strong>/<en>fire</en>
-|branch|author|PR|Note|
-|-------|--------|--|-----|
-|branch4|@yykamei|#8|<p></p>|
+|branch|author|Note|
+|-------|--------|-----|
+|branch4|@yykamei|<p></p>|
 `
     expect(parse(headingWithStrong)).toEqual({
       "feature/fire": [
         {
           name: "branch4",
-          extras: { branch: "branch4", author: "@yykamei", PR: "#8", Note: null },
+          author: "@yykamei",
+          pull: null,
+          extras: { Note: null },
         },
       ],
     })
