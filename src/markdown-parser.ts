@@ -13,6 +13,8 @@ interface MergedBranches {
 
 interface TargetBranch {
   readonly name: string
+  readonly author: string | null
+  readonly pull: string | null
   readonly extras: {
     readonly [key: string]: string
   }
@@ -63,15 +65,22 @@ const tableToTargetBranch = (node: any): TargetBranch[] => {
 
   return rows.slice(1).map((row: any) => {
     let name: string | null = null
+    let author: string | null = null
+    let pull: string | null = null
     const extras: any = {}
 
     row.forEach((v: any, idx: number) => {
-      extras[headers[idx]] = v
       if (headers[idx]?.toLowerCase() === "branch") {
         if (v == null) {
           throw new Error("Branch must exist in the table row")
         }
         name = v
+      } else if (["author"].includes(headers[idx]?.toLowerCase())) {
+        author = v
+      } else if (["pr", "pull", "pull_request"].includes(headers[idx]?.toLowerCase())) {
+        pull = v
+      } else {
+        extras[headers[idx]] = v
       }
     })
     if (name == null) {
@@ -79,6 +88,8 @@ const tableToTargetBranch = (node: any): TargetBranch[] => {
     }
     return {
       name,
+      author,
+      pull,
       extras,
     }
   })

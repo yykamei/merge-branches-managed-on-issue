@@ -19064,15 +19064,25 @@ const tableToTargetBranch = (node) => {
     core.debug(`We could get the headers with these values: ${headers}`);
     return rows.slice(1).map((row) => {
         let name = null;
+        let author = null;
+        let pull = null;
         const extras = {};
         row.forEach((v, idx) => {
-            var _a;
-            extras[headers[idx]] = v;
+            var _a, _b, _c;
             if (((_a = headers[idx]) === null || _a === void 0 ? void 0 : _a.toLowerCase()) === "branch") {
                 if (v == null) {
                     throw new Error("Branch must exist in the table row");
                 }
                 name = v;
+            }
+            else if (["author"].includes((_b = headers[idx]) === null || _b === void 0 ? void 0 : _b.toLowerCase())) {
+                author = v;
+            }
+            else if (["pr", "pull", "pull_request"].includes((_c = headers[idx]) === null || _c === void 0 ? void 0 : _c.toLowerCase())) {
+                pull = v;
+            }
+            else {
+                extras[headers[idx]] = v;
             }
         });
         if (name == null) {
@@ -19080,6 +19090,8 @@ const tableToTargetBranch = (node) => {
         }
         return {
             name,
+            author,
+            pull,
             extras,
         };
     });
