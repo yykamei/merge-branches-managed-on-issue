@@ -68,7 +68,7 @@ export const buildExec = ({ workingDirectory: cwd, shell }: Params): Exec => {
       }
 
       if (shell[0]) {
-        const prefix = path.join(os.tmpdir(), "before-merge")
+        const prefix = path.join(os.tmpdir(), "custom-")
         const src = path.join(fs.mkdtempSync(prefix), "script")
         fs.writeFileSync(src, source)
         let exitCode = 0
