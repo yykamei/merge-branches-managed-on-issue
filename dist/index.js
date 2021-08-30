@@ -19192,7 +19192,7 @@ const buildExec = ({ workingDirectory: cwd, shell }) => {
                     },
                 };
                 if (shell[0]) {
-                    const prefix = external_path_default().join(external_os_.tmpdir(), "before-merge");
+                    const prefix = external_path_default().join(external_os_.tmpdir(), "custom-");
                     const src = external_path_default().join(external_fs_.mkdtempSync(prefix), "script");
                     external_fs_.writeFileSync(src, source);
                     let exitCode = 0;
