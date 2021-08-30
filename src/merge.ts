@@ -45,6 +45,9 @@ const checkout = async (
       core.debug(`  creating to ${branch}...`)
       await exec("git", ["checkout", "-b", branch])
       await exec("git", ["push", "origin", branch])
+    } else {
+      core.debug(`  checkout to ${branch}...`)
+      await exec("git", ["checkout", branch])
     }
   }
 
