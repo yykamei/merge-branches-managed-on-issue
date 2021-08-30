@@ -19321,13 +19321,11 @@ After pushing the merge commit, Run this workflow again 💪
     }
     core.debug("Finish mergeTargets()");
 });
-const push = ({ exec }, { force, baseBranch }) => merge_awaiter(void 0, void 0, void 0, function* () {
+const push = ({ exec }, { baseBranch, targetBranches, modifiedBranchSuffix }) => merge_awaiter(void 0, void 0, void 0, function* () {
     core.debug("Start push()");
-    if (force) {
-        yield exec("git", ["push", "--force", "origin", baseBranch]);
-    }
-    else {
-        yield exec("git", ["push", "origin", baseBranch]);
+    for (const branch of [...targetBranches.map((t) => modifiedBranch(t, modifiedBranchSuffix)), baseBranch]) {
+        core.debug(`  pushing ${branch}`);
+        yield exec("git", ["push", "origin", branch]);
     }
     core.debug("Finish push()");
 });
