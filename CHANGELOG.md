@@ -6,6 +6,7 @@
 
 **Fixed bugs:**
 
+- Fix the logic of reset\(\); reset modified, too [\#24](https://github.com/yykamei/merge-branches-managed-on-issue/pull/24) ([yykamei](https://github.com/yykamei))
 - Fix checkout to create modified branches locally [\#20](https://github.com/yykamei/merge-branches-managed-on-issue/pull/20) ([yykamei](https://github.com/yykamei))
 
 **Merged pull requests:**
