@@ -133,12 +133,11 @@ After pushing the merge commit, Run this workflow again 💪
   core.debug("Finish mergeTargets()")
 }
 
-const push = async ({ exec }: Exec, { force, baseBranch }: Params) => {
+const push = async ({ exec }: Exec, { baseBranch, targetBranches, modifiedBranchSuffix }: Params) => {
   core.debug("Start push()")
-  if (force) {
-    await exec("git", ["push", "--force", "origin", baseBranch])
-  } else {
-    await exec("git", ["push", "origin", baseBranch])
+  for (const branch of [...targetBranches.map((t) => modifiedBranch(t, modifiedBranchSuffix)), baseBranch]) {
+    core.debug(`  pushing ${branch}`)
+    await exec("git", ["push", "origin", branch])
   }
   core.debug("Finish push()")
 }
