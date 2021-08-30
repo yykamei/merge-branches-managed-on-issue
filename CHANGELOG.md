@@ -4,6 +4,10 @@
 
 [Full Changelog](https://github.com/yykamei/merge-branches-managed-on-issue/compare/v0.1.0...HEAD)
 
+**Fixed bugs:**
+
+- Fix checkout to create modified branches locally [\#20](https://github.com/yykamei/merge-branches-managed-on-issue/pull/20) ([yykamei](https://github.com/yykamei))
+
 **Merged pull requests:**
 
 - Extract authro and PR from extras in markdown table [\#18](https://github.com/yykamei/merge-branches-managed-on-issue/pull/18) ([yykamei](https://github.com/yykamei))
