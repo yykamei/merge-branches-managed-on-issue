@@ -10,6 +10,7 @@
 
 **Merged pull requests:**
 
+- Rename the temporary script file name [\#22](https://github.com/yykamei/merge-branches-managed-on-issue/pull/22) ([yykamei](https://github.com/yykamei))
 - Extract authro and PR from extras in markdown table [\#18](https://github.com/yykamei/merge-branches-managed-on-issue/pull/18) ([yykamei](https://github.com/yykamei))
 - Bump typescript from 4.3.5 to 4.4.2 [\#10](https://github.com/yykamei/merge-branches-managed-on-issue/pull/10) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump @octokit/webhooks-types from 4.3.0 to 4.3.1 [\#9](https://github.com/yykamei/merge-branches-managed-on-issue/pull/9) ([dependabot[bot]](https://github.com/apps/dependabot))
