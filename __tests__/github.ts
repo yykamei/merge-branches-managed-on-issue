@@ -1,6 +1,6 @@
 import * as core from "@actions/core"
 import * as github from "@actions/github"
-import { fetchData } from "../src/github"
+import { fetchData, updateIssue } from "../src/github"
 
 describe("fetchData", () => {
   const octokit: any = { graphql: jest.fn() }
@@ -10,7 +10,6 @@ describe("fetchData", () => {
   })
 
   beforeEach(() => {
-    jest.spyOn(core, "debug").mockImplementation(jest.fn)
     jest.spyOn(github.context, "repo", "get").mockReturnValue({ owner: "foo", repo: "bar" })
     jest.spyOn(github, "getOctokit").mockImplementation(() => octokit)
   })
@@ -19,6 +18,7 @@ describe("fetchData", () => {
     jest.spyOn(octokit, "graphql").mockResolvedValueOnce({
       repository: {
         issue: {
+          id: "id!",
           body: "body",
           locked: false,
           number: 832,
@@ -39,6 +39,7 @@ query($owner: String!, $repo: String!, $issueNumber: Int!) {
       name
     }
     issue(number: $issueNumber) {
+      id
       body
       locked
       number
@@ -51,6 +52,7 @@ query($owner: String!, $repo: String!, $issueNumber: Int!) {
     )
     expect(result).toStrictEqual({
       issue: {
+        id: "id!",
         body: "body",
         locked: false,
         number: 832,
@@ -59,5 +61,39 @@ query($owner: String!, $repo: String!, $issueNumber: Int!) {
       },
       defaultBranch: "main",
     })
+  })
+})
+
+describe("updateIssue", () => {
+  const octokit: any = { graphql: jest.fn() }
+
+  beforeAll(() => {
+    jest.spyOn(core, "debug").mockImplementation(jest.fn)
+  })
+
+  beforeEach(() => {
+    jest.spyOn(github, "getOctokit").mockImplementation(() => octokit)
+  })
+
+  it("succeeds to update an issue", async () => {
+    jest.spyOn(octokit, "graphql").mockResolvedValueOnce({
+      updateIssue: {
+        issue: {
+          id: "MDU6SXNzdWU5ODM3OTQwMDc=",
+        },
+      },
+    })
+    await updateIssue({ id: "MDU6SXNzdWU5ODM3OTQwMDc=" } as any, "special description", "secret")
+    expect(octokit.graphql).toHaveBeenCalledWith(
+      `
+mutation($id: ID!, $body: String!) { 
+  updateIssue(input: {id: $id, body: $body}) {
+    issue {
+      id
+    }
+  }
+}`,
+      { id: "MDU6SXNzdWU5ODM3OTQwMDc=", body: "special description" }
+    )
   })
 })

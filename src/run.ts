@@ -1,11 +1,11 @@
 import * as core from "@actions/core"
 import { context } from "@actions/github"
-import type { WorkflowDispatchEvent } from "@octokit/webhooks-types"
+import type { DeleteEvent, WorkflowDispatchEvent } from "@octokit/webhooks-types"
 import { getInputs } from "./inputs"
 import type { Inputs } from "./inputs"
-import { fetchData } from "./github"
-import { parse } from "./markdown-parser"
-import { merge } from "./merge"
+import { fetchData, updateIssue } from "./github"
+import { parse, remove } from "./markdown-parser"
+import { deleteBranch, merge } from "./git"
 
 export const run = async (): Promise<void> => {
   const inputs = getInputs()
@@ -18,8 +18,7 @@ export const run = async (): Promise<void> => {
       // Reformat the issue body
       return
     case "delete":
-      // Delete the deleted branch from the issue body
-      return
+      return await handleDelete(inputs)
     default:
       throw new Error(`This action does not support the event "${context.eventName}"`)
   }
@@ -48,7 +47,7 @@ const handleWorkflowDispatch = async ({
   const force = (payload.inputs[inputsParamForce] as string).toLowerCase() === "true"
 
   const { issue, defaultBranch } = await fetchData({ token, issueNumber })
-  const result = parse(issue.body)
+  const result = parse(issue.body).mergedBranches
   const targetBranches = result[baseBranch]
 
   if (targetBranches == null) {
@@ -66,4 +65,16 @@ const handleWorkflowDispatch = async ({
     defaultBranch,
     force,
   })
+}
+
+const handleDelete = async ({ token, issueNumber, workingDirectory, shell, modifiedBranchSuffix }: Inputs) => {
+  const payload = context.payload as DeleteEvent
+  if (payload.ref_type !== "branch") {
+    return
+  }
+  const branch = payload.ref.replace("refs/heads/", "")
+  const { issue } = await fetchData({ token, issueNumber })
+  await deleteBranch(branch, { workingDirectory, shell, modifiedBranchSuffix })
+  const newBody = remove(issue.body, branch)
+  await updateIssue(issue, newBody, token)
 }

@@ -2,10 +2,16 @@
 // So, we explicitly disable `@typescript-eslint/no-explicit-any` to avoid "children does not exist".
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+import * as core from "@actions/core"
 import unified from "unified"
 import remarkParse from "remark-parse"
 import remarkGfm from "remark-gfm"
-import * as core from "@actions/core"
+import remarkStringify from "remark-stringify"
+
+interface Parsed {
+  readonly mergedBranches: MergedBranches
+  readonly node: any
+}
 
 interface MergedBranches {
   [baseBranch: string]: TargetBranch[]
@@ -20,7 +26,7 @@ interface TargetBranch {
   }
 }
 
-export const parse = (body: string): MergedBranches => {
+export const parse = (body: string): Parsed => {
   core.debug("Start parse()")
   let currentBaseBranch: string | null = null
   const mergedBranches: MergedBranches = {}
@@ -46,7 +52,34 @@ export const parse = (body: string): MergedBranches => {
         return // Do nothing
     }
   })
-  return mergedBranches
+  return { node: result, mergedBranches }
+}
+
+export const remove = (body: string, branch: string): string => {
+  core.debug("Start remove()")
+  const parsed = parse(body)
+  const root = parsed.node
+
+  root.children.forEach((node: any, idx: number) => {
+    switch (node.type) {
+      case "table": {
+        for (const targetBranches of Object.values(parsed.mergedBranches)) {
+          if (targetBranches.find((t: TargetBranch) => t.name === branch)) {
+            const headers = node.children.slice(0, 1).flatMap((c: any) => tableRowToArray(c))
+            const branchCol = headers.findIndex((h: string | null) => isBranch(h))
+            root.children[idx]!.children = [
+              ...node.children.slice(0, 1),
+              ...node.children.slice(1).filter((c: any) => tableRowToArray(c)[branchCol] !== branch),
+            ]
+          }
+        }
+        return
+      }
+      default:
+        return // Do nothing
+    }
+  })
+  return unified().use(remarkGfm).use(remarkStringify).stringify(root)
 }
 
 const tableToTargetBranch = (node: any): TargetBranch[] => {
@@ -70,7 +103,7 @@ const tableToTargetBranch = (node: any): TargetBranch[] => {
     const extras: any = {}
 
     row.forEach((v: any, idx: number) => {
-      if (headers[idx]?.toLowerCase() === "branch") {
+      if (isBranch(headers[idx])) {
         if (v == null) {
           throw new Error("Branch must exist in the table row")
         }
@@ -135,3 +168,5 @@ const extractText = (node: any): string | null => {
   core.debug("We could not extract the text value")
   return null
 }
+
+const isBranch = (s: string | undefined | null) => s?.toLocaleLowerCase() === "branch"
