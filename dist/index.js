@@ -5604,6 +5604,50 @@ exports.isPlainObject = isPlainObject;
 
 /***/ }),
 
+/***/ 4232:
+/***/ ((module) => {
+
+"use strict";
+
+
+module.exports = longestStreak
+
+// Get the count of the longest repeating streak of `character` in `value`.
+function longestStreak(value, character) {
+  var count = 0
+  var maximum = 0
+  var expected
+  var index
+
+  if (typeof character !== 'string' || character.length !== 1) {
+    throw new Error('Expected character')
+  }
+
+  value = String(value)
+  index = value.indexOf(character)
+  expected = index
+
+  while (index !== -1) {
+    count++
+
+    if (index === expected) {
+      if (count > maximum) {
+        maximum = count
+      }
+    } else {
+      count = 1
+    }
+
+    expected = index + 1
+    index = value.indexOf(character, expected)
+  }
+
+  return maximum
+}
+
+
+/***/ }),
+
 /***/ 1062:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
@@ -7473,6 +7517,14 @@ function toMarkdown(options) {
 
 /***/ }),
 
+/***/ 219:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+
+module.exports = __nccwpck_require__(3683)
+
+
+/***/ }),
+
 /***/ 9363:
 /***/ ((module) => {
 
@@ -7503,6 +7555,410 @@ function configure(base, extension) {
 
   return base
 }
+
+
+/***/ }),
+
+/***/ 3920:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+
+module.exports = blockquote
+
+var flow = __nccwpck_require__(7530)
+var indentLines = __nccwpck_require__(6887)
+
+function blockquote(node, _, context) {
+  var exit = context.enter('blockquote')
+  var value = indentLines(flow(node, context), map)
+  exit()
+  return value
+}
+
+function map(line, index, blank) {
+  return '>' + (blank ? '' : ' ') + line
+}
+
+
+/***/ }),
+
+/***/ 229:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+
+module.exports = hardBreak
+
+var patternInScope = __nccwpck_require__(8850)
+
+function hardBreak(node, _, context, safe) {
+  var index = -1
+
+  while (++index < context.unsafe.length) {
+    // If we can’t put eols in this construct (setext headings, tables), use a
+    // space instead.
+    if (
+      context.unsafe[index].character === '\n' &&
+      patternInScope(context.stack, context.unsafe[index])
+    ) {
+      return /[ \t]/.test(safe.before) ? '' : ' '
+    }
+  }
+
+  return '\\\n'
+}
+
+
+/***/ }),
+
+/***/ 5268:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+
+module.exports = code
+
+var repeat = __nccwpck_require__(6976)
+var streak = __nccwpck_require__(4232)
+var formatCodeAsIndented = __nccwpck_require__(8446)
+var checkFence = __nccwpck_require__(158)
+var indentLines = __nccwpck_require__(6887)
+var safe = __nccwpck_require__(3906)
+
+function code(node, _, context) {
+  var marker = checkFence(context)
+  var raw = node.value || ''
+  var suffix = marker === '`' ? 'GraveAccent' : 'Tilde'
+  var value
+  var sequence
+  var exit
+  var subexit
+
+  if (formatCodeAsIndented(node, context)) {
+    exit = context.enter('codeIndented')
+    value = indentLines(raw, map)
+  } else {
+    sequence = repeat(marker, Math.max(streak(raw, marker) + 1, 3))
+    exit = context.enter('codeFenced')
+    value = sequence
+
+    if (node.lang) {
+      subexit = context.enter('codeFencedLang' + suffix)
+      value += safe(context, node.lang, {
+        before: '`',
+        after: ' ',
+        encode: ['`']
+      })
+      subexit()
+    }
+
+    if (node.lang && node.meta) {
+      subexit = context.enter('codeFencedMeta' + suffix)
+      value +=
+        ' ' +
+        safe(context, node.meta, {
+          before: ' ',
+          after: '\n',
+          encode: ['`']
+        })
+      subexit()
+    }
+
+    value += '\n'
+
+    if (raw) {
+      value += raw + '\n'
+    }
+
+    value += sequence
+  }
+
+  exit()
+  return value
+}
+
+function map(line, _, blank) {
+  return (blank ? '' : '    ') + line
+}
+
+
+/***/ }),
+
+/***/ 7385:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+
+module.exports = definition
+
+var association = __nccwpck_require__(9211)
+var checkQuote = __nccwpck_require__(3366)
+var safe = __nccwpck_require__(3906)
+
+function definition(node, _, context) {
+  var marker = checkQuote(context)
+  var suffix = marker === '"' ? 'Quote' : 'Apostrophe'
+  var exit = context.enter('definition')
+  var subexit = context.enter('label')
+  var value =
+    '[' + safe(context, association(node), {before: '[', after: ']'}) + ']: '
+
+  subexit()
+
+  if (
+    // If there’s no url, or…
+    !node.url ||
+    // If there’s whitespace, enclosed is prettier.
+    /[ \t\r\n]/.test(node.url)
+  ) {
+    subexit = context.enter('destinationLiteral')
+    value += '<' + safe(context, node.url, {before: '<', after: '>'}) + '>'
+  } else {
+    // No whitespace, raw is prettier.
+    subexit = context.enter('destinationRaw')
+    value += safe(context, node.url, {before: ' ', after: ' '})
+  }
+
+  subexit()
+
+  if (node.title) {
+    subexit = context.enter('title' + suffix)
+    value +=
+      ' ' +
+      marker +
+      safe(context, node.title, {before: marker, after: marker}) +
+      marker
+    subexit()
+  }
+
+  exit()
+
+  return value
+}
+
+
+/***/ }),
+
+/***/ 8909:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+
+module.exports = emphasis
+emphasis.peek = emphasisPeek
+
+var checkEmphasis = __nccwpck_require__(6452)
+var phrasing = __nccwpck_require__(7489)
+
+// To do: there are cases where emphasis cannot “form” depending on the
+// previous or next character of sequences.
+// There’s no way around that though, except for injecting zero-width stuff.
+// Do we need to safeguard against that?
+function emphasis(node, _, context) {
+  var marker = checkEmphasis(context)
+  var exit = context.enter('emphasis')
+  var value = phrasing(node, context, {before: marker, after: marker})
+  exit()
+  return marker + value + marker
+}
+
+function emphasisPeek(node, _, context) {
+  return context.options.emphasis || '*'
+}
+
+
+/***/ }),
+
+/***/ 2568:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+
+module.exports = heading
+
+var repeat = __nccwpck_require__(6976)
+var formatHeadingAsSetext = __nccwpck_require__(4954)
+var phrasing = __nccwpck_require__(7489)
+
+function heading(node, _, context) {
+  var rank = Math.max(Math.min(6, node.depth || 1), 1)
+  var exit
+  var subexit
+  var value
+  var sequence
+
+  if (formatHeadingAsSetext(node, context)) {
+    exit = context.enter('headingSetext')
+    subexit = context.enter('phrasing')
+    value = phrasing(node, context, {before: '\n', after: '\n'})
+    subexit()
+    exit()
+
+    return (
+      value +
+      '\n' +
+      repeat(
+        rank === 1 ? '=' : '-',
+        // The whole size…
+        value.length -
+          // Minus the position of the character after the last EOL (or
+          // 0 if there is none)…
+          (Math.max(value.lastIndexOf('\r'), value.lastIndexOf('\n')) + 1)
+      )
+    )
+  }
+
+  sequence = repeat('#', rank)
+  exit = context.enter('headingAtx')
+  subexit = context.enter('phrasing')
+  value = phrasing(node, context, {before: '# ', after: '\n'})
+  value = value ? sequence + ' ' + value : sequence
+  if (context.options.closeAtx) {
+    value += ' ' + sequence
+  }
+
+  subexit()
+  exit()
+
+  return value
+}
+
+
+/***/ }),
+
+/***/ 5538:
+/***/ ((module) => {
+
+module.exports = html
+html.peek = htmlPeek
+
+function html(node) {
+  return node.value || ''
+}
+
+function htmlPeek() {
+  return '<'
+}
+
+
+/***/ }),
+
+/***/ 3885:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+
+module.exports = imageReference
+imageReference.peek = imageReferencePeek
+
+var association = __nccwpck_require__(9211)
+var safe = __nccwpck_require__(3906)
+
+function imageReference(node, _, context) {
+  var type = node.referenceType
+  var exit = context.enter('imageReference')
+  var subexit = context.enter('label')
+  var alt = safe(context, node.alt, {before: '[', after: ']'})
+  var value = '![' + alt + ']'
+  var reference
+  var stack
+
+  subexit()
+  // Hide the fact that we’re in phrasing, because escapes don’t work.
+  stack = context.stack
+  context.stack = []
+  subexit = context.enter('reference')
+  reference = safe(context, association(node), {before: '[', after: ']'})
+  subexit()
+  context.stack = stack
+  exit()
+
+  if (type === 'full' || !alt || alt !== reference) {
+    value += '[' + reference + ']'
+  } else if (type !== 'shortcut') {
+    value += '[]'
+  }
+
+  return value
+}
+
+function imageReferencePeek() {
+  return '!'
+}
+
+
+/***/ }),
+
+/***/ 1591:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+
+module.exports = image
+image.peek = imagePeek
+
+var checkQuote = __nccwpck_require__(3366)
+var safe = __nccwpck_require__(3906)
+
+function image(node, _, context) {
+  var quote = checkQuote(context)
+  var suffix = quote === '"' ? 'Quote' : 'Apostrophe'
+  var exit = context.enter('image')
+  var subexit = context.enter('label')
+  var value = '![' + safe(context, node.alt, {before: '[', after: ']'}) + ']('
+
+  subexit()
+
+  if (
+    // If there’s no url but there is a title…
+    (!node.url && node.title) ||
+    // Or if there’s markdown whitespace or an eol, enclose.
+    /[ \t\r\n]/.test(node.url)
+  ) {
+    subexit = context.enter('destinationLiteral')
+    value += '<' + safe(context, node.url, {before: '<', after: '>'}) + '>'
+  } else {
+    // No whitespace, raw is prettier.
+    subexit = context.enter('destinationRaw')
+    value += safe(context, node.url, {
+      before: '(',
+      after: node.title ? ' ' : ')'
+    })
+  }
+
+  subexit()
+
+  if (node.title) {
+    subexit = context.enter('title' + suffix)
+    value +=
+      ' ' +
+      quote +
+      safe(context, node.title, {before: quote, after: quote}) +
+      quote
+    subexit()
+  }
+
+  value += ')'
+  exit()
+
+  return value
+}
+
+function imagePeek() {
+  return '!'
+}
+
+
+/***/ }),
+
+/***/ 3769:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+exports.blockquote = __nccwpck_require__(3920)
+exports.break = __nccwpck_require__(229)
+exports.code = __nccwpck_require__(5268)
+exports.definition = __nccwpck_require__(7385)
+exports.emphasis = __nccwpck_require__(8909)
+exports.hardBreak = __nccwpck_require__(229)
+exports.heading = __nccwpck_require__(2568)
+exports.html = __nccwpck_require__(5538)
+exports.image = __nccwpck_require__(1591)
+exports.imageReference = __nccwpck_require__(3885)
+exports.inlineCode = __nccwpck_require__(5645)
+exports.link = __nccwpck_require__(7938)
+exports.linkReference = __nccwpck_require__(9556)
+exports.list = __nccwpck_require__(9323)
+exports.listItem = __nccwpck_require__(7016)
+exports.paragraph = __nccwpck_require__(5197)
+exports.root = __nccwpck_require__(54)
+exports.strong = __nccwpck_require__(2150)
+exports.text = __nccwpck_require__(2124)
+exports.thematicBreak = __nccwpck_require__(3960)
 
 
 /***/ }),
@@ -7583,6 +8039,128 @@ function inlineCodePeek() {
 
 /***/ }),
 
+/***/ 9556:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+
+module.exports = linkReference
+linkReference.peek = linkReferencePeek
+
+var association = __nccwpck_require__(9211)
+var phrasing = __nccwpck_require__(7489)
+var safe = __nccwpck_require__(3906)
+
+function linkReference(node, _, context) {
+  var type = node.referenceType
+  var exit = context.enter('linkReference')
+  var subexit = context.enter('label')
+  var text = phrasing(node, context, {before: '[', after: ']'})
+  var value = '[' + text + ']'
+  var reference
+  var stack
+
+  subexit()
+  // Hide the fact that we’re in phrasing, because escapes don’t work.
+  stack = context.stack
+  context.stack = []
+  subexit = context.enter('reference')
+  reference = safe(context, association(node), {before: '[', after: ']'})
+  subexit()
+  context.stack = stack
+  exit()
+
+  if (type === 'full' || !text || text !== reference) {
+    value += '[' + reference + ']'
+  } else if (type !== 'shortcut') {
+    value += '[]'
+  }
+
+  return value
+}
+
+function linkReferencePeek() {
+  return '['
+}
+
+
+/***/ }),
+
+/***/ 7938:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+
+module.exports = link
+link.peek = linkPeek
+
+var checkQuote = __nccwpck_require__(3366)
+var formatLinkAsAutolink = __nccwpck_require__(5358)
+var phrasing = __nccwpck_require__(7489)
+var safe = __nccwpck_require__(3906)
+
+function link(node, _, context) {
+  var quote = checkQuote(context)
+  var suffix = quote === '"' ? 'Quote' : 'Apostrophe'
+  var exit
+  var subexit
+  var value
+  var stack
+
+  if (formatLinkAsAutolink(node, context)) {
+    // Hide the fact that we’re in phrasing, because escapes don’t work.
+    stack = context.stack
+    context.stack = []
+    exit = context.enter('autolink')
+    value = '<' + phrasing(node, context, {before: '<', after: '>'}) + '>'
+    exit()
+    context.stack = stack
+    return value
+  }
+
+  exit = context.enter('link')
+  subexit = context.enter('label')
+  value = '[' + phrasing(node, context, {before: '[', after: ']'}) + ']('
+  subexit()
+
+  if (
+    // If there’s no url but there is a title…
+    (!node.url && node.title) ||
+    // Or if there’s markdown whitespace or an eol, enclose.
+    /[ \t\r\n]/.test(node.url)
+  ) {
+    subexit = context.enter('destinationLiteral')
+    value += '<' + safe(context, node.url, {before: '<', after: '>'}) + '>'
+  } else {
+    // No whitespace, raw is prettier.
+    subexit = context.enter('destinationRaw')
+    value += safe(context, node.url, {
+      before: '(',
+      after: node.title ? ' ' : ')'
+    })
+  }
+
+  subexit()
+
+  if (node.title) {
+    subexit = context.enter('title' + suffix)
+    value +=
+      ' ' +
+      quote +
+      safe(context, node.title, {before: quote, after: quote}) +
+      quote
+    subexit()
+  }
+
+  value += ')'
+
+  exit()
+  return value
+}
+
+function linkPeek(node, _, context) {
+  return formatLinkAsAutolink(node, context) ? '<' : '['
+}
+
+
+/***/ }),
+
 /***/ 7016:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
@@ -7637,6 +8215,397 @@ function listItem(node, parent, context) {
 
 /***/ }),
 
+/***/ 9323:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+
+module.exports = list
+
+var flow = __nccwpck_require__(7530)
+
+function list(node, _, context) {
+  var exit = context.enter('list')
+  var value = flow(node, context)
+  exit()
+  return value
+}
+
+
+/***/ }),
+
+/***/ 5197:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+
+module.exports = paragraph
+
+var phrasing = __nccwpck_require__(7489)
+
+function paragraph(node, _, context) {
+  var exit = context.enter('paragraph')
+  var subexit = context.enter('phrasing')
+  var value = phrasing(node, context, {before: '\n', after: '\n'})
+  subexit()
+  exit()
+  return value
+}
+
+
+/***/ }),
+
+/***/ 54:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+
+module.exports = root
+
+var flow = __nccwpck_require__(7530)
+
+function root(node, _, context) {
+  return flow(node, context)
+}
+
+
+/***/ }),
+
+/***/ 2150:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+
+module.exports = strong
+strong.peek = strongPeek
+
+var checkStrong = __nccwpck_require__(3534)
+var phrasing = __nccwpck_require__(7489)
+
+// To do: there are cases where emphasis cannot “form” depending on the
+// previous or next character of sequences.
+// There’s no way around that though, except for injecting zero-width stuff.
+// Do we need to safeguard against that?
+function strong(node, _, context) {
+  var marker = checkStrong(context)
+  var exit = context.enter('strong')
+  var value = phrasing(node, context, {before: marker, after: marker})
+  exit()
+  return marker + marker + value + marker + marker
+}
+
+function strongPeek(node, _, context) {
+  return context.options.strong || '*'
+}
+
+
+/***/ }),
+
+/***/ 2124:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+
+module.exports = text
+
+var safe = __nccwpck_require__(3906)
+
+function text(node, parent, context, safeOptions) {
+  return safe(context, node.value, safeOptions)
+}
+
+
+/***/ }),
+
+/***/ 3960:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+
+module.exports = thematicBreak
+
+var repeat = __nccwpck_require__(6976)
+var checkRepeat = __nccwpck_require__(3680)
+var checkRule = __nccwpck_require__(7253)
+
+function thematicBreak(node, parent, context) {
+  var value = repeat(
+    checkRule(context) + (context.options.ruleSpaces ? ' ' : ''),
+    checkRepeat(context)
+  )
+
+  return context.options.ruleSpaces ? value.slice(0, -1) : value
+}
+
+
+/***/ }),
+
+/***/ 3683:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+
+module.exports = toMarkdown
+
+var zwitch = __nccwpck_require__(1067)
+var configure = __nccwpck_require__(9363)
+var defaultHandlers = __nccwpck_require__(3769)
+var defaultJoin = __nccwpck_require__(3701)
+var defaultUnsafe = __nccwpck_require__(6566)
+
+function toMarkdown(tree, options) {
+  var settings = options || {}
+  var context = {
+    enter: enter,
+    stack: [],
+    unsafe: [],
+    join: [],
+    handlers: {},
+    options: {}
+  }
+  var result
+
+  configure(context, {
+    unsafe: defaultUnsafe,
+    join: defaultJoin,
+    handlers: defaultHandlers
+  })
+  configure(context, settings)
+
+  if (context.options.tightDefinitions) {
+    context.join = [joinDefinition].concat(context.join)
+  }
+
+  context.handle = zwitch('type', {
+    invalid: invalid,
+    unknown: unknown,
+    handlers: context.handlers
+  })
+
+  result = context.handle(tree, null, context, {before: '\n', after: '\n'})
+
+  if (
+    result &&
+    result.charCodeAt(result.length - 1) !== 10 &&
+    result.charCodeAt(result.length - 1) !== 13
+  ) {
+    result += '\n'
+  }
+
+  return result
+
+  function enter(name) {
+    context.stack.push(name)
+    return exit
+
+    function exit() {
+      context.stack.pop()
+    }
+  }
+}
+
+function invalid(value) {
+  throw new Error('Cannot handle value `' + value + '`, expected node')
+}
+
+function unknown(node) {
+  throw new Error('Cannot handle unknown node `' + node.type + '`')
+}
+
+function joinDefinition(left, right) {
+  // No blank line between adjacent definitions.
+  if (left.type === 'definition' && left.type === right.type) {
+    return 0
+  }
+}
+
+
+/***/ }),
+
+/***/ 3701:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+
+module.exports = [joinDefaults]
+
+var formatCodeAsIndented = __nccwpck_require__(8446)
+var formatHeadingAsSetext = __nccwpck_require__(4954)
+
+function joinDefaults(left, right, parent, context) {
+  if (
+    // Two lists with the same marker.
+    (right.type === 'list' &&
+      right.type === left.type &&
+      Boolean(left.ordered) === Boolean(right.ordered)) ||
+    // Indented code after list or another indented code.
+    (right.type === 'code' &&
+      formatCodeAsIndented(right, context) &&
+      (left.type === 'list' ||
+        (left.type === right.type && formatCodeAsIndented(left, context))))
+  ) {
+    return false
+  }
+
+  // Join children of a list or an item.
+  // In which case, `parent` has a `spread` field.
+  if (typeof parent.spread === 'boolean') {
+    if (
+      left.type === 'paragraph' &&
+      // Two paragraphs.
+      (left.type === right.type ||
+        right.type === 'definition' ||
+        // Paragraph followed by a setext heading.
+        (right.type === 'heading' && formatHeadingAsSetext(right, context)))
+    ) {
+      return
+    }
+
+    return parent.spread ? 1 : 0
+  }
+}
+
+
+/***/ }),
+
+/***/ 6566:
+/***/ ((module) => {
+
+module.exports = [
+  {
+    character: '\t',
+    inConstruct: ['codeFencedLangGraveAccent', 'codeFencedLangTilde']
+  },
+  {
+    character: '\r',
+    inConstruct: [
+      'codeFencedLangGraveAccent',
+      'codeFencedLangTilde',
+      'codeFencedMetaGraveAccent',
+      'codeFencedMetaTilde',
+      'destinationLiteral',
+      'headingAtx'
+    ]
+  },
+  {
+    character: '\n',
+    inConstruct: [
+      'codeFencedLangGraveAccent',
+      'codeFencedLangTilde',
+      'codeFencedMetaGraveAccent',
+      'codeFencedMetaTilde',
+      'destinationLiteral',
+      'headingAtx'
+    ]
+  },
+  {
+    character: ' ',
+    inConstruct: ['codeFencedLangGraveAccent', 'codeFencedLangTilde']
+  },
+  // An exclamation mark can start an image, if it is followed by a link or
+  // a link reference.
+  {character: '!', after: '\\[', inConstruct: 'phrasing'},
+  // A quote can break out of a title.
+  {character: '"', inConstruct: 'titleQuote'},
+  // A number sign could start an ATX heading if it starts a line.
+  {atBreak: true, character: '#'},
+  {character: '#', inConstruct: 'headingAtx', after: '(?:[\r\n]|$)'},
+  // Dollar sign and percentage are not used in markdown.
+  // An ampersand could start a character reference.
+  {character: '&', after: '[#A-Za-z]', inConstruct: 'phrasing'},
+  // An apostrophe can break out of a title.
+  {character: "'", inConstruct: 'titleApostrophe'},
+  // A left paren could break out of a destination raw.
+  {character: '(', inConstruct: 'destinationRaw'},
+  {before: '\\]', character: '(', inConstruct: 'phrasing'},
+  // A right paren could start a list item or break out of a destination
+  // raw.
+  {atBreak: true, before: '\\d+', character: ')'},
+  {character: ')', inConstruct: 'destinationRaw'},
+  // An asterisk can start thematic breaks, list items, emphasis, strong.
+  {atBreak: true, character: '*'},
+  {character: '*', inConstruct: 'phrasing'},
+  // A plus sign could start a list item.
+  {atBreak: true, character: '+'},
+  // A dash can start thematic breaks, list items, and setext heading
+  // underlines.
+  {atBreak: true, character: '-'},
+  // A dot could start a list item.
+  {atBreak: true, before: '\\d+', character: '.', after: '(?:[ \t\r\n]|$)'},
+  // Slash, colon, and semicolon are not used in markdown for constructs.
+  // A less than can start html (flow or text) or an autolink.
+  // HTML could start with an exclamation mark (declaration, cdata, comment),
+  // slash (closing tag), question mark (instruction), or a letter (tag).
+  // An autolink also starts with a letter.
+  // Finally, it could break out of a destination literal.
+  {atBreak: true, character: '<', after: '[!/?A-Za-z]'},
+  {character: '<', after: '[!/?A-Za-z]', inConstruct: 'phrasing'},
+  {character: '<', inConstruct: 'destinationLiteral'},
+  // An equals to can start setext heading underlines.
+  {atBreak: true, character: '='},
+  // A greater than can start block quotes and it can break out of a
+  // destination literal.
+  {atBreak: true, character: '>'},
+  {character: '>', inConstruct: 'destinationLiteral'},
+  // Question mark and at sign are not used in markdown for constructs.
+  // A left bracket can start definitions, references, labels,
+  {atBreak: true, character: '['},
+  {character: '[', inConstruct: ['phrasing', 'label', 'reference']},
+  // A backslash can start an escape (when followed by punctuation) or a
+  // hard break (when followed by an eol).
+  // Note: typical escapes are handled in `safe`!
+  {character: '\\', after: '[\\r\\n]', inConstruct: 'phrasing'},
+  // A right bracket can exit labels.
+  {
+    character: ']',
+    inConstruct: ['label', 'reference']
+  },
+  // Caret is not used in markdown for constructs.
+  // An underscore can start emphasis, strong, or a thematic break.
+  {atBreak: true, character: '_'},
+  {before: '[^A-Za-z]', character: '_', inConstruct: 'phrasing'},
+  {character: '_', after: '[^A-Za-z]', inConstruct: 'phrasing'},
+  // A grave accent can start code (fenced or text), or it can break out of
+  // a grave accent code fence.
+  {atBreak: true, character: '`'},
+  {
+    character: '`',
+    inConstruct: [
+      'codeFencedLangGraveAccent',
+      'codeFencedMetaGraveAccent',
+      'phrasing'
+    ]
+  },
+  // Left brace, vertical bar, right brace are not used in markdown for
+  // constructs.
+  // A tilde can start code (fenced).
+  {atBreak: true, character: '~'}
+]
+
+
+/***/ }),
+
+/***/ 9211:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+
+module.exports = association
+
+var decode = __nccwpck_require__(3485)
+
+var characterEscape = /\\([!-/:-@[-`{-~])/g
+var characterReference = /&(#(\d{1,7}|x[\da-f]{1,6})|[\da-z]{1,31});/gi
+
+// The `label` of an association is the string value: character escapes and
+// references work, and casing is intact.
+// The `identifier` is used to match one association to another: controversially,
+// character escapes and references don’t work in this matching: `&copy;` does
+// not match `©`, and `\+` does not match `+`.
+// But casing is ignored (and whitespace) is trimmed and collapsed: ` A\nb`
+// matches `a b`.
+// So, we do prefer the label when figuring out how we’re going to serialize:
+// it has whitespace, casing, and we can ignore most useless character escapes
+// and all character references.
+function association(node) {
+  if (node.label || !node.identifier) {
+    return node.label || ''
+  }
+
+  return node.identifier
+    .replace(characterEscape, '$1')
+    .replace(characterReference, decodeIfPossible)
+}
+
+function decodeIfPossible($0, $1) {
+  return decode($1) || $0
+}
+
+
+/***/ }),
+
 /***/ 8599:
 /***/ ((module) => {
 
@@ -7650,6 +8619,50 @@ function checkBullet(context) {
       'Cannot serialize items with `' +
         marker +
         '` for `options.bullet`, expected `*`, `+`, or `-`'
+    )
+  }
+
+  return marker
+}
+
+
+/***/ }),
+
+/***/ 6452:
+/***/ ((module) => {
+
+module.exports = checkEmphasis
+
+function checkEmphasis(context) {
+  var marker = context.options.emphasis || '*'
+
+  if (marker !== '*' && marker !== '_') {
+    throw new Error(
+      'Cannot serialize emphasis with `' +
+        marker +
+        '` for `options.emphasis`, expected `*`, or `_`'
+    )
+  }
+
+  return marker
+}
+
+
+/***/ }),
+
+/***/ 158:
+/***/ ((module) => {
+
+module.exports = checkFence
+
+function checkFence(context) {
+  var marker = context.options.fence || '`'
+
+  if (marker !== '`' && marker !== '~') {
+    throw new Error(
+      'Cannot serialize code with `' +
+        marker +
+        '` for `options.fence`, expected `` ` `` or `~`'
     )
   }
 
@@ -7680,6 +8693,94 @@ function checkListItemIndent(context) {
   }
 
   return style
+}
+
+
+/***/ }),
+
+/***/ 3366:
+/***/ ((module) => {
+
+module.exports = checkQuote
+
+function checkQuote(context) {
+  var marker = context.options.quote || '"'
+
+  if (marker !== '"' && marker !== "'") {
+    throw new Error(
+      'Cannot serialize title with `' +
+        marker +
+        '` for `options.quote`, expected `"`, or `\'`'
+    )
+  }
+
+  return marker
+}
+
+
+/***/ }),
+
+/***/ 3680:
+/***/ ((module) => {
+
+module.exports = checkRule
+
+function checkRule(context) {
+  var repetition = context.options.ruleRepetition || 3
+
+  if (repetition < 3) {
+    throw new Error(
+      'Cannot serialize rules with repetition `' +
+        repetition +
+        '` for `options.ruleRepetition`, expected `3` or more'
+    )
+  }
+
+  return repetition
+}
+
+
+/***/ }),
+
+/***/ 7253:
+/***/ ((module) => {
+
+module.exports = checkRule
+
+function checkRule(context) {
+  var marker = context.options.rule || '*'
+
+  if (marker !== '*' && marker !== '-' && marker !== '_') {
+    throw new Error(
+      'Cannot serialize rules with `' +
+        marker +
+        '` for `options.rule`, expected `*`, `-`, or `_`'
+    )
+  }
+
+  return marker
+}
+
+
+/***/ }),
+
+/***/ 3534:
+/***/ ((module) => {
+
+module.exports = checkStrong
+
+function checkStrong(context) {
+  var marker = context.options.strong || '*'
+
+  if (marker !== '*' && marker !== '_') {
+    throw new Error(
+      'Cannot serialize strong with `' +
+        marker +
+        '` for `options.strong`, expected `*`, or `_`'
+    )
+  }
+
+  return marker
 }
 
 
@@ -7803,6 +8904,76 @@ function phrasing(parent, context, safeOptions) {
 
 /***/ }),
 
+/***/ 8446:
+/***/ ((module) => {
+
+module.exports = formatCodeAsIndented
+
+function formatCodeAsIndented(node, context) {
+  return (
+    !context.options.fences &&
+    node.value &&
+    // If there’s no info…
+    !node.lang &&
+    // And there’s a non-whitespace character…
+    /[^ \r\n]/.test(node.value) &&
+    // And the value doesn’t start or end in a blank…
+    !/^[\t ]*(?:[\r\n]|$)|(?:^|[\r\n])[\t ]*$/.test(node.value)
+  )
+}
+
+
+/***/ }),
+
+/***/ 4954:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+
+module.exports = formatHeadingAsSetext
+
+var toString = __nccwpck_require__(5789)
+
+function formatHeadingAsSetext(node, context) {
+  return (
+    context.options.setext && (!node.depth || node.depth < 3) && toString(node)
+  )
+}
+
+
+/***/ }),
+
+/***/ 5358:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+
+module.exports = formatLinkAsAutolink
+
+var toString = __nccwpck_require__(5789)
+
+function formatLinkAsAutolink(node, context) {
+  var raw = toString(node)
+
+  return (
+    !context.options.resourceLink &&
+    // If there’s a url…
+    node.url &&
+    // And there’s a no title…
+    !node.title &&
+    // And the content of `node` is a single text node…
+    node.children &&
+    node.children.length === 1 &&
+    node.children[0].type === 'text' &&
+    // And if the url is the same as the content…
+    (raw === node.url || 'mailto:' + raw === node.url) &&
+    // And that starts w/ a protocol…
+    /^[a-z][a-z+.-]+:/i.test(node.url) &&
+    // And that doesn’t contain ASCII control codes (character escapes and
+    // references don’t work) or angle brackets…
+    !/[\0- <>\u007F]/.test(node.url)
+  )
+}
+
+
+/***/ }),
+
 /***/ 6887:
 /***/ ((module) => {
 
@@ -7862,6 +9033,189 @@ function patternCompile(pattern) {
   }
 
   return pattern._compiled
+}
+
+
+/***/ }),
+
+/***/ 8850:
+/***/ ((module) => {
+
+module.exports = patternInScope
+
+function patternInScope(stack, pattern) {
+  return (
+    listInScope(stack, pattern.inConstruct, true) &&
+    !listInScope(stack, pattern.notInConstruct)
+  )
+}
+
+function listInScope(stack, list, none) {
+  var index
+
+  if (!list) {
+    return none
+  }
+
+  if (typeof list === 'string') {
+    list = [list]
+  }
+
+  index = -1
+
+  while (++index < list.length) {
+    if (stack.indexOf(list[index]) !== -1) {
+      return true
+    }
+  }
+
+  return false
+}
+
+
+/***/ }),
+
+/***/ 3906:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+
+module.exports = safe
+
+var patternCompile = __nccwpck_require__(4810)
+var patternInScope = __nccwpck_require__(8850)
+
+function safe(context, input, config) {
+  var value = (config.before || '') + (input || '') + (config.after || '')
+  var positions = []
+  var result = []
+  var infos = {}
+  var index = -1
+  var before
+  var after
+  var position
+  var pattern
+  var expression
+  var match
+  var start
+  var end
+
+  while (++index < context.unsafe.length) {
+    pattern = context.unsafe[index]
+
+    if (!patternInScope(context.stack, pattern)) {
+      continue
+    }
+
+    expression = patternCompile(pattern)
+
+    while ((match = expression.exec(value))) {
+      before = 'before' in pattern || pattern.atBreak
+      after = 'after' in pattern
+
+      position = match.index + (before ? match[1].length : 0)
+
+      if (positions.indexOf(position) === -1) {
+        positions.push(position)
+        infos[position] = {before: before, after: after}
+      } else {
+        if (infos[position].before && !before) {
+          infos[position].before = false
+        }
+
+        if (infos[position].after && !after) {
+          infos[position].after = false
+        }
+      }
+    }
+  }
+
+  positions.sort(numerical)
+
+  start = config.before ? config.before.length : 0
+  end = value.length - (config.after ? config.after.length : 0)
+  index = -1
+
+  while (++index < positions.length) {
+    position = positions[index]
+
+    if (
+      // Character before or after matched:
+      position < start ||
+      position >= end
+    ) {
+      continue
+    }
+
+    // If this character is supposed to be escaped because it has a condition on
+    // the next character, and the next character is definitly being escaped,
+    // then skip this escape.
+    if (
+      position + 1 < end &&
+      positions[index + 1] === position + 1 &&
+      infos[position].after &&
+      !infos[position + 1].before &&
+      !infos[position + 1].after
+    ) {
+      continue
+    }
+
+    if (start !== position) {
+      // If we have to use a character reference, an ampersand would be more
+      // correct, but as backslashes only care about punctuation, either will
+      // do the trick
+      result.push(escapeBackslashes(value.slice(start, position), '\\'))
+    }
+
+    start = position
+
+    if (
+      /[!-/:-@[-`{-~]/.test(value.charAt(position)) &&
+      (!config.encode || config.encode.indexOf(value.charAt(position)) === -1)
+    ) {
+      // Character escape.
+      result.push('\\')
+    } else {
+      // Character reference.
+      result.push(
+        '&#x' + value.charCodeAt(position).toString(16).toUpperCase() + ';'
+      )
+      start++
+    }
+  }
+
+  result.push(escapeBackslashes(value.slice(start, end), config.after))
+
+  return result.join('')
+}
+
+function numerical(a, b) {
+  return a - b
+}
+
+function escapeBackslashes(value, after) {
+  var expression = /\\(?=[!-/:-@[-`{-~])/g
+  var positions = []
+  var results = []
+  var index = -1
+  var start = 0
+  var whole = value + after
+  var match
+
+  while ((match = expression.exec(whole))) {
+    positions.push(match.index)
+  }
+
+  while (++index < positions.length) {
+    if (start !== positions[index]) {
+      results.push(value.slice(start, positions[index]))
+    }
+
+    results.push('\\')
+    start = positions[index]
+  }
+
+  results.push(value.slice(start))
+
+  return results.join('')
 }
 
 
@@ -17027,6 +18381,37 @@ function parse(options) {
 
 /***/ }),
 
+/***/ 7114:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+
+"use strict";
+
+
+module.exports = stringify
+
+var toMarkdown = __nccwpck_require__(219)
+
+function stringify(options) {
+  var self = this
+
+  this.Compiler = compile
+
+  function compile(tree) {
+    return toMarkdown(
+      tree,
+      Object.assign({}, self.data('settings'), options, {
+        // Note: this option is not in the readme.
+        // The goal is for it to be set by plugins on `data` instead of being
+        // passed by users.
+        extensions: self.data('toMarkdownExtensions') || []
+      })
+    )
+  }
+}
+
+
+/***/ }),
+
 /***/ 6976:
 /***/ ((module) => {
 
@@ -18698,6 +20083,42 @@ function wrappy (fn, cb) {
 
 /***/ }),
 
+/***/ 1067:
+/***/ ((module) => {
+
+"use strict";
+
+
+module.exports = factory
+
+var noop = Function.prototype
+var own = {}.hasOwnProperty
+
+// Handle values based on a property.
+function factory(key, options) {
+  var settings = options || {}
+
+  function one(value) {
+    var fn = one.invalid
+    var handlers = one.handlers
+
+    if (value && own.call(value, key)) {
+      fn = own.call(handlers, value[key]) ? handlers[value[key]] : one.unknown
+    }
+
+    return (fn || noop).apply(this, arguments)
+  }
+
+  one.handlers = settings.handlers || {}
+  one.invalid = settings.invalid
+  one.unknown = settings.unknown
+
+  return one
+}
+
+
+/***/ }),
+
 /***/ 2877:
 /***/ ((module) => {
 
@@ -18992,6 +20413,7 @@ query($owner: String!, $repo: String!, $issueNumber: Int!) {
       name
     }
     issue(number: $issueNumber) {
+      id
       body
       locked
       number
@@ -19006,6 +20428,18 @@ query($owner: String!, $repo: String!, $issueNumber: Int!) {
         defaultBranch: result.repository.defaultBranchRef.name,
     };
 });
+const updateIssue = (issue, body, token) => __awaiter(void 0, void 0, void 0, function* () {
+    core.debug("Start updateIssue()");
+    const octokit = (0,github.getOctokit)(token);
+    yield octokit.graphql(`
+mutation($id: ID!, $body: String!) { 
+  updateIssue(input: {id: $id, body: $body}) {
+    issue {
+      id
+    }
+  }
+}`, { id: issue.id, body });
+});
 
 // EXTERNAL MODULE: ./node_modules/unified/index.js
 var unified = __nccwpck_require__(5075);
@@ -19016,10 +20450,14 @@ var remark_parse_default = /*#__PURE__*/__nccwpck_require__.n(remark_parse);
 // EXTERNAL MODULE: ./node_modules/remark-gfm/index.js
 var remark_gfm = __nccwpck_require__(5772);
 var remark_gfm_default = /*#__PURE__*/__nccwpck_require__.n(remark_gfm);
+// EXTERNAL MODULE: ./node_modules/remark-stringify/index.js
+var remark_stringify = __nccwpck_require__(7114);
+var remark_stringify_default = /*#__PURE__*/__nccwpck_require__.n(remark_stringify);
 ;// CONCATENATED MODULE: ./src/markdown-parser.ts
 // We are using the old version of unified, which does not have sufficient typing definitions.
 // So, we explicitly disable `@typescript-eslint/no-explicit-any` to avoid "children does not exist".
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
 
 
 
@@ -19048,7 +20486,32 @@ const parse = (body) => {
                 return; // Do nothing
         }
     });
-    return mergedBranches;
+    return { node: result, mergedBranches };
+};
+const remove = (body, branch) => {
+    core.debug("Start remove()");
+    const parsed = parse(body);
+    const root = parsed.node;
+    root.children.forEach((node, idx) => {
+        switch (node.type) {
+            case "table": {
+                for (const targetBranches of Object.values(parsed.mergedBranches)) {
+                    if (targetBranches.find((t) => t.name === branch)) {
+                        const headers = node.children.slice(0, 1).flatMap((c) => tableRowToArray(c));
+                        const branchCol = headers.findIndex((h) => isBranch(h));
+                        root.children[idx].children = [
+                            ...node.children.slice(0, 1),
+                            ...node.children.slice(1).filter((c) => tableRowToArray(c)[branchCol] !== branch),
+                        ];
+                    }
+                }
+                return;
+            }
+            default:
+                return; // Do nothing
+        }
+    });
+    return unified_default()().use((remark_gfm_default())).use((remark_stringify_default())).stringify(root);
 };
 const tableToTargetBranch = (node) => {
     core.debug(`Start tableToTargetBranch()`);
@@ -19068,17 +20531,17 @@ const tableToTargetBranch = (node) => {
         let pull = null;
         const extras = {};
         row.forEach((v, idx) => {
-            var _a, _b, _c;
-            if (((_a = headers[idx]) === null || _a === void 0 ? void 0 : _a.toLowerCase()) === "branch") {
+            var _a, _b;
+            if (isBranch(headers[idx])) {
                 if (v == null) {
                     throw new Error("Branch must exist in the table row");
                 }
                 name = v;
             }
-            else if (["author"].includes((_b = headers[idx]) === null || _b === void 0 ? void 0 : _b.toLowerCase())) {
+            else if (["author"].includes((_a = headers[idx]) === null || _a === void 0 ? void 0 : _a.toLowerCase())) {
                 author = v;
             }
-            else if (["pr", "pull", "pull_request"].includes((_c = headers[idx]) === null || _c === void 0 ? void 0 : _c.toLowerCase())) {
+            else if (["pr", "pull", "pull_request"].includes((_b = headers[idx]) === null || _b === void 0 ? void 0 : _b.toLowerCase())) {
                 pull = v;
             }
             else {
@@ -19133,6 +20596,7 @@ const extractText = (node) => {
     core.debug("We could not extract the text value");
     return null;
 };
+const isBranch = (s) => (s === null || s === void 0 ? void 0 : s.toLocaleLowerCase()) === "branch";
 
 // EXTERNAL MODULE: ./node_modules/@actions/exec/lib/exec.js
 var exec = __nccwpck_require__(1514);
@@ -19211,8 +20675,8 @@ const buildExec = ({ workingDirectory: cwd, shell }) => {
     };
 };
 
-;// CONCATENATED MODULE: ./src/merge.ts
-var merge_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
+;// CONCATENATED MODULE: ./src/git.ts
+var git_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -19223,7 +20687,7 @@ var merge_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _ar
 };
 
 
-const merge = (params) => merge_awaiter(void 0, void 0, void 0, function* () {
+const merge = (params) => git_awaiter(void 0, void 0, void 0, function* () {
     const { workingDirectory, shell } = params;
     const exec = buildExec({ workingDirectory, shell });
     yield configureGit(exec);
@@ -19234,8 +20698,13 @@ const merge = (params) => merge_awaiter(void 0, void 0, void 0, function* () {
     yield push(exec, params);
     return yield output(exec, params);
 });
-const prepare = ({ exec }, { force, baseBranch, targetBranches, modifiedBranchSuffix }) => merge_awaiter(void 0, void 0, void 0, function* () {
-    const run = (target, resetTarget) => merge_awaiter(void 0, void 0, void 0, function* () {
+const deleteBranch = (target, { workingDirectory, shell, modifiedBranchSuffix }) => git_awaiter(void 0, void 0, void 0, function* () {
+    const branch = modifiedBranch(target, modifiedBranchSuffix);
+    const exec = buildExec({ workingDirectory, shell });
+    yield exec.exec("git", ["push", "--delete", "origin", branch], {}, true);
+});
+const prepare = ({ exec }, { force, baseBranch, targetBranches, modifiedBranchSuffix }) => git_awaiter(void 0, void 0, void 0, function* () {
+    const run = (target, resetTarget) => git_awaiter(void 0, void 0, void 0, function* () {
         core.debug(`  checkout to ${target}...`);
         yield exec("git", ["checkout", target]);
         const { stdout } = yield exec("git", ["branch", "--remotes", "--list", `origin/${target}`]);
@@ -19261,14 +20730,14 @@ const prepare = ({ exec }, { force, baseBranch, targetBranches, modifiedBranchSu
     yield run(baseBranch, baseBranch);
     core.debug("Finish prepare()");
 });
-const configureGit = ({ exec }) => merge_awaiter(void 0, void 0, void 0, function* () {
+const configureGit = ({ exec }) => git_awaiter(void 0, void 0, void 0, function* () {
     core.debug("Start configureGit()");
     // TODO: `name` and `email` should be configurable.
     yield exec("git", ["config", "user.name", "github-actions"]);
     yield exec("git", ["config", "user.email", "github-actions@github.com"]);
     core.debug("Finish configureGit()");
 });
-const runScriptForBranches = (when) => ({ exec, script }, { beforeMerge, afterMerge, targetBranches, baseBranch, modifiedBranchSuffix }) => merge_awaiter(void 0, void 0, void 0, function* () {
+const runScriptForBranches = (when) => ({ exec, script }, { beforeMerge, afterMerge, targetBranches, baseBranch, modifiedBranchSuffix }) => git_awaiter(void 0, void 0, void 0, function* () {
     core.debug("Start runScriptForBranches()");
     const source = when === "before" ? beforeMerge : afterMerge;
     if (source == null) {
@@ -19289,7 +20758,7 @@ const runScriptForBranches = (when) => ({ exec, script }, { beforeMerge, afterMe
     // NOTE: baseBranch can be modified directly because it is managed by this action.
     core.debug("Finish runScriptForBranches()");
 });
-const mergeTargets = ({ exec }, { baseBranch, targetBranches, modifiedBranchSuffix }) => merge_awaiter(void 0, void 0, void 0, function* () {
+const mergeTargets = ({ exec }, { baseBranch, targetBranches, modifiedBranchSuffix }) => git_awaiter(void 0, void 0, void 0, function* () {
     core.debug("Start mergeTargets()");
     for (const target of targetBranches) {
         const branch = modifiedBranch(target, modifiedBranchSuffix);
@@ -19321,7 +20790,7 @@ After pushing the merge commit, Run this workflow again 💪
     }
     core.debug("Finish mergeTargets()");
 });
-const push = ({ exec }, { baseBranch, targetBranches, modifiedBranchSuffix }) => merge_awaiter(void 0, void 0, void 0, function* () {
+const push = ({ exec }, { baseBranch, targetBranches, modifiedBranchSuffix }) => git_awaiter(void 0, void 0, void 0, function* () {
     core.debug("Start push()");
     for (const branch of [...targetBranches.map((t) => modifiedBranch(t, modifiedBranchSuffix)), baseBranch]) {
         core.debug(`  pushing ${branch}`);
@@ -19329,7 +20798,7 @@ const push = ({ exec }, { baseBranch, targetBranches, modifiedBranchSuffix }) =>
     }
     core.debug("Finish push()");
 });
-const output = ({ exec }, { defaultBranch }) => merge_awaiter(void 0, void 0, void 0, function* () {
+const output = ({ exec }, { defaultBranch }) => git_awaiter(void 0, void 0, void 0, function* () {
     const { stdout } = yield exec("git", ["log", "--merges", "--oneline", `origin/${defaultBranch}...HEAD`]);
     return stdout;
 });
@@ -19361,8 +20830,7 @@ const run = () => run_awaiter(void 0, void 0, void 0, function* () {
             // Reformat the issue body
             return;
         case "delete":
-            // Delete the deleted branch from the issue body
-            return;
+            return yield handleDelete(inputs);
         default:
             throw new Error(`This action does not support the event "${github.context.eventName}"`);
     }
@@ -19376,7 +20844,7 @@ const handleWorkflowDispatch = ({ token, issueNumber, workingDirectory, shell, b
     const baseBranch = payload.inputs[inputsParamBaseBranch];
     const force = payload.inputs[inputsParamForce].toLowerCase() === "true";
     const { issue, defaultBranch } = yield fetchData({ token, issueNumber });
-    const result = parse(issue.body);
+    const result = parse(issue.body).mergedBranches;
     const targetBranches = result[baseBranch];
     if (targetBranches == null) {
         throw new Error(`The specified base-branch "${baseBranch}" is not defined in the body of the issue #${issueNumber}`);
@@ -19392,6 +20860,17 @@ const handleWorkflowDispatch = ({ token, issueNumber, workingDirectory, shell, b
         defaultBranch,
         force,
     });
+});
+const handleDelete = ({ token, issueNumber, workingDirectory, shell, modifiedBranchSuffix }) => run_awaiter(void 0, void 0, void 0, function* () {
+    const payload = github.context.payload;
+    if (payload.ref_type !== "branch") {
+        return;
+    }
+    const branch = payload.ref.replace("refs/heads/", "");
+    const { issue } = yield fetchData({ token, issueNumber });
+    yield deleteBranch(branch, { workingDirectory, shell, modifiedBranchSuffix });
+    const newBody = remove(issue.body, branch);
+    yield updateIssue(issue, newBody, token);
 });
 
 ;// CONCATENATED MODULE: ./src/main.ts

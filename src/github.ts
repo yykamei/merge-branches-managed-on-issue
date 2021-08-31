@@ -20,6 +20,7 @@ query($owner: String!, $repo: String!, $issueNumber: Int!) {
       name
     }
     issue(number: $issueNumber) {
+      id
       body
       locked
       number
@@ -38,7 +39,25 @@ query($owner: String!, $repo: String!, $issueNumber: Int!) {
   }
 }
 
+export const updateIssue = async (issue: Issue, body: string, token: string) => {
+  core.debug("Start updateIssue()")
+
+  const octokit = getOctokit(token)
+  await octokit.graphql(
+    `
+mutation($id: ID!, $body: String!) { 
+  updateIssue(input: {id: $id, body: $body}) {
+    issue {
+      id
+    }
+  }
+}`,
+    { id: issue.id, body }
+  )
+}
+
 export interface Issue {
+  readonly id: string
   readonly body: string
   readonly locked: boolean
   readonly number: number

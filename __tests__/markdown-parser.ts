@@ -1,4 +1,4 @@
-import { parse } from "../src/markdown-parser"
+import { parse, remove } from "../src/markdown-parser"
 import * as core from "@actions/core"
 
 describe("parse", () => {
@@ -23,7 +23,7 @@ describe("parse", () => {
 | branch3               | @yykamei | #140 |                                             |
 `
 
-    expect(parse(basic)).toEqual({
+    expect(parse(basic).mergedBranches).toEqual({
       staging: [
         {
           name: "branch1",
@@ -73,7 +73,7 @@ Hi, it's staging branch.
 | branch2               | @yykamei | #993 |  |
 | branch3               | @yykamei | #998 |  |
 `
-    expect(parse(headingWithStrong)).toEqual({
+    expect(parse(headingWithStrong).mergedBranches).toEqual({
       staging: [
         {
           name: "branch2",
@@ -98,7 +98,7 @@ Hi, it's staging branch.
 |-------|--------|-----|
 |branch4|@yykamei|<p></p>|
 `
-    expect(parse(headingWithStrong)).toEqual({
+    expect(parse(headingWithStrong).mergedBranches).toEqual({
       "feature/fire": [
         {
           name: "branch4",
@@ -116,7 +116,7 @@ Hi, it's staging branch.
 |----|
 |test|
 `
-    expect(() => parse(broken)).toThrowError("Branch must exist in the table row")
+    expect(() => parse(broken).mergedBranches).toThrowError("Branch must exist in the table row")
   })
 
   it("throws an error because of broken markdown table", () => {
@@ -125,6 +125,42 @@ Hi, it's staging branch.
 |-|-|
 |ok+++++++
 `
-    expect(() => parse(broken)).toThrowError("Branch must exist in the table row")
+    expect(() => parse(broken).mergedBranches).toThrowError("Branch must exist in the table row")
+  })
+})
+
+describe("remove", () => {
+  it("remove the specified branch from the markdown table", () => {
+    const basic = `This is a markdown body.
+
+## staging
+| branch                | author   | PR   | Note                                        |
+| --------------------- | -------- | ---- | ------------------------------------------- |
+| branch2               | @yykamei | #123 | This will be used until the end of October. |
+| feature/add-something | @yykamei | #138 |                                             |
+
+## strawberry
+| Branch                | author   | PR   | Note                                        |
+| --------------------- | -------- | ---- | ------------------------------------------- |
+| feature/add-something | @yykamei | #138 |                                             |
+| branch2               | @yykamei | #139 |                                             |
+| branch3               | @yykamei | #140 |                                             |
+`
+
+    expect(remove(basic, "branch2")).toEqual(`This is a markdown body.
+
+## staging
+
+| branch                | author   | PR   | Note |
+| --------------------- | -------- | ---- | ---- |
+| feature/add-something | @yykamei | #138 |      |
+
+## strawberry
+
+| Branch                | author   | PR   | Note |
+| --------------------- | -------- | ---- | ---- |
+| feature/add-something | @yykamei | #138 |      |
+| branch3               | @yykamei | #140 |      |
+`)
   })
 })

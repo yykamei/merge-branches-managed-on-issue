@@ -3,7 +3,7 @@ import { context } from "@actions/github"
 import { run } from "../src/run"
 import * as inputs from "../src/inputs"
 import * as github from "../src/github"
-import * as merge from "../src/merge"
+import * as git from "../src/git"
 
 describe("run", () => {
   beforeAll(() => {
@@ -47,7 +47,7 @@ describe("run", () => {
         issue: { body },
         defaultBranch: "main",
       } as any)
-      const callMerge = jest.spyOn(merge, "merge").mockResolvedValueOnce("git-log")
+      const callMerge = jest.spyOn(git, "merge").mockResolvedValueOnce("git-log")
 
       await run()
       expect(fetchData).toHaveBeenCalledWith({ token: "token", issueNumber: 73 })
@@ -111,11 +111,61 @@ describe("run", () => {
   })
 
   describe("when the event is delete", () => {
+    const body = `This is a markdown body.
+
+## staging
+| branch                | author   | PR   | Note |
+| --------------------- | -------- | ---- | ---- |
+| branch1               | @yykamei | #123 |      |
+| feature/add-something | @yykamei | #138 |      |
+
+## strawberry
+| branch                | author   | PR   | Note |
+| --------------------- | -------- | ---- | ---- |
+| feature/add-something | @yykamei | #138 |      |
+| branch2               | @yykamei | #139 |      |
+| branch3               | @yykamei | #140 |      |
+`
     beforeEach(() => {
       Object.defineProperty(context, "eventName", { value: "delete" })
+      Object.defineProperty(context, "payload", {
+        value: { ref_type: "branch", ref: "refs/heads/feature/add-something" },
+      })
     })
 
     it("succeeds", async () => {
+      const fetchData = jest.spyOn(github, "fetchData").mockResolvedValueOnce({ issue: { id: "id!", body } } as any)
+      const deleteBranch = jest.spyOn(git, "deleteBranch").mockResolvedValueOnce(undefined)
+      const updateIssue = jest.spyOn(github, "updateIssue").mockResolvedValueOnce(undefined)
+      await run()
+      expect(fetchData).toHaveBeenCalledWith({ token: "token", issueNumber: 73 })
+      expect(deleteBranch).toHaveBeenCalledWith("feature/add-something", {
+        workingDirectory: "/foo",
+        shell: ["bash", "-eo", "pipefail"],
+        modifiedBranchSuffix: ".modified",
+      })
+      const newBody = `This is a markdown body.
+
+## staging
+
+| branch  | author   | PR   | Note |
+| ------- | -------- | ---- | ---- |
+| branch1 | @yykamei | #123 |      |
+
+## strawberry
+
+| branch  | author   | PR   | Note |
+| ------- | -------- | ---- | ---- |
+| branch2 | @yykamei | #139 |      |
+| branch3 | @yykamei | #140 |      |
+`
+      expect(updateIssue).toHaveBeenCalledWith({ id: "id!", body }, newBody, "token")
+    })
+
+    it("does nothing because the ref_type is tag", async () => {
+      Object.defineProperty(context, "payload", {
+        value: { ref_type: "tag", ref: "refs/heads/v1.1.1" },
+      })
       await run()
     })
   })
