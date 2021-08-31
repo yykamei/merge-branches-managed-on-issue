@@ -1,8 +1,8 @@
 # Changelog
 
-## [Unreleased](https://github.com/yykamei/merge-branches-managed-on-issue/tree/HEAD)
+## [v0.2.0](https://github.com/yykamei/merge-branches-managed-on-issue/tree/v0.2.0) (2021-08-31)
 
-[Full Changelog](https://github.com/yykamei/merge-branches-managed-on-issue/compare/v0.1.0...HEAD)
+[Full Changelog](https://github.com/yykamei/merge-branches-managed-on-issue/compare/v0.1.0...v0.2.0)
 
 **Implemented enhancements:**
 
