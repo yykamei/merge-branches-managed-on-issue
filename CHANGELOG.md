@@ -4,6 +4,10 @@
 
 [Full Changelog](https://github.com/yykamei/merge-branches-managed-on-issue/compare/v0.1.0...HEAD)
 
+**Implemented enhancements:**
+
+- Support delete event to remove the branch [\#26](https://github.com/yykamei/merge-branches-managed-on-issue/pull/26) ([yykamei](https://github.com/yykamei))
+
 **Fixed bugs:**
 
 - Fix the logic of reset\(\); reset modified, too [\#24](https://github.com/yykamei/merge-branches-managed-on-issue/pull/24) ([yykamei](https://github.com/yykamei))
