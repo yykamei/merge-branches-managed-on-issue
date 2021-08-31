@@ -46,6 +46,7 @@ on:
         description: force
         required: false
         default: "false"
+  delete:
 
 jobs:
   merge:
