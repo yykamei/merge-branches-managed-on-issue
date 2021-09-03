@@ -6,6 +6,7 @@
 
 **Merged pull requests:**
 
+- Bump jest from 27.0.6 to 27.1.0 [\#34](https://github.com/yykamei/merge-branches-managed-on-issue/pull/34) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump @typescript-eslint/parser from 4.29.3 to 4.30.0 [\#32](https://github.com/yykamei/merge-branches-managed-on-issue/pull/32) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump @octokit/webhooks-types from 4.3.1 to 4.4.0 [\#31](https://github.com/yykamei/merge-branches-managed-on-issue/pull/31) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump @typescript-eslint/eslint-plugin from 4.29.3 to 4.30.0 [\#29](https://github.com/yykamei/merge-branches-managed-on-issue/pull/29) ([dependabot[bot]](https://github.com/apps/dependabot))
