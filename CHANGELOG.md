@@ -1,5 +1,13 @@
 # Changelog
 
+## [Unreleased](https://github.com/yykamei/merge-branches-managed-on-issue/tree/HEAD)
+
+[Full Changelog](https://github.com/yykamei/merge-branches-managed-on-issue/compare/v0.2.0...HEAD)
+
+**Merged pull requests:**
+
+- Bump @typescript-eslint/eslint-plugin from 4.29.3 to 4.30.0 [\#29](https://github.com/yykamei/merge-branches-managed-on-issue/pull/29) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## [v0.2.0](https://github.com/yykamei/merge-branches-managed-on-issue/tree/v0.2.0) (2021-08-31)
 
 [Full Changelog](https://github.com/yykamei/merge-branches-managed-on-issue/compare/v0.1.0...v0.2.0)
