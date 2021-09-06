@@ -44,7 +44,13 @@ const prepare = async (
 ): Promise<void> => {
   const run = async (target: string, resetTarget: string) => {
     core.debug(`  checkout to ${target}...`)
-    await exec("git", ["checkout", target])
+
+    const { stdout: targetCheck } = await exec("git", ["branch", "--remotes", "--list", `origin/${resetTarget}`])
+    if (targetCheck.trim().length === 0) {
+      await exec("git", ["checkout", "-b", resetTarget])
+    } else {
+      await exec("git", ["checkout", resetTarget])
+    }
 
     const { stdout } = await exec("git", ["branch", "--remotes", "--list", `origin/${target}`])
     if (stdout.trim().length === 0) {
