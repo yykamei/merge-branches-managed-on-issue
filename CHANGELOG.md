@@ -4,6 +4,11 @@
 
 [Full Changelog](https://github.com/yykamei/merge-branches-managed-on-issue/compare/v0.2.0...HEAD)
 
+**Fixed bugs:**
+
+- Push resetTarget [\#41](https://github.com/yykamei/merge-branches-managed-on-issue/pull/41) ([yykamei](https://github.com/yykamei))
+- Check the existence of resetTarget [\#39](https://github.com/yykamei/merge-branches-managed-on-issue/pull/39) ([yykamei](https://github.com/yykamei))
+
 **Merged pull requests:**
 
 - Bump jest from 27.0.6 to 27.1.0 [\#34](https://github.com/yykamei/merge-branches-managed-on-issue/pull/34) ([dependabot[bot]](https://github.com/apps/dependabot))
