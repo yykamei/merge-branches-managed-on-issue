@@ -11,6 +11,7 @@
 
 **Merged pull requests:**
 
+- Run git-merge\(1\) for the case branch updated [\#43](https://github.com/yykamei/merge-branches-managed-on-issue/pull/43) ([yykamei](https://github.com/yykamei))
 - Bump jest from 27.0.6 to 27.1.0 [\#34](https://github.com/yykamei/merge-branches-managed-on-issue/pull/34) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump @vercel/ncc from 0.29.2 to 0.30.0 [\#33](https://github.com/yykamei/merge-branches-managed-on-issue/pull/33) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump @typescript-eslint/parser from 4.29.3 to 4.30.0 [\#32](https://github.com/yykamei/merge-branches-managed-on-issue/pull/32) ([dependabot[bot]](https://github.com/apps/dependabot))
