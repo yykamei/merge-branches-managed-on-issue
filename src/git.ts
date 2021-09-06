@@ -47,7 +47,9 @@ const prepare = async (
 
     const { stdout: targetCheck } = await exec("git", ["branch", "--remotes", "--list", `origin/${resetTarget}`])
     if (targetCheck.trim().length === 0) {
+      core.debug(`  creating ${resetTarget}...`)
       await exec("git", ["checkout", "-b", resetTarget])
+      await exec("git", ["push", "origin", resetTarget])
     } else {
       await exec("git", ["checkout", resetTarget])
     }
