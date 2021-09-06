@@ -20724,6 +20724,9 @@ const prepare = ({ exec }, { force, baseBranch, targetBranches, modifiedBranchSu
         else {
             core.debug(`  checkout to ${target}...`);
             yield exec("git", ["checkout", target]);
+            if (!force && target !== resetTarget) {
+                yield exec("git", ["merge", "--no-ff", "--no-edit", `origin/${resetTarget}`]);
+            }
             if (force) {
                 core.debug(`  reset ${target} forcefully with origin/${resetTarget}...`);
                 yield exec("git", ["reset", "--hard", `origin/${resetTarget}`]);
