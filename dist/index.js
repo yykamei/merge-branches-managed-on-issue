@@ -20708,7 +20708,9 @@ const prepare = ({ exec }, { force, baseBranch, targetBranches, modifiedBranchSu
         core.debug(`  checkout to ${target}...`);
         const { stdout: targetCheck } = yield exec("git", ["branch", "--remotes", "--list", `origin/${resetTarget}`]);
         if (targetCheck.trim().length === 0) {
+            core.debug(`  creating ${resetTarget}...`);
             yield exec("git", ["checkout", "-b", resetTarget]);
+            yield exec("git", ["push", "origin", resetTarget]);
         }
         else {
             yield exec("git", ["checkout", resetTarget]);
