@@ -4,6 +4,10 @@
 
 [Full Changelog](https://github.com/yykamei/merge-branches-managed-on-issue/compare/v0.2.0...HEAD)
 
+**Implemented enhancements:**
+
+- Support issues event and reformat the issue body [\#45](https://github.com/yykamei/merge-branches-managed-on-issue/pull/45) ([yykamei](https://github.com/yykamei))
+
 **Fixed bugs:**
 
 - Push resetTarget [\#41](https://github.com/yykamei/merge-branches-managed-on-issue/pull/41) ([yykamei](https://github.com/yykamei))
