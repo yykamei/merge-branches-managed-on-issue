@@ -133,6 +133,13 @@ describe("run", () => {
         "token"
       )
     })
+
+    it("does nothing because the issues number does not correspond to the inputs", async () => {
+      Object.defineProperty(context, "payload", {
+        value: { issue: { number: 89111 } },
+      })
+      await run()
+    })
   })
 
   describe("when the event is delete", () => {
