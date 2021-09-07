@@ -103,10 +103,35 @@ describe("run", () => {
   describe("when the event is issues", () => {
     beforeEach(() => {
       Object.defineProperty(context, "eventName", { value: "issues" })
+      Object.defineProperty(context, "payload", {
+        value: { issue: { number: 73 } },
+      })
     })
 
     it("succeeds", async () => {
+      const fetchData = jest.spyOn(github, "fetchData").mockResolvedValueOnce({
+        issue: {
+          id: "id!",
+          body: "## staging\n|branch|author|pr|!|\n|-|-|-|-|\n|b1||||\n",
+        },
+      } as any)
+      const updateIssue = jest.spyOn(github, "updateIssue").mockResolvedValueOnce(undefined)
       await run()
+      expect(fetchData).toHaveBeenCalledWith({ token: "token", issueNumber: 73 })
+      const newBody = `## staging
+
+| branch | author | pr | ! |
+| ------ | ------ | -- | - |
+| b1     |        |    |   |
+`
+      expect(updateIssue).toHaveBeenCalledWith(
+        {
+          id: "id!",
+          body: "## staging\n|branch|author|pr|!|\n|-|-|-|-|\n|b1||||\n",
+        },
+        newBody,
+        "token"
+      )
     })
   })
 
