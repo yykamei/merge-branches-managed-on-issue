@@ -55,6 +55,12 @@ export const parse = (body: string): Parsed => {
   return { node: result, mergedBranches }
 }
 
+export const reformat = (body: string): string => {
+  core.debug("Start reformat()")
+  const { node } = parse(body)
+  return unified().use(remarkGfm).use(remarkStringify).stringify(node)
+}
+
 export const remove = (body: string, branch: string): string => {
   core.debug("Start remove()")
   const parsed = parse(body)

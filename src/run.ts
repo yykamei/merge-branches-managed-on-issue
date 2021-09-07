@@ -1,10 +1,10 @@
 import * as core from "@actions/core"
 import { context } from "@actions/github"
-import type { DeleteEvent, WorkflowDispatchEvent } from "@octokit/webhooks-types"
+import type { DeleteEvent, IssuesEvent, WorkflowDispatchEvent } from "@octokit/webhooks-types"
 import { getInputs } from "./inputs"
 import type { Inputs } from "./inputs"
 import { fetchData, updateIssue } from "./github"
-import { parse, remove } from "./markdown-parser"
+import { parse, reformat, remove } from "./markdown-parser"
 import { deleteBranch, merge } from "./git"
 
 export const run = async (): Promise<void> => {
@@ -15,8 +15,7 @@ export const run = async (): Promise<void> => {
     case "workflow_dispatch":
       return await handleWorkflowDispatch(inputs)
     case "issues":
-      // Reformat the issue body
-      return
+      return await handleIssues(inputs)
     case "delete":
       return await handleDelete(inputs)
     default:
@@ -65,6 +64,16 @@ const handleWorkflowDispatch = async ({
     defaultBranch,
     force,
   })
+}
+
+const handleIssues = async ({ issueNumber, token }: Inputs) => {
+  const payload = context.payload as IssuesEvent
+  if (payload.issue.number !== issueNumber) {
+    return
+  }
+  const { issue } = await fetchData({ token, issueNumber })
+  const newBody = reformat(issue.body)
+  await updateIssue(issue, newBody, token)
 }
 
 const handleDelete = async ({ token, issueNumber, workingDirectory, shell, modifiedBranchSuffix }: Inputs) => {

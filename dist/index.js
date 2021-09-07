@@ -20488,6 +20488,11 @@ const parse = (body) => {
     });
     return { node: result, mergedBranches };
 };
+const reformat = (body) => {
+    core.debug("Start reformat()");
+    const { node } = parse(body);
+    return unified_default()().use((remark_gfm_default())).use((remark_stringify_default())).stringify(node);
+};
 const remove = (body, branch) => {
     core.debug("Start remove()");
     const parsed = parse(body);
@@ -20838,8 +20843,7 @@ const run = () => run_awaiter(void 0, void 0, void 0, function* () {
         case "workflow_dispatch":
             return yield handleWorkflowDispatch(inputs);
         case "issues":
-            // Reformat the issue body
-            return;
+            return yield handleIssues(inputs);
         case "delete":
             return yield handleDelete(inputs);
         default:
@@ -20871,6 +20875,15 @@ const handleWorkflowDispatch = ({ token, issueNumber, workingDirectory, shell, b
         defaultBranch,
         force,
     });
+});
+const handleIssues = ({ issueNumber, token }) => run_awaiter(void 0, void 0, void 0, function* () {
+    const payload = github.context.payload;
+    if (payload.issue.number !== issueNumber) {
+        return;
+    }
+    const { issue } = yield fetchData({ token, issueNumber });
+    const newBody = reformat(issue.body);
+    yield updateIssue(issue, newBody, token);
 });
 const handleDelete = ({ token, issueNumber, workingDirectory, shell, modifiedBranchSuffix }) => run_awaiter(void 0, void 0, void 0, function* () {
     const payload = github.context.payload;

@@ -47,6 +47,8 @@ on:
         required: false
         default: "false"
   delete:
+  issues:
+    types: [opened, edited, reopened]
 
 jobs:
   merge:
