@@ -1,10 +1,10 @@
 import * as core from "@actions/core"
 import { context } from "@actions/github"
-import type { DeleteEvent, IssuesEvent, WorkflowDispatchEvent } from "@octokit/webhooks-types"
-import { getInputs } from "./inputs"
+import type { DeleteEvent, IssueCommentEvent, IssuesEvent, WorkflowDispatchEvent } from "@octokit/webhooks-types"
 import type { Inputs } from "./inputs"
-import { fetchData, updateIssue } from "./github"
-import { parse, reformat, remove } from "./markdown-parser"
+import { getInputs } from "./inputs"
+import { fetchData, fetchPull, updateComment, updateIssue } from "./github"
+import { append, parse, reformat, remove } from "./markdown-parser"
 import { deleteBranch, merge } from "./git"
 
 export const run = async (): Promise<void> => {
@@ -16,6 +16,8 @@ export const run = async (): Promise<void> => {
       return await handleWorkflowDispatch(inputs)
     case "issues":
       return await handleIssues(inputs)
+    case "issue_comment":
+      return await handleIssueComment(inputs)
     case "delete":
       return await handleDelete(inputs)
     default:
@@ -74,6 +76,51 @@ const handleIssues = async ({ issueNumber, token }: Inputs) => {
   const { issue } = await fetchData({ token, issueNumber })
   const newBody = reformat(issue.body)
   await updateIssue(issue, newBody, token)
+}
+
+const handleIssueComment = async ({ token, issueNumber, commentPrefix }: Inputs) => {
+  const payload = context.payload as IssueCommentEvent
+  if (payload.issue.pull_request == null || !payload.comment.body?.startsWith(commentPrefix)) {
+    return
+  }
+
+  const [_prefix, action, baseBranch] = payload.comment.body.split(/\s+/)
+  if (action == null || baseBranch == null) {
+    return
+  }
+
+  try {
+    const { issue } = await fetchData({ token, issueNumber })
+    const {
+      pull: {
+        author: { login: author },
+        headRefName: branch,
+      },
+    } = await fetchPull({ token, number: payload.issue.number })
+
+    if (action === "append-to") {
+      const newBody = append({
+        body: issue.body,
+        branch,
+        baseBranch,
+        author: `@${author}`,
+        pr: `#${payload.issue.number}`,
+      })
+      await updateIssue(issue, newBody, token)
+      await updateComment(payload.comment.node_id, `✅ ${payload.comment.body}`, token)
+    } else if (action === "remove-from") {
+      const newBody = remove(issue.body, branch, baseBranch)
+      await updateIssue(issue, newBody, token)
+      await updateComment(payload.comment.node_id, `✅ ${payload.comment.body}`, token)
+    }
+  } catch (e) {
+    await updateComment(
+      payload.comment.node_id,
+      `⚠️ Failed to execute "${action}". Edit this comment again.\n\n${payload.comment.body}`,
+      token
+    )
+    throw e
+  }
 }
 
 const handleDelete = async ({ token, issueNumber, workingDirectory, shell, modifiedBranchSuffix }: Inputs) => {

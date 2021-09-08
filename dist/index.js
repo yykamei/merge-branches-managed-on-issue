@@ -19392,6 +19392,39 @@ function assertDone(name, asyncName, complete) {
 
 /***/ }),
 
+/***/ 2637:
+/***/ ((module) => {
+
+"use strict";
+
+
+module.exports = u
+
+function u(type, props, value) {
+  var node
+
+  if (
+    (value === null || value === undefined) &&
+    (typeof props !== 'object' || Array.isArray(props))
+  ) {
+    value = props
+    props = {}
+  }
+
+  node = Object.assign({type: String(type)}, props)
+
+  if (Array.isArray(value)) {
+    node.children = value
+  } else if (value !== null && value !== undefined) {
+    node.value = String(value)
+  }
+
+  return node
+}
+
+
+/***/ }),
+
 /***/ 4070:
 /***/ ((module) => {
 
@@ -20368,7 +20401,8 @@ const getInputs = () => {
         afterMerge: (0,core.getInput)("after-merge") || null,
         inputsParamBaseBranch: (0,core.getInput)("inputs-param-base-branch") || "base-branch",
         inputsParamForce: (0,core.getInput)("inputs-param-force") || "force",
-        modifiedBranchSuffix: (0,core.getInput)("modified-branch-suffix") || ".modified", // NOTE: Make the value `null` if it seems falsy.
+        modifiedBranchSuffix: (0,core.getInput)("modified-branch-suffix") || ".modified",
+        commentPrefix: (0,core.getInput)("comment-prefix") || "/mbmi", // NOTE: Make the value `null` if it seems falsy.
     };
 };
 const resolvedWorkingDirectory = () => {
@@ -20402,8 +20436,8 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
 };
 
 
-const fetchData = ({ token, issueNumber }) => __awaiter(void 0, void 0, void 0, function* () {
-    core.debug("Start fetchIssue()");
+const fetchData = ({ token, issueNumber, }) => __awaiter(void 0, void 0, void 0, function* () {
+    core.debug("Start fetchData()");
     const { owner, repo } = github.context.repo;
     const octokit = (0,github.getOctokit)(token);
     const result = yield octokit.graphql(`
@@ -20422,9 +20456,35 @@ query($owner: String!, $repo: String!, $issueNumber: Int!) {
     }
   }
 }`, { owner, repo, issueNumber });
-    core.debug(`Finish fetchIssue() with this response:\n${result}`);
+    core.debug(`Finish fetchData() with this response:\n${result}`);
     return {
         issue: result.repository.issue,
+        defaultBranch: result.repository.defaultBranchRef.name,
+    };
+});
+const fetchPull = ({ token, number, }) => __awaiter(void 0, void 0, void 0, function* () {
+    core.debug("Start fetchPull()");
+    const { owner, repo } = github.context.repo;
+    const octokit = (0,github.getOctokit)(token);
+    const result = yield octokit.graphql(`
+query($owner: String!, $repo: String!, $number: Int!) { 
+  repository(owner: $owner, name: $repo) { 
+    defaultBranchRef {
+      name
+    }
+    pullRequest(number: $number) {
+      id
+      author {
+        login
+      }
+      baseRefName
+      headRefName
+    }
+  }
+}`, { owner, repo, number });
+    core.debug(`Finish fetchPull() with this response:\n${result}`);
+    return {
+        pull: result.repository.pullRequest,
         defaultBranch: result.repository.defaultBranchRef.name,
     };
 });
@@ -20440,6 +20500,18 @@ mutation($id: ID!, $body: String!) {
   }
 }`, { id: issue.id, body });
 });
+const updateComment = (commentId, body, token) => __awaiter(void 0, void 0, void 0, function* () {
+    core.debug("Start updateComment()");
+    const octokit = (0,github.getOctokit)(token);
+    yield octokit.graphql(`
+mutation($id: ID!, $body: String!) { 
+  updateIssueComment(input: {id: $id, body: $body}) {
+    issueComment {
+      id
+    }
+  }
+}`, { id: commentId, body });
+});
 
 // EXTERNAL MODULE: ./node_modules/unified/index.js
 var unified = __nccwpck_require__(5075);
@@ -20453,10 +20525,14 @@ var remark_gfm_default = /*#__PURE__*/__nccwpck_require__.n(remark_gfm);
 // EXTERNAL MODULE: ./node_modules/remark-stringify/index.js
 var remark_stringify = __nccwpck_require__(7114);
 var remark_stringify_default = /*#__PURE__*/__nccwpck_require__.n(remark_stringify);
+// EXTERNAL MODULE: ./node_modules/unist-builder/index.js
+var unist_builder = __nccwpck_require__(2637);
+var unist_builder_default = /*#__PURE__*/__nccwpck_require__.n(unist_builder);
 ;// CONCATENATED MODULE: ./src/markdown-parser.ts
 // We are using the old version of unified, which does not have sufficient typing definitions.
 // So, we explicitly disable `@typescript-eslint/no-explicit-any` to avoid "children does not exist".
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
 
 
 
@@ -20493,22 +20569,86 @@ const reformat = (body) => {
     const { node } = parse(body);
     return unified_default()().use((remark_gfm_default())).use((remark_stringify_default())).stringify(node);
 };
-const remove = (body, branch) => {
+const append = ({ body, branch, author, pr, baseBranch }) => {
+    core.debug("Start append()");
+    const parsed = parse(body);
+    const root = parsed.node;
+    let currentBaseBranch = null;
+    root.children.forEach((node, idx) => {
+        switch (node.type) {
+            case "heading": {
+                currentBaseBranch = extractText(node);
+                return;
+            }
+            case "table": {
+                if (currentBaseBranch == null) {
+                    return;
+                }
+                if (baseBranch != null && currentBaseBranch !== baseBranch) {
+                    return;
+                }
+                const targetBranches = parsed.mergedBranches[currentBaseBranch];
+                if (targetBranches == null) {
+                    return;
+                }
+                if (targetBranches.find((t) => t.name === branch) != null) {
+                    // NOTE: Don't append more than once
+                    return;
+                }
+                const headers = node.children.slice(0, 1).flatMap((c) => tableRowToArray(c));
+                const tableCells = headers.map((h) => {
+                    if (isBranch(h)) {
+                        return unist_builder_default()("tableCell", [unist_builder_default()("text", branch)]);
+                    }
+                    else if (isAuthor(h)) {
+                        return unist_builder_default()("tableCell", [unist_builder_default()("text", author || "")]);
+                    }
+                    else if (isPR(h)) {
+                        return unist_builder_default()("tableCell", [unist_builder_default()("text", pr || "")]);
+                    }
+                    else {
+                        return unist_builder_default()("tableCell", [unist_builder_default()("text", "")]);
+                    }
+                });
+                const newRow = unist_builder_default()("tableRow", tableCells);
+                root.children[idx].children = [...node.children, newRow];
+                return;
+            }
+            default:
+                return; // Do nothing
+        }
+    });
+    return unified_default()().use((remark_gfm_default())).use((remark_stringify_default())).stringify(root);
+};
+const remove = (body, branch, baseBranch) => {
     core.debug("Start remove()");
     const parsed = parse(body);
     const root = parsed.node;
+    let currentBaseBranch = null;
     root.children.forEach((node, idx) => {
         switch (node.type) {
+            case "heading": {
+                currentBaseBranch = extractText(node);
+                return;
+            }
             case "table": {
-                for (const targetBranches of Object.values(parsed.mergedBranches)) {
-                    if (targetBranches.find((t) => t.name === branch)) {
-                        const headers = node.children.slice(0, 1).flatMap((c) => tableRowToArray(c));
-                        const branchCol = headers.findIndex((h) => isBranch(h));
-                        root.children[idx].children = [
-                            ...node.children.slice(0, 1),
-                            ...node.children.slice(1).filter((c) => tableRowToArray(c)[branchCol] !== branch),
-                        ];
-                    }
+                if (currentBaseBranch == null) {
+                    return;
+                }
+                if (baseBranch != null && currentBaseBranch !== baseBranch) {
+                    return;
+                }
+                const targetBranches = parsed.mergedBranches[currentBaseBranch];
+                if (targetBranches == null) {
+                    return;
+                }
+                if (targetBranches.find((t) => t.name === branch)) {
+                    const headers = node.children.slice(0, 1).flatMap((c) => tableRowToArray(c));
+                    const branchCol = headers.findIndex((h) => isBranch(h));
+                    root.children[idx].children = [
+                        ...node.children.slice(0, 1),
+                        ...node.children.slice(1).filter((c) => tableRowToArray(c)[branchCol] !== branch),
+                    ];
                 }
                 return;
             }
@@ -20536,17 +20676,16 @@ const tableToTargetBranch = (node) => {
         let pull = null;
         const extras = {};
         row.forEach((v, idx) => {
-            var _a, _b;
             if (isBranch(headers[idx])) {
                 if (v == null) {
                     throw new Error("Branch must exist in the table row");
                 }
                 name = v;
             }
-            else if (["author"].includes((_a = headers[idx]) === null || _a === void 0 ? void 0 : _a.toLowerCase())) {
+            else if (isAuthor(headers[idx])) {
                 author = v;
             }
-            else if (["pr", "pull", "pull_request"].includes((_b = headers[idx]) === null || _b === void 0 ? void 0 : _b.toLowerCase())) {
+            else if (isPR(headers[idx])) {
                 pull = v;
             }
             else {
@@ -20602,6 +20741,8 @@ const extractText = (node) => {
     return null;
 };
 const isBranch = (s) => (s === null || s === void 0 ? void 0 : s.toLocaleLowerCase()) === "branch";
+const isAuthor = (s) => (s === null || s === void 0 ? void 0 : s.toLocaleLowerCase()) === "author";
+const isPR = (s) => ["pr", "pull", "pull_request", "pullrequest"].find((c) => (s === null || s === void 0 ? void 0 : s.toLocaleLowerCase()) === c) != null;
 
 // EXTERNAL MODULE: ./node_modules/@actions/exec/lib/exec.js
 var exec = __nccwpck_require__(1514);
@@ -20844,6 +20985,8 @@ const run = () => run_awaiter(void 0, void 0, void 0, function* () {
             return yield handleWorkflowDispatch(inputs);
         case "issues":
             return yield handleIssues(inputs);
+        case "issue_comment":
+            return yield handleIssueComment(inputs);
         case "delete":
             return yield handleDelete(inputs);
         default:
@@ -20884,6 +21027,41 @@ const handleIssues = ({ issueNumber, token }) => run_awaiter(void 0, void 0, voi
     const { issue } = yield fetchData({ token, issueNumber });
     const newBody = reformat(issue.body);
     yield updateIssue(issue, newBody, token);
+});
+const handleIssueComment = ({ token, issueNumber, commentPrefix }) => run_awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    const payload = github.context.payload;
+    if (payload.issue.pull_request == null || !((_a = payload.comment.body) === null || _a === void 0 ? void 0 : _a.startsWith(commentPrefix))) {
+        return;
+    }
+    const [_prefix, action, baseBranch] = payload.comment.body.split(/\s+/);
+    if (action == null || baseBranch == null) {
+        return;
+    }
+    try {
+        const { issue } = yield fetchData({ token, issueNumber });
+        const { pull: { author: { login: author }, headRefName: branch, }, } = yield fetchPull({ token, number: payload.issue.number });
+        if (action === "append-to") {
+            const newBody = append({
+                body: issue.body,
+                branch,
+                baseBranch,
+                author: `@${author}`,
+                pr: `#${payload.issue.number}`,
+            });
+            yield updateIssue(issue, newBody, token);
+            yield updateComment(payload.comment.node_id, `✅ ${payload.comment.body}`, token);
+        }
+        else if (action === "remove-from") {
+            const newBody = remove(issue.body, branch, baseBranch);
+            yield updateIssue(issue, newBody, token);
+            yield updateComment(payload.comment.node_id, `✅ ${payload.comment.body}`, token);
+        }
+    }
+    catch (e) {
+        yield updateComment(payload.comment.node_id, `⚠️ Failed to execute "${action}". Edit this comment again.\n\n${payload.comment.body}`, token);
+        throw e;
+    }
 });
 const handleDelete = ({ token, issueNumber, workingDirectory, shell, modifiedBranchSuffix }) => run_awaiter(void 0, void 0, void 0, function* () {
     const payload = github.context.payload;

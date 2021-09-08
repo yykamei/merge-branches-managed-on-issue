@@ -19,7 +19,8 @@
     "remark-gfm": "^1.0.0",
     "remark-parse": "^9.0.0",
     "remark-stringify": "^9.0.1",
-    "unified": "^9.2.2"
+    "unified": "^9.2.2",
+    "unist-builder": "^2.0.3"
   },
   "devDependencies": {
     "@octokit/webhooks-types": "^4.4.0",

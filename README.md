@@ -49,6 +49,8 @@ on:
   delete:
   issues:
     types: [opened, edited, reopened]
+  issue_comment:
+    types: [created, edited]
 
 jobs:
   merge:
@@ -132,7 +134,36 @@ These are all available inputs.
 | inputs-param-base-branch | The name for a base branch in the workflow_dispatch action                                                                                                                                                                                                 | `false`  | `base-branch`       |
 | inputs-param-force       | The name for force option in the workflow_dispatch action                                                                                                                                                                                                  | `false`  | `force`             |
 | modified-branch-suffix   | The suffix for the modified branch. If you don't set `before-merge` or `after-merge`, the modified branch and the original branch will be the same                                                                                                         | `false`  | `.modified`         |
+| command-prefix           | The comment prefix to trigger some actions.                                                                                                                                                                                                                | `false`  | `/mbmi`             |
 | token                    | The GitHub token used to create an authenticated client                                                                                                                                                                                                    | `false`  | `GITHUB_TOKEN`      |
+
+## Append or remove a branch through comments
+
+You can append or remove a branch to/from the markdown table thrugh pull request comments.
+For example, you're opening a pull request `#431` whose head branch is `add/special-feature`, and your GitHub account name is `octocat`.
+At this point, you can append your branch by just posting a comment on the pull request like this:
+
+```markdown
+/mbmi append-to staging
+```
+
+And then, the branch `add/special-feature` will be appended to the markdown table, and you can get the following result:
+
+```markdown
+## staging
+
+| branch              | author   | PR   | note |
+| ------------------- | -------- | ---- | ---- |
+| add-button          | @yykamei | #78  |      |
+| add-special         | @yykamei | #79  |      |
+| add/special-feature | @octocat | #431 |      |
+```
+
+Also, you can remove your working branch like this:
+
+```markdown
+/mbmi remove-from staging
+```
 
 ## FAQ
 

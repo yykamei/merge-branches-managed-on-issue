@@ -18,6 +18,7 @@ describe("run", () => {
       inputsParamBaseBranch: "base-branch",
       inputsParamForce: "force",
       modifiedBranchSuffix: ".modified",
+      commentPrefix: "/mbmi",
     }))
   })
 
@@ -139,6 +140,137 @@ describe("run", () => {
         value: { issue: { number: 89111 } },
       })
       await run()
+    })
+  })
+
+  describe("when the event is issue_comment", () => {
+    beforeEach(() => {
+      Object.defineProperty(context, "eventName", { value: "issue_comment" })
+    })
+
+    it("succeeds for append-to", async () => {
+      Object.defineProperty(context, "payload", {
+        value: {
+          issue: { number: 20, pull_request: {} },
+          comment: { node_id: "1239", body: "/mbmi append-to staging" },
+        },
+      })
+
+      const fetchData = jest.spyOn(github, "fetchData").mockResolvedValueOnce({
+        issue: {
+          id: "id!",
+          body: "## staging\n|branch|author|pr|!|\n|-|-|-|-|\n|b1||||\n",
+        },
+      } as any)
+      const fetchPull = jest.spyOn(github, "fetchPull").mockResolvedValueOnce({
+        pull: {
+          author: { login: "Jack" },
+          headRefName: "feat3",
+        },
+      } as any)
+      const updateIssue = jest.spyOn(github, "updateIssue").mockResolvedValueOnce(undefined)
+      const updateComment = jest.spyOn(github, "updateComment").mockResolvedValueOnce(undefined)
+      await run()
+      expect(fetchData).toHaveBeenCalledWith({ token: "token", issueNumber: 73 })
+      expect(fetchPull).toHaveBeenCalledWith({ token: "token", number: 20 })
+      const newBody = `## staging
+
+| branch | author | pr  | ! |
+| ------ | ------ | --- | - |
+| b1     |        |     |   |
+| feat3  | @Jack  | #20 |   |
+`
+      expect(updateIssue).toHaveBeenCalledWith(
+        {
+          id: "id!",
+          body: "## staging\n|branch|author|pr|!|\n|-|-|-|-|\n|b1||||\n",
+        },
+        newBody,
+        "token"
+      )
+      expect(updateComment).toHaveBeenCalledWith("1239", "✅ /mbmi append-to staging", "token")
+    })
+
+    it("succeeds for remove-from", async () => {
+      Object.defineProperty(context, "payload", {
+        value: {
+          issue: { number: 20, pull_request: {} },
+          comment: { node_id: "1239", body: "/mbmi remove-from staging" },
+        },
+      })
+      const fetchData = jest.spyOn(github, "fetchData").mockResolvedValueOnce({
+        issue: {
+          id: "id!",
+          body: "## staging\n|branch|author|pr|!|\n|-|-|-|-|\n|b1||||\n",
+        },
+      } as any)
+      const fetchPull = jest.spyOn(github, "fetchPull").mockResolvedValueOnce({
+        pull: {
+          author: { login: "J" },
+          headRefName: "b1",
+        },
+      } as any)
+      const updateIssue = jest.spyOn(github, "updateIssue").mockResolvedValueOnce(undefined)
+      const updateComment = jest.spyOn(github, "updateComment").mockResolvedValueOnce(undefined)
+      await run()
+      expect(fetchData).toHaveBeenCalledWith({ token: "token", issueNumber: 73 })
+      expect(fetchPull).toHaveBeenCalledWith({ token: "token", number: 20 })
+      const newBody = `## staging
+
+| branch | author | pr | ! |
+| ------ | ------ | -- | - |
+`
+      expect(updateIssue).toHaveBeenCalledWith(
+        {
+          id: "id!",
+          body: "## staging\n|branch|author|pr|!|\n|-|-|-|-|\n|b1||||\n",
+        },
+        newBody,
+        "token"
+      )
+      expect(updateComment).toHaveBeenCalledWith("1239", "✅ /mbmi remove-from staging", "token")
+    })
+
+    it("does nothing if the comment is not from pull requests", async () => {
+      Object.defineProperty(context, "payload", {
+        value: { issue: { number: 20 }, comment: { node_id: "1239", body: "Hello!" } },
+      })
+      await run()
+    })
+
+    it("does nothing if the comment is not command", async () => {
+      Object.defineProperty(context, "payload", {
+        value: { issue: { number: 20, pull_request: {} }, comment: { node_id: "1239", body: "Hello!" } },
+      })
+      await run()
+    })
+
+    it("does nothing if the action is unknown", async () => {
+      Object.defineProperty(context, "payload", {
+        value: { issue: { number: 20, pull_request: {} }, comment: { node_id: "1239", body: "/mbmi 🤷‍️" } },
+      })
+      await run()
+    })
+
+    it("reports error if something wrong happens", async () => {
+      Object.defineProperty(context, "payload", {
+        value: {
+          issue: { number: 20, pull_request: {} },
+          comment: { node_id: "1239", body: "/mbmi append-to staging" },
+        },
+      })
+
+      jest.spyOn(github, "fetchData").mockRejectedValueOnce(new Error("!"))
+      const updateComment = jest.spyOn(github, "updateComment").mockResolvedValueOnce(undefined)
+      try {
+        await run()
+      } catch {
+        expect(updateComment).toHaveBeenCalledWith(
+          "1239",
+          '⚠️ Failed to execute "append-to". Edit this comment again.\n\n/mbmi append-to staging',
+          "token"
+        )
+      }
     })
   })
 
