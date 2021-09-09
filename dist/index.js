@@ -20923,6 +20923,7 @@ const mergeTargets = ({ exec }, { baseBranch, targetBranches, modifiedBranchSuff
         if (exitCode !== 0) {
             const { stdout: status } = yield exec("git", ["status"], {}, true);
             const { stdout: diff } = yield exec("git", ["diff"], {}, true);
+            yield exec("git", ["push", "origin", branch]);
             throw new Error(`The branch "${branch}" could not be merged into "${baseBranch}"
 git-status(1):
 ${status}

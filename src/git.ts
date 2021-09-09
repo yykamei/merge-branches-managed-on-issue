@@ -129,6 +129,7 @@ const mergeTargets = async ({ exec }: Exec, { baseBranch, targetBranches, modifi
     if (exitCode !== 0) {
       const { stdout: status } = await exec("git", ["status"], {}, true)
       const { stdout: diff } = await exec("git", ["diff"], {}, true)
+      await exec("git", ["push", "origin", branch])
       throw new Error(`The branch "${branch}" could not be merged into "${baseBranch}"
 git-status(1):
 ${status}
