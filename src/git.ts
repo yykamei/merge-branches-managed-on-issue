@@ -62,16 +62,16 @@ const prepare = async (
     } else {
       core.debug(`  checkout to ${target}...`)
       await exec("git", ["checkout", target])
+    }
 
-      if (!force && target !== resetTarget) {
-        await exec("git", ["merge", "--no-ff", "--no-edit", `origin/${resetTarget}`])
-      }
+    if (!force && target !== resetTarget) {
+      await exec("git", ["merge", "--no-ff", "--no-edit", `origin/${resetTarget}`])
+    }
 
-      if (force) {
-        core.debug(`  reset ${target} forcefully with origin/${resetTarget}...`)
-        await exec("git", ["reset", "--hard", `origin/${resetTarget}`])
-        await exec("git", ["push", "--force", "origin", target])
-      }
+    if (force) {
+      core.debug(`  reset ${target} forcefully with origin/${resetTarget}...`)
+      await exec("git", ["reset", "--hard", `origin/${resetTarget}`])
+      await exec("git", ["push", "--force", "origin", target])
     }
   }
 
