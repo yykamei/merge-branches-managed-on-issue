@@ -40,7 +40,7 @@ export const deleteBranch = async (
 
 const prepare = async (
   { exec }: Exec,
-  { force, baseBranch, targetBranches, modifiedBranchSuffix }: Params
+  { force, baseBranch, defaultBranch, targetBranches, modifiedBranchSuffix }: Params
 ): Promise<void> => {
   const run = async (target: string, resetTarget: string) => {
     core.debug(`  checkout to ${target}...`)
@@ -79,7 +79,7 @@ const prepare = async (
   for (const target of targetBranches) {
     await run(modifiedBranch(target, modifiedBranchSuffix), target)
   }
-  await run(baseBranch, baseBranch)
+  await run(baseBranch, defaultBranch)
   core.debug("Finish prepare()")
 }
 
