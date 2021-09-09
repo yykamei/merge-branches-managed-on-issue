@@ -1,5 +1,13 @@
 # Changelog
 
+## [Unreleased](https://github.com/yykamei/merge-branches-managed-on-issue/tree/HEAD)
+
+[Full Changelog](https://github.com/yykamei/merge-branches-managed-on-issue/compare/vv0.3.0...HEAD)
+
+**Implemented enhancements:**
+
+- Support comment commands [\#47](https://github.com/yykamei/merge-branches-managed-on-issue/pull/47) ([yykamei](https://github.com/yykamei))
+
 ## [vv0.3.0](https://github.com/yykamei/merge-branches-managed-on-issue/tree/vv0.3.0) (2021-09-07)
 
 [Full Changelog](https://github.com/yykamei/merge-branches-managed-on-issue/compare/v0.2.0...vv0.3.0)
