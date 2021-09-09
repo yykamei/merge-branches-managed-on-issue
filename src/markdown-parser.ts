@@ -7,6 +7,7 @@ import unified from "unified"
 import remarkParse from "remark-parse"
 import remarkGfm from "remark-gfm"
 import remarkStringify from "remark-stringify"
+import u from "unist-builder"
 
 interface Parsed {
   readonly mergedBranches: MergedBranches
@@ -61,23 +62,94 @@ export const reformat = (body: string): string => {
   return unified().use(remarkGfm).use(remarkStringify).stringify(node)
 }
 
-export const remove = (body: string, branch: string): string => {
-  core.debug("Start remove()")
+interface AppendParams {
+  readonly body: string
+  readonly branch: string
+  readonly author?: string
+  readonly pr?: string
+  readonly baseBranch?: string
+}
+
+export const append = ({ body, branch, author, pr, baseBranch }: AppendParams): string => {
+  core.debug("Start append()")
   const parsed = parse(body)
   const root = parsed.node
+  let currentBaseBranch: string | null = null
 
   root.children.forEach((node: any, idx: number) => {
     switch (node.type) {
+      case "heading": {
+        currentBaseBranch = extractText(node)
+        return
+      }
       case "table": {
-        for (const targetBranches of Object.values(parsed.mergedBranches)) {
-          if (targetBranches.find((t: TargetBranch) => t.name === branch)) {
-            const headers = node.children.slice(0, 1).flatMap((c: any) => tableRowToArray(c))
-            const branchCol = headers.findIndex((h: string | null) => isBranch(h))
-            root.children[idx]!.children = [
-              ...node.children.slice(0, 1),
-              ...node.children.slice(1).filter((c: any) => tableRowToArray(c)[branchCol] !== branch),
-            ]
+        if (currentBaseBranch == null) {
+          return
+        }
+        if (baseBranch != null && currentBaseBranch !== baseBranch) {
+          return
+        }
+        const targetBranches = parsed.mergedBranches[currentBaseBranch]
+        if (targetBranches == null) {
+          return
+        }
+        if (targetBranches.find((t) => t.name === branch) != null) {
+          // NOTE: Don't append more than once
+          return
+        }
+        const headers = node.children.slice(0, 1).flatMap((c: any) => tableRowToArray(c))
+        const tableCells = headers.map((h: string | null) => {
+          if (isBranch(h)) {
+            return u("tableCell", [u("text", branch)])
+          } else if (isAuthor(h)) {
+            return u("tableCell", [u("text", author || "")])
+          } else if (isPR(h)) {
+            return u("tableCell", [u("text", pr || "")])
+          } else {
+            return u("tableCell", [u("text", "")])
           }
+        })
+        const newRow = u("tableRow", tableCells)
+        root.children[idx]!.children = [...node.children, newRow]
+        return
+      }
+      default:
+        return // Do nothing
+    }
+  })
+  return unified().use(remarkGfm).use(remarkStringify).stringify(root)
+}
+
+export const remove = (body: string, branch: string, baseBranch?: string): string => {
+  core.debug("Start remove()")
+  const parsed = parse(body)
+  const root = parsed.node
+  let currentBaseBranch: string | null = null
+
+  root.children.forEach((node: any, idx: number) => {
+    switch (node.type) {
+      case "heading": {
+        currentBaseBranch = extractText(node)
+        return
+      }
+      case "table": {
+        if (currentBaseBranch == null) {
+          return
+        }
+        if (baseBranch != null && currentBaseBranch !== baseBranch) {
+          return
+        }
+        const targetBranches = parsed.mergedBranches[currentBaseBranch]
+        if (targetBranches == null) {
+          return
+        }
+        if (targetBranches.find((t: TargetBranch) => t.name === branch)) {
+          const headers = node.children.slice(0, 1).flatMap((c: any) => tableRowToArray(c))
+          const branchCol = headers.findIndex((h: string | null) => isBranch(h))
+          root.children[idx]!.children = [
+            ...node.children.slice(0, 1),
+            ...node.children.slice(1).filter((c: any) => tableRowToArray(c)[branchCol] !== branch),
+          ]
         }
         return
       }
@@ -114,9 +186,9 @@ const tableToTargetBranch = (node: any): TargetBranch[] => {
           throw new Error("Branch must exist in the table row")
         }
         name = v
-      } else if (["author"].includes(headers[idx]?.toLowerCase())) {
+      } else if (isAuthor(headers[idx])) {
         author = v
-      } else if (["pr", "pull", "pull_request"].includes(headers[idx]?.toLowerCase())) {
+      } else if (isPR(headers[idx])) {
         pull = v
       } else {
         extras[headers[idx]] = v
@@ -176,3 +248,6 @@ const extractText = (node: any): string | null => {
 }
 
 const isBranch = (s: string | undefined | null) => s?.toLocaleLowerCase() === "branch"
+const isAuthor = (s: string | undefined | null) => s?.toLocaleLowerCase() === "author"
+const isPR = (s: string | undefined | null) =>
+  ["pr", "pull", "pull_request", "pullrequest"].find((c) => s?.toLocaleLowerCase() === c) != null

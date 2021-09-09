@@ -1,4 +1,4 @@
-import { parse, remove } from "../src/markdown-parser"
+import { append, parse, remove } from "../src/markdown-parser"
 import * as core from "@actions/core"
 
 describe("parse", () => {
@@ -129,9 +129,12 @@ Hi, it's staging branch.
   })
 })
 
-describe("remove", () => {
-  it("remove the specified branch from the markdown table", () => {
-    const basic = `This is a markdown body.
+describe("append", () => {
+  const body = `
+| A | B |
+| - | - |
+
+## This is a markdown body.
 
 ## staging
 | branch                | author   | PR   | Note                                        |
@@ -147,7 +150,124 @@ describe("remove", () => {
 | branch3               | @yykamei | #140 |                                             |
 `
 
-    expect(remove(basic, "branch2")).toEqual(`This is a markdown body.
+  it("appends a new branch to a specific baseBranch", () => {
+    expect(append({ body, branch: "abc", baseBranch: "strawberry", author: "@foo", pr: "#893" })).toEqual(`| A | B |
+| - | - |
+
+## This is a markdown body.
+
+## staging
+
+| branch                | author   | PR   | Note                                        |
+| --------------------- | -------- | ---- | ------------------------------------------- |
+| branch2               | @yykamei | #123 | This will be used until the end of October. |
+| feature/add-something | @yykamei | #138 |                                             |
+
+## strawberry
+
+| Branch                | author   | PR   | Note |
+| --------------------- | -------- | ---- | ---- |
+| feature/add-something | @yykamei | #138 |      |
+| branch2               | @yykamei | #139 |      |
+| branch3               | @yykamei | #140 |      |
+| abc                   | @foo     | #893 |      |
+`)
+  })
+
+  it("appends a branch to all baseBranches", () => {
+    expect(append({ body, branch: "abc", author: "@foo", pr: "#893" })).toEqual(`| A | B |
+| - | - |
+
+## This is a markdown body.
+
+## staging
+
+| branch                | author   | PR   | Note                                        |
+| --------------------- | -------- | ---- | ------------------------------------------- |
+| branch2               | @yykamei | #123 | This will be used until the end of October. |
+| feature/add-something | @yykamei | #138 |                                             |
+| abc                   | @foo     | #893 |                                             |
+
+## strawberry
+
+| Branch                | author   | PR   | Note |
+| --------------------- | -------- | ---- | ---- |
+| feature/add-something | @yykamei | #138 |      |
+| branch2               | @yykamei | #139 |      |
+| branch3               | @yykamei | #140 |      |
+| abc                   | @foo     | #893 |      |
+`)
+  })
+
+  it("does not append a branch", () => {
+    expect(append({ body, branch: "branch2", author: "@yykamei", pr: "#123" })).toEqual(`| A | B |
+| - | - |
+
+## This is a markdown body.
+
+## staging
+
+| branch                | author   | PR   | Note                                        |
+| --------------------- | -------- | ---- | ------------------------------------------- |
+| branch2               | @yykamei | #123 | This will be used until the end of October. |
+| feature/add-something | @yykamei | #138 |                                             |
+
+## strawberry
+
+| Branch                | author   | PR   | Note |
+| --------------------- | -------- | ---- | ---- |
+| feature/add-something | @yykamei | #138 |      |
+| branch2               | @yykamei | #139 |      |
+| branch3               | @yykamei | #140 |      |
+`)
+  })
+
+  it("appends a branch to only baseBranches that does not have the specified one", () => {
+    expect(append({ body, branch: "branch3", author: "@yykamei", pr: "#140" })).toEqual(`| A | B |
+| - | - |
+
+## This is a markdown body.
+
+## staging
+
+| branch                | author   | PR   | Note                                        |
+| --------------------- | -------- | ---- | ------------------------------------------- |
+| branch2               | @yykamei | #123 | This will be used until the end of October. |
+| feature/add-something | @yykamei | #138 |                                             |
+| branch3               | @yykamei | #140 |                                             |
+
+## strawberry
+
+| Branch                | author   | PR   | Note |
+| --------------------- | -------- | ---- | ---- |
+| feature/add-something | @yykamei | #138 |      |
+| branch2               | @yykamei | #139 |      |
+| branch3               | @yykamei | #140 |      |
+`)
+  })
+})
+
+describe("remove", () => {
+  const body = `This is a markdown body.
+
+## staging
+
+| branch                | author   | PR   | Note                                        |
+| --------------------- | -------- | ---- | ------------------------------------------- |
+| branch2               | @yykamei | #123 | This will be used until the end of October. |
+| feature/add-something | @yykamei | #138 |                                             |
+
+## strawberry
+
+| Branch                | author   | PR   | Note |
+| --------------------- | -------- | ---- | ---- |
+| feature/add-something | @yykamei | #138 |      |
+| branch2               | @yykamei | #139 |      |
+| branch3               | @yykamei | #140 |      |
+`
+
+  it("removes the specified branch from the markdown table", () => {
+    expect(remove(body, "branch2")).toEqual(`This is a markdown body.
 
 ## staging
 
@@ -162,5 +282,28 @@ describe("remove", () => {
 | feature/add-something | @yykamei | #138 |      |
 | branch3               | @yykamei | #140 |      |
 `)
+  })
+
+  it("removes the specified branch from the specific baseBranch markdown table", () => {
+    expect(remove(body, "branch2", "strawberry")).toEqual(`This is a markdown body.
+
+## staging
+
+| branch                | author   | PR   | Note                                        |
+| --------------------- | -------- | ---- | ------------------------------------------- |
+| branch2               | @yykamei | #123 | This will be used until the end of October. |
+| feature/add-something | @yykamei | #138 |                                             |
+
+## strawberry
+
+| Branch                | author   | PR   | Note |
+| --------------------- | -------- | ---- | ---- |
+| feature/add-something | @yykamei | #138 |      |
+| branch3               | @yykamei | #140 |      |
+`)
+  })
+
+  it("does not remove because the specified branch does not exist", () => {
+    expect(remove(body, "gone")).toEqual(body)
   })
 })
