@@ -20849,7 +20849,7 @@ const deleteBranch = (target, { workingDirectory, shell, modifiedBranchSuffix })
     const exec = buildExec({ workingDirectory, shell });
     yield exec.exec("git", ["push", "--delete", "origin", branch], {}, true);
 });
-const prepare = ({ exec }, { force, baseBranch, targetBranches, modifiedBranchSuffix }) => git_awaiter(void 0, void 0, void 0, function* () {
+const prepare = ({ exec }, { force, baseBranch, defaultBranch, targetBranches, modifiedBranchSuffix }) => git_awaiter(void 0, void 0, void 0, function* () {
     const run = (target, resetTarget) => git_awaiter(void 0, void 0, void 0, function* () {
         core.debug(`  checkout to ${target}...`);
         const { stdout: targetCheck } = yield exec("git", ["branch", "--remotes", "--list", `origin/${resetTarget}`]);
@@ -20884,7 +20884,7 @@ const prepare = ({ exec }, { force, baseBranch, targetBranches, modifiedBranchSu
     for (const target of targetBranches) {
         yield run(modifiedBranch(target, modifiedBranchSuffix), target);
     }
-    yield run(baseBranch, baseBranch);
+    yield run(baseBranch, defaultBranch);
     core.debug("Finish prepare()");
 });
 const configureGit = ({ exec }) => git_awaiter(void 0, void 0, void 0, function* () {
