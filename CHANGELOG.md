@@ -1,19 +1,24 @@
 # Changelog
 
+## [Unreleased](https://github.com/yykamei/merge-branches-managed-on-issue/tree/HEAD)
+
+[Full Changelog](https://github.com/yykamei/merge-branches-managed-on-issue/compare/v0.3.0...HEAD)
+
+**Fixed bugs:**
+
+- Reset baseBranch with the defaultBranch [\#49](https://github.com/yykamei/merge-branches-managed-on-issue/pull/49) ([yykamei](https://github.com/yykamei))
+
+## [v0.3.0](https://github.com/yykamei/merge-branches-managed-on-issue/tree/v0.3.0) (2021-09-09)
+
+[Full Changelog](https://github.com/yykamei/merge-branches-managed-on-issue/compare/v0.4.0...v0.3.0)
+
 ## [v0.4.0](https://github.com/yykamei/merge-branches-managed-on-issue/tree/v0.4.0) (2021-09-09)
 
-[Full Changelog](https://github.com/yykamei/merge-branches-managed-on-issue/compare/vv0.3.0...v0.4.0)
+[Full Changelog](https://github.com/yykamei/merge-branches-managed-on-issue/compare/v0.2.0...v0.4.0)
 
 **Implemented enhancements:**
 
 - Support comment commands [\#47](https://github.com/yykamei/merge-branches-managed-on-issue/pull/47) ([yykamei](https://github.com/yykamei))
-
-## [vv0.3.0](https://github.com/yykamei/merge-branches-managed-on-issue/tree/vv0.3.0) (2021-09-07)
-
-[Full Changelog](https://github.com/yykamei/merge-branches-managed-on-issue/compare/v0.2.0...vv0.3.0)
-
-**Implemented enhancements:**
-
 - Support issues event and reformat the issue body [\#45](https://github.com/yykamei/merge-branches-managed-on-issue/pull/45) ([yykamei](https://github.com/yykamei))
 
 **Fixed bugs:**
