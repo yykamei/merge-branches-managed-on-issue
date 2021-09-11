@@ -11,6 +11,7 @@
 
 **Merged pull requests:**
 
+- Bump @typescript-eslint/parser from 4.30.0 to 4.31.0 [\#55](https://github.com/yykamei/merge-branches-managed-on-issue/pull/55) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump @typescript-eslint/eslint-plugin from 4.30.0 to 4.31.0 [\#53](https://github.com/yykamei/merge-branches-managed-on-issue/pull/53) ([dependabot[bot]](https://github.com/apps/dependabot))
 
 ## [v0.3.0](https://github.com/yykamei/merge-branches-managed-on-issue/tree/v0.3.0) (2021-09-09)
