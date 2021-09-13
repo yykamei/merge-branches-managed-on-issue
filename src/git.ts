@@ -42,7 +42,7 @@ const prepare = async (
   { exec }: Exec,
   { force, baseBranch, defaultBranch, targetBranches, modifiedBranchSuffix }: Params
 ): Promise<void> => {
-  const run = async (target: string, resetTarget: string) => {
+  const run = async (target: string, resetTarget: string, mergeUpstream = true) => {
     core.debug(`  checkout to ${target}...`)
 
     const { stdout: targetCheck } = await exec("git", ["branch", "--remotes", "--list", `origin/${resetTarget}`])
@@ -64,7 +64,7 @@ const prepare = async (
       await exec("git", ["checkout", target])
     }
 
-    if (!force && target !== resetTarget) {
+    if (mergeUpstream && !force) {
       await exec("git", ["merge", "--no-ff", "--no-edit", `origin/${resetTarget}`])
     }
 
@@ -79,7 +79,7 @@ const prepare = async (
   for (const target of targetBranches) {
     await run(modifiedBranch(target, modifiedBranchSuffix), target)
   }
-  await run(baseBranch, defaultBranch)
+  await run(baseBranch, defaultBranch, false)
   core.debug("Finish prepare()")
 }
 
