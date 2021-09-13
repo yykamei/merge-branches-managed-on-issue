@@ -20850,7 +20850,7 @@ const deleteBranch = (target, { workingDirectory, shell, modifiedBranchSuffix })
     yield exec.exec("git", ["push", "--delete", "origin", branch], {}, true);
 });
 const prepare = ({ exec }, { force, baseBranch, defaultBranch, targetBranches, modifiedBranchSuffix }) => git_awaiter(void 0, void 0, void 0, function* () {
-    const run = (target, resetTarget) => git_awaiter(void 0, void 0, void 0, function* () {
+    const run = (target, resetTarget, mergeUpstream = true) => git_awaiter(void 0, void 0, void 0, function* () {
         core.debug(`  checkout to ${target}...`);
         const { stdout: targetCheck } = yield exec("git", ["branch", "--remotes", "--list", `origin/${resetTarget}`]);
         if (targetCheck.trim().length === 0) {
@@ -20871,7 +20871,7 @@ const prepare = ({ exec }, { force, baseBranch, defaultBranch, targetBranches, m
             core.debug(`  checkout to ${target}...`);
             yield exec("git", ["checkout", target]);
         }
-        if (!force && target !== resetTarget) {
+        if (mergeUpstream && !force) {
             yield exec("git", ["merge", "--no-ff", "--no-edit", `origin/${resetTarget}`]);
         }
         if (force) {
@@ -20884,7 +20884,7 @@ const prepare = ({ exec }, { force, baseBranch, defaultBranch, targetBranches, m
     for (const target of targetBranches) {
         yield run(modifiedBranch(target, modifiedBranchSuffix), target);
     }
-    yield run(baseBranch, defaultBranch);
+    yield run(baseBranch, defaultBranch, false);
     core.debug("Finish prepare()");
 });
 const configureGit = ({ exec }) => git_awaiter(void 0, void 0, void 0, function* () {
