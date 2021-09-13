@@ -42,7 +42,7 @@ const prepare = async (
   { exec }: Exec,
   { force, baseBranch, defaultBranch, targetBranches, modifiedBranchSuffix }: Params
 ): Promise<void> => {
-  const run = async (target: string, resetTarget: string, mergeUpstream: boolean = true) => {
+  const run = async (target: string, resetTarget: string, mergeUpstream = true) => {
     core.debug(`  checkout to ${target}...`)
 
     const { stdout: targetCheck } = await exec("git", ["branch", "--remotes", "--list", `origin/${resetTarget}`])
