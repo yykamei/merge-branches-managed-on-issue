@@ -6,6 +6,7 @@
 
 **Fixed bugs:**
 
+- Do not merge upstream on baseBranch [\#58](https://github.com/yykamei/merge-branches-managed-on-issue/pull/58) ([yykamei](https://github.com/yykamei))
 - Fix prepare to always run with force option [\#51](https://github.com/yykamei/merge-branches-managed-on-issue/pull/51) ([yykamei](https://github.com/yykamei))
 - Reset baseBranch with the defaultBranch [\#49](https://github.com/yykamei/merge-branches-managed-on-issue/pull/49) ([yykamei](https://github.com/yykamei))
 
