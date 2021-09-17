@@ -1,8 +1,8 @@
 # Changelog
 
-## [Unreleased](https://github.com/yykamei/merge-branches-managed-on-issue/tree/HEAD)
+## [v0.4.1](https://github.com/yykamei/merge-branches-managed-on-issue/tree/v0.4.1) (2021-09-17)
 
-[Full Changelog](https://github.com/yykamei/merge-branches-managed-on-issue/compare/v0.3.0...HEAD)
+[Full Changelog](https://github.com/yykamei/merge-branches-managed-on-issue/compare/v0.3.0...v0.4.1)
 
 **Fixed bugs:**
 
@@ -12,6 +12,9 @@
 
 **Merged pull requests:**
 
+- Bump @vercel/ncc from 0.30.0 to 0.31.1 [\#65](https://github.com/yykamei/merge-branches-managed-on-issue/pull/65) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump @typescript-eslint/parser from 4.31.0 to 4.31.1 [\#64](https://github.com/yykamei/merge-branches-managed-on-issue/pull/64) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump jest from 27.1.0 to 27.2.0 [\#62](https://github.com/yykamei/merge-branches-managed-on-issue/pull/62) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump prettier from 2.3.2 to 2.4.1 [\#60](https://github.com/yykamei/merge-branches-managed-on-issue/pull/60) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump @typescript-eslint/parser from 4.30.0 to 4.31.0 [\#55](https://github.com/yykamei/merge-branches-managed-on-issue/pull/55) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump @typescript-eslint/eslint-plugin from 4.30.0 to 4.31.0 [\#53](https://github.com/yykamei/merge-branches-managed-on-issue/pull/53) ([dependabot[bot]](https://github.com/apps/dependabot))
