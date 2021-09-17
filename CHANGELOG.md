@@ -1,5 +1,13 @@
 # Changelog
 
+## [Unreleased](https://github.com/yykamei/merge-branches-managed-on-issue/tree/HEAD)
+
+[Full Changelog](https://github.com/yykamei/merge-branches-managed-on-issue/compare/v0.4.1...HEAD)
+
+**Merged pull requests:**
+
+- Bump @octokit/webhooks-types from 4.4.0 to 4.7.0 [\#67](https://github.com/yykamei/merge-branches-managed-on-issue/pull/67) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## [v0.4.1](https://github.com/yykamei/merge-branches-managed-on-issue/tree/v0.4.1) (2021-09-17)
 
 [Full Changelog](https://github.com/yykamei/merge-branches-managed-on-issue/compare/v0.3.0...v0.4.1)
