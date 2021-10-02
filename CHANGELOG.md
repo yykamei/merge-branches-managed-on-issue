@@ -6,6 +6,7 @@
 
 **Merged pull requests:**
 
+- Add CodeSee architecture diagram workflow to repository [\#73](https://github.com/yykamei/merge-branches-managed-on-issue/pull/73) ([codesee-architecture-diagrams[bot]](https://github.com/apps/codesee-architecture-diagrams))
 - Bump @types/node from 16.7.10 to 16.9.2 [\#69](https://github.com/yykamei/merge-branches-managed-on-issue/pull/69) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump @octokit/webhooks-types from 4.4.0 to 4.7.0 [\#67](https://github.com/yykamei/merge-branches-managed-on-issue/pull/67) ([dependabot[bot]](https://github.com/apps/dependabot))
 
