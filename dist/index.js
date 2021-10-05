@@ -20888,6 +20888,7 @@ const runAfterMerge = ({ exec, script }, { baseBranch, afterMerge }) => git_awai
     }
 });
 const mergeTargets = ({ exec }, { defaultBranch, baseBranch, targetBranches, modifiedBranchSuffix }) => git_awaiter(void 0, void 0, void 0, function* () {
+    yield exec("git", ["checkout", baseBranch]);
     for (const target of targetBranches) {
         const branch = modifiedBranch(target, modifiedBranchSuffix);
         const { exitCode } = yield exec("git", ["merge", "--no-ff", "--no-edit", branch], {}, true);
