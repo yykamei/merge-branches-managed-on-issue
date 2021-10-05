@@ -121,7 +121,7 @@ const runScriptForBranches =
     core.debug("Finish runScriptForBranches()")
   }
 
-const mergeTargets = async ({ exec }: Exec, { baseBranch, targetBranches, modifiedBranchSuffix }: Params) => {
+const mergeTargets = async ({ exec }: Exec, { defaultBranch, baseBranch, targetBranches, modifiedBranchSuffix }: Params) => {
   core.debug("Start mergeTargets()")
   for (const target of targetBranches) {
     const branch = modifiedBranch(target, modifiedBranchSuffix)
@@ -140,6 +140,7 @@ ${diff}
 You might be able to resolve conflicts on your local machine 💻 with these commands:
 
 git fetch
+git checkout ${defaultBranch}
 git branch -D ${baseBranch}
 git checkout ${baseBranch}
 git pull origin ${baseBranch}

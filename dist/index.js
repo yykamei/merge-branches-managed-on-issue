@@ -20915,7 +20915,7 @@ const runScriptForBranches = (when) => ({ exec, script }, { beforeMerge, afterMe
     // NOTE: baseBranch can be modified directly because it is managed by this action.
     core.debug("Finish runScriptForBranches()");
 });
-const mergeTargets = ({ exec }, { baseBranch, targetBranches, modifiedBranchSuffix }) => git_awaiter(void 0, void 0, void 0, function* () {
+const mergeTargets = ({ exec }, { defaultBranch, baseBranch, targetBranches, modifiedBranchSuffix }) => git_awaiter(void 0, void 0, void 0, function* () {
     core.debug("Start mergeTargets()");
     for (const target of targetBranches) {
         const branch = modifiedBranch(target, modifiedBranchSuffix);
@@ -20934,6 +20934,7 @@ ${diff}
 You might be able to resolve conflicts on your local machine 💻 with these commands:
 
 git fetch
+git checkout ${defaultBranch}
 git branch -D ${baseBranch}
 git checkout ${baseBranch}
 git pull origin ${baseBranch}
