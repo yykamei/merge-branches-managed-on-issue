@@ -7,6 +7,9 @@
 **Fixed bugs:**
 
 - Fix the message when conflicts happen [\#72](https://github.com/yykamei/merge-branches-managed-on-issue/issues/72)
+- Fix mergeUpstream to push modified branch [\#83](https://github.com/yykamei/merge-branches-managed-on-issue/pull/83) ([yykamei](https://github.com/yykamei))
+- Fix mergeTarget to checkout beforehand [\#82](https://github.com/yykamei/merge-branches-managed-on-issue/pull/82) ([yykamei](https://github.com/yykamei))
+- Run beforeMerge before git-merge\(1\) with each target [\#79](https://github.com/yykamei/merge-branches-managed-on-issue/pull/79) ([yykamei](https://github.com/yykamei))
 
 **Merged pull requests:**
 
