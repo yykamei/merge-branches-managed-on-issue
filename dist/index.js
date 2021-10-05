@@ -20934,6 +20934,7 @@ ${diff}
 You might be able to resolve conflicts on your local machine 💻 with these commands:
 
 git fetch
+git branch -D ${baseBranch}
 git checkout ${baseBranch}
 git pull origin ${baseBranch}
 git merge --no-ff origin/${branch}
