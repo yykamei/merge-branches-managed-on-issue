@@ -101,6 +101,7 @@ const mergeTargets = async (
   { exec }: Exec,
   { defaultBranch, baseBranch, targetBranches, modifiedBranchSuffix }: Params
 ) => {
+  await exec("git", ["checkout", baseBranch])
   for (const target of targetBranches) {
     const branch = modifiedBranch(target, modifiedBranchSuffix)
     const { exitCode } = await exec("git", ["merge", "--no-ff", "--no-edit", branch], {}, true)
