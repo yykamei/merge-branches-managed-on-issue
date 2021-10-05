@@ -73,21 +73,22 @@ const prepareBranch = async ({ exec }: Exec, dest: string, src: string, force: b
 
 const mergeUpstream = async (
   { exec, script }: Exec,
-  branch: string,
-  baseBranch: string,
+  dest: string,
+  src: string,
   beforeMerge?: string | null
 ): Promise<void> => {
-  await exec("git", ["checkout", baseBranch])
+  await exec("git", ["checkout", src])
   if (beforeMerge != null) {
-    await script(beforeMerge, { CURRENT_BRANCH: baseBranch, BASE_BRANCH: baseBranch })
+    await script(beforeMerge, { CURRENT_BRANCH: src, BASE_BRANCH: src })
   }
 
-  await exec("git", ["checkout", branch])
+  await exec("git", ["checkout", dest])
   if (beforeMerge != null) {
-    await script(beforeMerge, { CURRENT_BRANCH: branch, BASE_BRANCH: baseBranch })
+    await script(beforeMerge, { CURRENT_BRANCH: dest, BASE_BRANCH: src })
   }
 
-  await exec("git", ["merge", "--no-ff", "--no-edit", baseBranch])
+  await exec("git", ["merge", "--no-ff", "--no-edit", src])
+  await exec("git", ["push", "origin", dest])
 }
 
 const runAfterMerge = async ({ exec, script }: Exec, { baseBranch, afterMerge }: Params): Promise<void> => {
