@@ -20870,16 +20870,17 @@ const prepareBranch = ({ exec }, dest, src, force) => git_awaiter(void 0, void 0
         yield exec("git", ["push", "--force", "origin", dest]);
     }
 });
-const mergeUpstream = ({ exec, script }, branch, baseBranch, beforeMerge) => git_awaiter(void 0, void 0, void 0, function* () {
-    yield exec("git", ["checkout", baseBranch]);
+const mergeUpstream = ({ exec, script }, dest, src, beforeMerge) => git_awaiter(void 0, void 0, void 0, function* () {
+    yield exec("git", ["checkout", src]);
     if (beforeMerge != null) {
-        yield script(beforeMerge, { CURRENT_BRANCH: baseBranch, BASE_BRANCH: baseBranch });
+        yield script(beforeMerge, { CURRENT_BRANCH: src, BASE_BRANCH: src });
     }
-    yield exec("git", ["checkout", branch]);
+    yield exec("git", ["checkout", dest]);
     if (beforeMerge != null) {
-        yield script(beforeMerge, { CURRENT_BRANCH: branch, BASE_BRANCH: baseBranch });
+        yield script(beforeMerge, { CURRENT_BRANCH: dest, BASE_BRANCH: src });
     }
-    yield exec("git", ["merge", "--no-ff", "--no-edit", baseBranch]);
+    yield exec("git", ["merge", "--no-ff", "--no-edit", src]);
+    yield exec("git", ["push", "origin", dest]);
 });
 const runAfterMerge = ({ exec, script }, { baseBranch, afterMerge }) => git_awaiter(void 0, void 0, void 0, function* () {
     if (afterMerge != null) {
