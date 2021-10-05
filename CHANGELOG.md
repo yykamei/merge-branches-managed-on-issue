@@ -7,6 +7,7 @@
 **Fixed bugs:**
 
 - Fix the message when conflicts happen [\#72](https://github.com/yykamei/merge-branches-managed-on-issue/issues/72)
+- Run beforeMerge before git-merge\(1\) with each target [\#79](https://github.com/yykamei/merge-branches-managed-on-issue/pull/79) ([yykamei](https://github.com/yykamei))
 
 **Merged pull requests:**
 
