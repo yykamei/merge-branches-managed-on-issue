@@ -4,6 +4,10 @@
 
 [Full Changelog](https://github.com/yykamei/merge-branches-managed-on-issue/compare/v0.4.1...HEAD)
 
+**Fixed bugs:**
+
+- Fix the message when conflicts happen [\#72](https://github.com/yykamei/merge-branches-managed-on-issue/issues/72)
+
 **Merged pull requests:**
 
 - Add CodeSee architecture diagram workflow to repository [\#73](https://github.com/yykamei/merge-branches-managed-on-issue/pull/73) ([codesee-architecture-diagrams[bot]](https://github.com/apps/codesee-architecture-diagrams))
