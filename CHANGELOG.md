@@ -1,18 +1,5 @@
 # Changelog
 
-## [Unreleased](https://github.com/yykamei/merge-branches-managed-on-issue/tree/HEAD)
-
-[Full Changelog](https://github.com/yykamei/merge-branches-managed-on-issue/compare/v0.5.0...HEAD)
-
-**Merged pull requests:**
-
-- Bump @types/jest from 27.0.1 to 27.0.2 [\#94](https://github.com/yykamei/merge-branches-managed-on-issue/pull/94) ([dependabot[bot]](https://github.com/apps/dependabot))
-- Bump @typescript-eslint/eslint-plugin from 4.31.0 to 4.33.0 [\#92](https://github.com/yykamei/merge-branches-managed-on-issue/pull/92) ([dependabot[bot]](https://github.com/apps/dependabot))
-- Bump typescript from 4.4.2 to 4.4.3 [\#90](https://github.com/yykamei/merge-branches-managed-on-issue/pull/90) ([dependabot[bot]](https://github.com/apps/dependabot))
-- Bump @typescript-eslint/parser from 4.31.1 to 4.33.0 [\#89](https://github.com/yykamei/merge-branches-managed-on-issue/pull/89) ([dependabot[bot]](https://github.com/apps/dependabot))
-- Bump @octokit/webhooks-types from 4.7.0 to 4.8.2 [\#87](https://github.com/yykamei/merge-branches-managed-on-issue/pull/87) ([dependabot[bot]](https://github.com/apps/dependabot))
-- Bump jest from 27.2.0 to 27.2.4 [\#85](https://github.com/yykamei/merge-branches-managed-on-issue/pull/85) ([dependabot[bot]](https://github.com/apps/dependabot))
-
 ## [v0.5.0](https://github.com/yykamei/merge-branches-managed-on-issue/tree/v0.5.0) (2021-10-05)
 
 [Full Changelog](https://github.com/yykamei/merge-branches-managed-on-issue/compare/v0.4.1...v0.5.0)
