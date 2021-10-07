@@ -12,6 +12,7 @@
 - Bump typescript from 4.4.2 to 4.4.3 [\#90](https://github.com/yykamei/merge-branches-managed-on-issue/pull/90) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump @typescript-eslint/parser from 4.31.1 to 4.33.0 [\#89](https://github.com/yykamei/merge-branches-managed-on-issue/pull/89) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump @octokit/webhooks-types from 4.7.0 to 4.8.2 [\#87](https://github.com/yykamei/merge-branches-managed-on-issue/pull/87) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump @actions/core from 1.5.0 to 1.6.0 [\#86](https://github.com/yykamei/merge-branches-managed-on-issue/pull/86) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump jest from 27.2.0 to 27.2.4 [\#85](https://github.com/yykamei/merge-branches-managed-on-issue/pull/85) ([dependabot[bot]](https://github.com/apps/dependabot))
 
 ## [v0.5.0](https://github.com/yykamei/merge-branches-managed-on-issue/tree/v0.5.0) (2021-10-05)
