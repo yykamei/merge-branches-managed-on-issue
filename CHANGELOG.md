@@ -6,6 +6,7 @@
 
 **Merged pull requests:**
 
+- Update README.md to add concurrency [\#105](https://github.com/yykamei/merge-branches-managed-on-issue/pull/105) ([yykamei](https://github.com/yykamei))
 - Bump @octokit/webhooks-types from 4.8.2 to 4.11.0 [\#103](https://github.com/yykamei/merge-branches-managed-on-issue/pull/103) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump @types/node from 16.9.2 to 16.10.3 [\#96](https://github.com/yykamei/merge-branches-managed-on-issue/pull/96) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump @types/jest from 27.0.1 to 27.0.2 [\#94](https://github.com/yykamei/merge-branches-managed-on-issue/pull/94) ([dependabot[bot]](https://github.com/apps/dependabot))
