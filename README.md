@@ -36,6 +36,7 @@ After creating an issue, configure this tool with the following workflow:
 
 ```yaml
 name: Merge Branches Managed on Issue
+concurrency: merge_branches # This might be required to prevent multiple jobs from running  at the same time
 on:
   workflow_dispatch:
     inputs:
