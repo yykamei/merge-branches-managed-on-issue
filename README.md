@@ -106,12 +106,12 @@ jobs:
             fi
             git commit --message="Change the version of YOUR-PRIVATE-GEM to refer to the main" --no-edit
           after-merge: |
-            if [[ "${BASE_BRANCH}" != "${CURRENT_BRANCH}" ]]; then
-              exit 0
-            fi
             sed -i -e "s#^gem.*YOUR-PRIVATE-GEM.*\$#gem 'YOUR-PRIVATE-GEM', github: 'your-org/YOUR-PRIVATE-GEM', branch: 'staging'#" Gemfile
             bundle lock --update YOUR-PRIVATE-GEM --conservative
             git add Gemfile Gemfile.lock
+            if [[ $(git diff --cached | wc -l) == 0 ]]; then
+              exit 0
+            fi
             git commit --message="Change the version of YOUR-PRIVATE-GEM to refer to staging" --no-edit
 ```
 
