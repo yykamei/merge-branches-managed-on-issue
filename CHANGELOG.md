@@ -6,6 +6,7 @@
 
 **Merged pull requests:**
 
+- Bump @types/node from 16.10.3 to 16.11.0 [\#114](https://github.com/yykamei/merge-branches-managed-on-issue/pull/114) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Update the example code in README.md [\#107](https://github.com/yykamei/merge-branches-managed-on-issue/pull/107) ([yykamei](https://github.com/yykamei))
 - Update README.md to add concurrency [\#105](https://github.com/yykamei/merge-branches-managed-on-issue/pull/105) ([yykamei](https://github.com/yykamei))
 - Bump @octokit/webhooks-types from 4.8.2 to 4.11.0 [\#103](https://github.com/yykamei/merge-branches-managed-on-issue/pull/103) ([dependabot[bot]](https://github.com/apps/dependabot))
