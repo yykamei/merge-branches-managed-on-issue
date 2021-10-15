@@ -6,6 +6,7 @@
 
 **Merged pull requests:**
 
+- Bump ts-jest from 27.0.5 to 27.0.6 [\#118](https://github.com/yykamei/merge-branches-managed-on-issue/pull/118) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump jest from 27.2.4 to 27.2.5 [\#116](https://github.com/yykamei/merge-branches-managed-on-issue/pull/116) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump @types/node from 16.10.3 to 16.11.0 [\#114](https://github.com/yykamei/merge-branches-managed-on-issue/pull/114) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump @octokit/webhooks-types from 4.11.0 to 4.12.0 [\#113](https://github.com/yykamei/merge-branches-managed-on-issue/pull/113) ([dependabot[bot]](https://github.com/apps/dependabot))
