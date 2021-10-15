@@ -7,6 +7,7 @@
 **Merged pull requests:**
 
 - Bump @types/node from 16.10.3 to 16.11.0 [\#114](https://github.com/yykamei/merge-branches-managed-on-issue/pull/114) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump @octokit/webhooks-types from 4.11.0 to 4.12.0 [\#113](https://github.com/yykamei/merge-branches-managed-on-issue/pull/113) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump typescript from 4.4.3 to 4.4.4 [\#110](https://github.com/yykamei/merge-branches-managed-on-issue/pull/110) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Update the example code in README.md [\#107](https://github.com/yykamei/merge-branches-managed-on-issue/pull/107) ([yykamei](https://github.com/yykamei))
 - Update README.md to add concurrency [\#105](https://github.com/yykamei/merge-branches-managed-on-issue/pull/105) ([yykamei](https://github.com/yykamei))
