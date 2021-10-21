@@ -4,6 +4,10 @@
 
 [Full Changelog](https://github.com/yykamei/merge-branches-managed-on-issue/compare/v0.5.0...HEAD)
 
+**Fixed bugs:**
+
+- Add runBeforeMerge [\#122](https://github.com/yykamei/merge-branches-managed-on-issue/pull/122) ([yykamei](https://github.com/yykamei))
+
 **Merged pull requests:**
 
 - Bump ts-jest from 27.0.5 to 27.0.6 [\#118](https://github.com/yykamei/merge-branches-managed-on-issue/pull/118) ([dependabot[bot]](https://github.com/apps/dependabot))
