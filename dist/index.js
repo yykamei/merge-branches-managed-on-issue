@@ -20999,6 +20999,7 @@ const merge = (params) => git_awaiter(void 0, void 0, void 0, function* () {
         yield prepareBranch(exec, modifiedBranch(target, modifiedBranchSuffix), target, force);
         yield mergeUpstream(exec, modifiedBranch(target, modifiedBranchSuffix), target, beforeMerge);
     }
+    yield runBeforeMerge(exec, params);
     yield mergeTargets(exec, params);
     yield runAfterMerge(exec, params);
     yield pushBaseBranch(exec, params);
@@ -21039,6 +21040,12 @@ const mergeUpstream = ({ exec, script }, dest, src, beforeMerge) => git_awaiter(
     }
     yield exec("git", ["merge", "--no-ff", "--no-edit", src]);
     yield exec("git", ["push", "origin", dest]);
+});
+const runBeforeMerge = ({ exec, script }, { baseBranch, beforeMerge }) => git_awaiter(void 0, void 0, void 0, function* () {
+    if (beforeMerge != null) {
+        yield exec("git", ["checkout", baseBranch]);
+        yield script(beforeMerge, { CURRENT_BRANCH: baseBranch, BASE_BRANCH: baseBranch });
+    }
 });
 const runAfterMerge = ({ exec, script }, { baseBranch, afterMerge }) => git_awaiter(void 0, void 0, void 0, function* () {
     if (afterMerge != null) {

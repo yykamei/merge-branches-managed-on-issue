@@ -34,6 +34,7 @@ export const merge = async (params: Params): Promise<string> => {
     await mergeUpstream(exec, modifiedBranch(target, modifiedBranchSuffix), target, beforeMerge)
   }
 
+  await runBeforeMerge(exec, params)
   await mergeTargets(exec, params)
   await runAfterMerge(exec, params)
   await pushBaseBranch(exec, params)
@@ -89,6 +90,13 @@ const mergeUpstream = async (
 
   await exec("git", ["merge", "--no-ff", "--no-edit", src])
   await exec("git", ["push", "origin", dest])
+}
+
+const runBeforeMerge = async ({ exec, script }: Exec, { baseBranch, beforeMerge }: Params): Promise<void> => {
+  if (beforeMerge != null) {
+    await exec("git", ["checkout", baseBranch])
+    await script(beforeMerge, { CURRENT_BRANCH: baseBranch, BASE_BRANCH: baseBranch })
+  }
 }
 
 const runAfterMerge = async ({ exec, script }: Exec, { baseBranch, afterMerge }: Params): Promise<void> => {
