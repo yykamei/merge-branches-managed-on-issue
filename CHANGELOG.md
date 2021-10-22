@@ -1,5 +1,14 @@
 # Changelog
 
+## [Unreleased](https://github.com/yykamei/merge-branches-managed-on-issue/tree/HEAD)
+
+[Full Changelog](https://github.com/yykamei/merge-branches-managed-on-issue/compare/v0.5.1...HEAD)
+
+**Merged pull requests:**
+
+- Bump jest from 27.2.5 to 27.3.1 [\#129](https://github.com/yykamei/merge-branches-managed-on-issue/pull/129) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump @types/node from 16.11.0 to 16.11.2 [\#125](https://github.com/yykamei/merge-branches-managed-on-issue/pull/125) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## [v0.5.1](https://github.com/yykamei/merge-branches-managed-on-issue/tree/v0.5.1) (2021-10-21)
 
 [Full Changelog](https://github.com/yykamei/merge-branches-managed-on-issue/compare/v0.5.0...v0.5.1)
