@@ -6,6 +6,7 @@
 
 **Merged pull requests:**
 
+- Bump @types/node from 16.11.2 to 16.11.6 [\#137](https://github.com/yykamei/merge-branches-managed-on-issue/pull/137) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump jest from 27.2.5 to 27.3.1 [\#129](https://github.com/yykamei/merge-branches-managed-on-issue/pull/129) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump ts-node from 10.3.0 to 10.3.1 [\#127](https://github.com/yykamei/merge-branches-managed-on-issue/pull/127) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump ts-jest from 27.0.6 to 27.0.7 [\#126](https://github.com/yykamei/merge-branches-managed-on-issue/pull/126) ([dependabot[bot]](https://github.com/apps/dependabot))
