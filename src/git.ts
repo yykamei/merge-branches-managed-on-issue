@@ -1,3 +1,4 @@
+import * as core from "@actions/core"
 import { buildExec } from "./exec"
 import type { Exec } from "./exec"
 import type { Inputs } from "./inputs"
@@ -88,8 +89,18 @@ const mergeUpstream = async (
     await script(beforeMerge, { CURRENT_BRANCH: dest, BASE_BRANCH: src })
   }
 
-  await exec("git", ["merge", "--no-ff", "--no-edit", src])
-  await exec("git", ["push", "origin", dest])
+  const { exitCode } = await exec("git", ["merge", "--no-ff", "--no-edit", src], {}, true)
+  if (exitCode !== 0) {
+    core.warning(
+      `We failed to merge the upstream "${src}" to "${dest}". We're about to recreate "${dest}" from "${src}".`
+    )
+    await exec("git", ["checkout", src])
+    await exec("git", ["branch", "-D", dest])
+    await exec("git", ["checkout", "-b", dest])
+    await exec("git", ["push", "--force", "origin", dest])
+  } else {
+    await exec("git", ["push", "origin", dest])
+  }
 }
 
 const runBeforeMerge = async ({ exec, script }: Exec, { baseBranch, beforeMerge }: Params): Promise<void> => {
