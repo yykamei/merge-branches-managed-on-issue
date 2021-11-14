@@ -91,7 +91,9 @@ const mergeUpstream = async (
 
   const { exitCode } = await exec("git", ["merge", "--no-ff", "--no-edit", src], {}, true)
   if (exitCode !== 0) {
-    core.warning(`We failed to merge the upstream "${src}" to "${dest}". We're about to recreate "${dest}" from "${src}".`)
+    core.warning(
+      `We failed to merge the upstream "${src}" to "${dest}". We're about to recreate "${dest}" from "${src}".`
+    )
     await exec("git", ["checkout", src])
     await exec("git", ["branch", "-D", dest])
     await exec("git", ["checkout", "-b", dest])
