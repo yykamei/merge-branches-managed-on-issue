@@ -4,6 +4,10 @@
 
 [Full Changelog](https://github.com/yykamei/merge-branches-managed-on-issue/compare/v0.5.1...HEAD)
 
+**Implemented enhancements:**
+
+- Fallback to recreating a modified branch on failure of merging [\#146](https://github.com/yykamei/merge-branches-managed-on-issue/pull/146) ([yykamei](https://github.com/yykamei))
+
 **Merged pull requests:**
 
 - Bump @octokit/webhooks-types from 4.13.1 to 4.14.0 [\#142](https://github.com/yykamei/merge-branches-managed-on-issue/pull/142) ([dependabot[bot]](https://github.com/apps/dependabot))
