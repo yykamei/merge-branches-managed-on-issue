@@ -20990,6 +20990,7 @@ var git_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argu
     });
 };
 
+
 const merge = (params) => git_awaiter(void 0, void 0, void 0, function* () {
     const { workingDirectory, shell, beforeMerge, baseBranch, defaultBranch, targetBranches, modifiedBranchSuffix, force = false, } = params;
     const exec = buildExec({ workingDirectory, shell });
@@ -21038,8 +21039,17 @@ const mergeUpstream = ({ exec, script }, dest, src, beforeMerge) => git_awaiter(
     if (beforeMerge != null) {
         yield script(beforeMerge, { CURRENT_BRANCH: dest, BASE_BRANCH: src });
     }
-    yield exec("git", ["merge", "--no-ff", "--no-edit", src]);
-    yield exec("git", ["push", "origin", dest]);
+    const { exitCode } = yield exec("git", ["merge", "--no-ff", "--no-edit", src], {}, true);
+    if (exitCode !== 0) {
+        core.warning(`We failed to merge the upstream "${src}" to "${dest}". We're about to recreate "${dest}" from "${src}".`);
+        yield exec("git", ["checkout", src]);
+        yield exec("git", ["branch", "-D", dest]);
+        yield exec("git", ["checkout", "-b", dest]);
+        yield exec("git", ["push", "--force", "origin", dest]);
+    }
+    else {
+        yield exec("git", ["push", "origin", dest]);
+    }
 });
 const runBeforeMerge = ({ exec, script }, { baseBranch, beforeMerge }) => git_awaiter(void 0, void 0, void 0, function* () {
     if (beforeMerge != null) {
