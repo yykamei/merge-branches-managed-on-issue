@@ -21042,6 +21042,7 @@ const mergeUpstream = ({ exec, script }, dest, src, beforeMerge) => git_awaiter(
     const { exitCode } = yield exec("git", ["merge", "--no-ff", "--no-edit", src], {}, true);
     if (exitCode !== 0) {
         core.warning(`We failed to merge the upstream "${src}" to "${dest}". We're about to recreate "${dest}" from "${src}".`);
+        yield exec("git", ["merge", "--abort"]);
         yield exec("git", ["checkout", src]);
         yield exec("git", ["branch", "-D", dest]);
         yield exec("git", ["checkout", "-b", dest]);
