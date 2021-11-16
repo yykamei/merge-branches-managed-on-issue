@@ -94,6 +94,7 @@ const mergeUpstream = async (
     core.warning(
       `We failed to merge the upstream "${src}" to "${dest}". We're about to recreate "${dest}" from "${src}".`
     )
+    await exec("git", ["merge", "--abort"])
     await exec("git", ["checkout", src])
     await exec("git", ["branch", "-D", dest])
     await exec("git", ["checkout", "-b", dest])
