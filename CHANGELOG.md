@@ -10,6 +10,7 @@
 
 **Merged pull requests:**
 
+- Run git-merge\(1\) --abort before checkout [\#148](https://github.com/yykamei/merge-branches-managed-on-issue/pull/148) ([yykamei](https://github.com/yykamei))
 - Bump @octokit/webhooks-types from 4.13.1 to 4.14.0 [\#142](https://github.com/yykamei/merge-branches-managed-on-issue/pull/142) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump @types/node from 16.11.6 to 16.11.7 [\#141](https://github.com/yykamei/merge-branches-managed-on-issue/pull/141) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump @types/node from 16.11.2 to 16.11.6 [\#137](https://github.com/yykamei/merge-branches-managed-on-issue/pull/137) ([dependabot[bot]](https://github.com/apps/dependabot))
