@@ -12,6 +12,7 @@
 
 - Bump @types/node from 16.11.7 to 16.11.8 [\#158](https://github.com/yykamei/merge-branches-managed-on-issue/pull/158) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump @octokit/webhooks-types from 4.14.0 to 4.15.0 [\#156](https://github.com/yykamei/merge-branches-managed-on-issue/pull/156) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump typescript from 4.4.4 to 4.5.2 [\#154](https://github.com/yykamei/merge-branches-managed-on-issue/pull/154) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump @types/jest from 27.0.2 to 27.0.3 [\#153](https://github.com/yykamei/merge-branches-managed-on-issue/pull/153) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Run git-merge\(1\) --abort before checkout [\#148](https://github.com/yykamei/merge-branches-managed-on-issue/pull/148) ([yykamei](https://github.com/yykamei))
 - Bump @octokit/webhooks-types from 4.13.1 to 4.14.0 [\#142](https://github.com/yykamei/merge-branches-managed-on-issue/pull/142) ([dependabot[bot]](https://github.com/apps/dependabot))
