@@ -1,5 +1,32 @@
 # Changelog
 
+## [Unreleased](https://github.com/yykamei/merge-branches-managed-on-issue/tree/HEAD)
+
+[Full Changelog](https://github.com/yykamei/merge-branches-managed-on-issue/compare/v0.5.1...HEAD)
+
+**Implemented enhancements:**
+
+- Fallback to recreating a modified branch on failure of merging [\#146](https://github.com/yykamei/merge-branches-managed-on-issue/pull/146) ([yykamei](https://github.com/yykamei))
+
+**Merged pull requests:**
+
+- Bump eslint from 7.32.0 to 8.3.0 [\#163](https://github.com/yykamei/merge-branches-managed-on-issue/pull/163) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump @types/node from 16.11.7 to 16.11.8 [\#158](https://github.com/yykamei/merge-branches-managed-on-issue/pull/158) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump @octokit/webhooks-types from 4.14.0 to 4.15.0 [\#156](https://github.com/yykamei/merge-branches-managed-on-issue/pull/156) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump typescript from 4.4.4 to 4.5.2 [\#154](https://github.com/yykamei/merge-branches-managed-on-issue/pull/154) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump @types/jest from 27.0.2 to 27.0.3 [\#153](https://github.com/yykamei/merge-branches-managed-on-issue/pull/153) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump @vercel/ncc from 0.31.1 to 0.32.0 [\#151](https://github.com/yykamei/merge-branches-managed-on-issue/pull/151) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Run git-merge\(1\) --abort before checkout [\#148](https://github.com/yykamei/merge-branches-managed-on-issue/pull/148) ([yykamei](https://github.com/yykamei))
+- Bump @octokit/webhooks-types from 4.13.1 to 4.14.0 [\#142](https://github.com/yykamei/merge-branches-managed-on-issue/pull/142) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump @types/node from 16.11.6 to 16.11.7 [\#141](https://github.com/yykamei/merge-branches-managed-on-issue/pull/141) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump @types/node from 16.11.2 to 16.11.6 [\#137](https://github.com/yykamei/merge-branches-managed-on-issue/pull/137) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump ts-node from 10.3.1 to 10.4.0 [\#135](https://github.com/yykamei/merge-branches-managed-on-issue/pull/135) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump jest from 27.2.5 to 27.3.1 [\#129](https://github.com/yykamei/merge-branches-managed-on-issue/pull/129) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump ts-node from 10.3.0 to 10.3.1 [\#127](https://github.com/yykamei/merge-branches-managed-on-issue/pull/127) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump ts-jest from 27.0.6 to 27.0.7 [\#126](https://github.com/yykamei/merge-branches-managed-on-issue/pull/126) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump @types/node from 16.11.0 to 16.11.2 [\#125](https://github.com/yykamei/merge-branches-managed-on-issue/pull/125) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump @octokit/webhooks-types from 4.12.0 to 4.13.1 [\#124](https://github.com/yykamei/merge-branches-managed-on-issue/pull/124) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## [v0.5.1](https://github.com/yykamei/merge-branches-managed-on-issue/tree/v0.5.1) (2021-10-21)
 
 [Full Changelog](https://github.com/yykamei/merge-branches-managed-on-issue/compare/v0.5.0...v0.5.1)
