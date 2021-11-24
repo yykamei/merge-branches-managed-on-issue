@@ -10,6 +10,7 @@
 
 **Merged pull requests:**
 
+- Use `type` field for "apply" inputs [\#167](https://github.com/yykamei/merge-branches-managed-on-issue/pull/167) ([yykamei](https://github.com/yykamei))
 - Bump eslint from 7.32.0 to 8.3.0 [\#163](https://github.com/yykamei/merge-branches-managed-on-issue/pull/163) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump @types/node from 16.11.7 to 16.11.8 [\#158](https://github.com/yykamei/merge-branches-managed-on-issue/pull/158) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump @octokit/webhooks-types from 4.14.0 to 4.15.0 [\#156](https://github.com/yykamei/merge-branches-managed-on-issue/pull/156) ([dependabot[bot]](https://github.com/apps/dependabot))
