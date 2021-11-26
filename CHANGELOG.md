@@ -6,6 +6,7 @@
 
 **Merged pull requests:**
 
+- Bump @octokit/webhooks-types from 4.15.0 to 4.17.1 [\#171](https://github.com/yykamei/merge-branches-managed-on-issue/pull/171) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump prettier from 2.4.1 to 2.5.0 [\#169](https://github.com/yykamei/merge-branches-managed-on-issue/pull/169) ([dependabot[bot]](https://github.com/apps/dependabot))
 
 ## [v0.5.2](https://github.com/yykamei/merge-branches-managed-on-issue/tree/v0.5.2) (2021-11-24)
