@@ -6,6 +6,7 @@
 
 **Merged pull requests:**
 
+- Bump @vercel/ncc from 0.32.0 to 0.33.0 [\#179](https://github.com/yykamei/merge-branches-managed-on-issue/pull/179) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump @typescript-eslint/parser from 5.4.0 to 5.5.0 [\#178](https://github.com/yykamei/merge-branches-managed-on-issue/pull/178) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump @types/node from 16.11.10 to 16.11.11 [\#177](https://github.com/yykamei/merge-branches-managed-on-issue/pull/177) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump jest from 27.3.1 to 27.4.3 [\#176](https://github.com/yykamei/merge-branches-managed-on-issue/pull/176) ([dependabot[bot]](https://github.com/apps/dependabot))
