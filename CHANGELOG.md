@@ -7,7 +7,9 @@
 **Merged pull requests:**
 
 - Bump @typescript-eslint/parser from 5.4.0 to 5.5.0 [\#178](https://github.com/yykamei/merge-branches-managed-on-issue/pull/178) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump @types/node from 16.11.10 to 16.11.11 [\#177](https://github.com/yykamei/merge-branches-managed-on-issue/pull/177) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump jest from 27.3.1 to 27.4.3 [\#176](https://github.com/yykamei/merge-branches-managed-on-issue/pull/176) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump @typescript-eslint/eslint-plugin from 5.4.0 to 5.5.0 [\#175](https://github.com/yykamei/merge-branches-managed-on-issue/pull/175) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump @octokit/webhooks-types from 4.15.0 to 4.17.1 [\#171](https://github.com/yykamei/merge-branches-managed-on-issue/pull/171) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump @types/node from 16.11.8 to 16.11.10 [\#170](https://github.com/yykamei/merge-branches-managed-on-issue/pull/170) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump prettier from 2.4.1 to 2.5.0 [\#169](https://github.com/yykamei/merge-branches-managed-on-issue/pull/169) ([dependabot[bot]](https://github.com/apps/dependabot))
