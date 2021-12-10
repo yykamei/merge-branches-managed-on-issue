@@ -6,6 +6,7 @@
 
 **Merged pull requests:**
 
+- Bump @typescript-eslint/eslint-plugin from 5.5.0 to 5.6.0 [\#190](https://github.com/yykamei/merge-branches-managed-on-issue/pull/190) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump prettier from 2.5.0 to 2.5.1 [\#188](https://github.com/yykamei/merge-branches-managed-on-issue/pull/188) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump typescript from 4.5.2 to 4.5.3 [\#187](https://github.com/yykamei/merge-branches-managed-on-issue/pull/187) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump eslint from 8.3.0 to 8.4.1 [\#185](https://github.com/yykamei/merge-branches-managed-on-issue/pull/185) ([dependabot[bot]](https://github.com/apps/dependabot))
