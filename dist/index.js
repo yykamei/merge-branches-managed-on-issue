@@ -21006,7 +21006,7 @@ const merge = (params) => git_awaiter(void 0, void 0, void 0, function* () {
     yield pushBaseBranch(exec, params);
     return yield output(exec, params);
 });
-const deleteBranch = (target, { workingDirectory, shell, modifiedBranchSuffix, baseBranch }) => git_awaiter(void 0, void 0, void 0, function* () {
+const deleteBranch = (target, { workingDirectory, shell, modifiedBranchSuffix, baseBranch, }) => git_awaiter(void 0, void 0, void 0, function* () {
     const exec = buildExec({ workingDirectory, shell });
     const branch = modifiedBranch(target, modifiedBranchSuffix, baseBranch);
     const oldBranch = oldModifiedBranch(target, modifiedBranchSuffix);

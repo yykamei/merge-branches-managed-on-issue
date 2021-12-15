@@ -45,7 +45,12 @@ export const merge = async (params: Params): Promise<string> => {
 
 export const deleteBranch = async (
   target: string,
-  { workingDirectory, shell, modifiedBranchSuffix, baseBranch }: Pick<Params, "workingDirectory" | "shell" | "modifiedBranchSuffix" | "baseBranch">
+  {
+    workingDirectory,
+    shell,
+    modifiedBranchSuffix,
+    baseBranch,
+  }: Pick<Params, "workingDirectory" | "shell" | "modifiedBranchSuffix" | "baseBranch">
 ): Promise<void> => {
   const exec = buildExec({ workingDirectory, shell })
   const branch = modifiedBranch(target, modifiedBranchSuffix, baseBranch)
