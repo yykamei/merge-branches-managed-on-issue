@@ -20997,8 +20997,8 @@ const merge = (params) => git_awaiter(void 0, void 0, void 0, function* () {
     yield configureGit(exec);
     yield prepareBranch(exec, baseBranch, defaultBranch, force);
     for (const target of targetBranches) {
-        yield prepareBranch(exec, modifiedBranch(target, modifiedBranchSuffix), target, force);
-        yield mergeUpstream(exec, modifiedBranch(target, modifiedBranchSuffix), target, beforeMerge);
+        yield prepareBranch(exec, modifiedBranch(target, modifiedBranchSuffix, baseBranch), target, force);
+        yield mergeUpstream(exec, modifiedBranch(target, modifiedBranchSuffix, baseBranch), target, beforeMerge);
     }
     yield runBeforeMerge(exec, params);
     yield mergeTargets(exec, params);
@@ -21006,10 +21006,12 @@ const merge = (params) => git_awaiter(void 0, void 0, void 0, function* () {
     yield pushBaseBranch(exec, params);
     return yield output(exec, params);
 });
-const deleteBranch = (target, { workingDirectory, shell, modifiedBranchSuffix }) => git_awaiter(void 0, void 0, void 0, function* () {
-    const branch = modifiedBranch(target, modifiedBranchSuffix);
+const deleteBranch = (target, { workingDirectory, shell, modifiedBranchSuffix, baseBranch, }) => git_awaiter(void 0, void 0, void 0, function* () {
     const exec = buildExec({ workingDirectory, shell });
+    const branch = modifiedBranch(target, modifiedBranchSuffix, baseBranch);
+    const oldBranch = oldModifiedBranch(target, modifiedBranchSuffix);
     yield exec.exec("git", ["push", "--delete", "origin", branch], {}, true);
+    yield exec.exec("git", ["push", "--delete", "origin", oldBranch], {}, true);
 });
 const configureGit = ({ exec }) => git_awaiter(void 0, void 0, void 0, function* () {
     // TODO: `name` and `email` should be configurable.
@@ -21067,7 +21069,7 @@ const runAfterMerge = ({ exec, script }, { baseBranch, afterMerge }) => git_awai
 const mergeTargets = ({ exec }, { defaultBranch, baseBranch, targetBranches, modifiedBranchSuffix }) => git_awaiter(void 0, void 0, void 0, function* () {
     yield exec("git", ["checkout", baseBranch]);
     for (const target of targetBranches) {
-        const branch = modifiedBranch(target, modifiedBranchSuffix);
+        const branch = modifiedBranch(target, modifiedBranchSuffix, baseBranch);
         const { exitCode } = yield exec("git", ["merge", "--no-ff", "--no-edit", branch], {}, true);
         if (exitCode !== 0) {
             const { stdout: status } = yield exec("git", ["status"], {}, true);
@@ -21106,7 +21108,8 @@ const output = ({ exec }, { defaultBranch }) => git_awaiter(void 0, void 0, void
     const { stdout } = yield exec("git", ["log", "--merges", "--oneline", `origin/${defaultBranch}...HEAD`]);
     return stdout;
 });
-const modifiedBranch = (branch, modifiedBranchSuffix) => `${branch}${modifiedBranchSuffix}`;
+const oldModifiedBranch = (branch, modifiedBranchSuffix) => `${branch}${modifiedBranchSuffix}`;
+const modifiedBranch = (branch, modifiedBranchSuffix, baseBranch) => `${branch}${modifiedBranchSuffix}-${baseBranch}`;
 
 ;// CONCATENATED MODULE: ./src/run.ts
 var run_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
@@ -21210,14 +21213,14 @@ const handleIssueComment = ({ token, issueNumber, commentPrefix }) => run_awaite
         throw e;
     }
 });
-const handleDelete = ({ token, issueNumber, workingDirectory, shell, modifiedBranchSuffix }) => run_awaiter(void 0, void 0, void 0, function* () {
+const handleDelete = ({ token, issueNumber, workingDirectory, shell, inputsParamBaseBranch, modifiedBranchSuffix, }) => run_awaiter(void 0, void 0, void 0, function* () {
     const payload = github.context.payload;
     if (payload.ref_type !== "branch") {
         return;
     }
     const branch = payload.ref.replace("refs/heads/", "");
     const { issue } = yield fetchData({ token, issueNumber });
-    yield deleteBranch(branch, { workingDirectory, shell, modifiedBranchSuffix });
+    yield deleteBranch(branch, { workingDirectory, shell, modifiedBranchSuffix, baseBranch: inputsParamBaseBranch });
     const newBody = remove(issue.body, branch);
     yield updateIssue(issue, newBody, token);
 });

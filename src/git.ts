@@ -31,8 +31,8 @@ export const merge = async (params: Params): Promise<string> => {
   await configureGit(exec)
   await prepareBranch(exec, baseBranch, defaultBranch, force)
   for (const target of targetBranches) {
-    await prepareBranch(exec, modifiedBranch(target, modifiedBranchSuffix), target, force)
-    await mergeUpstream(exec, modifiedBranch(target, modifiedBranchSuffix), target, beforeMerge)
+    await prepareBranch(exec, modifiedBranch(target, modifiedBranchSuffix, baseBranch), target, force)
+    await mergeUpstream(exec, modifiedBranch(target, modifiedBranchSuffix, baseBranch), target, beforeMerge)
   }
 
   await runBeforeMerge(exec, params)
@@ -45,11 +45,18 @@ export const merge = async (params: Params): Promise<string> => {
 
 export const deleteBranch = async (
   target: string,
-  { workingDirectory, shell, modifiedBranchSuffix }: Pick<Params, "workingDirectory" | "shell" | "modifiedBranchSuffix">
+  {
+    workingDirectory,
+    shell,
+    modifiedBranchSuffix,
+    baseBranch,
+  }: Pick<Params, "workingDirectory" | "shell" | "modifiedBranchSuffix" | "baseBranch">
 ): Promise<void> => {
-  const branch = modifiedBranch(target, modifiedBranchSuffix)
   const exec = buildExec({ workingDirectory, shell })
+  const branch = modifiedBranch(target, modifiedBranchSuffix, baseBranch)
+  const oldBranch = oldModifiedBranch(target, modifiedBranchSuffix)
   await exec.exec("git", ["push", "--delete", "origin", branch], {}, true)
+  await exec.exec("git", ["push", "--delete", "origin", oldBranch], {}, true)
 }
 
 const configureGit = async ({ exec }: Exec): Promise<void> => {
@@ -124,7 +131,7 @@ const mergeTargets = async (
 ) => {
   await exec("git", ["checkout", baseBranch])
   for (const target of targetBranches) {
-    const branch = modifiedBranch(target, modifiedBranchSuffix)
+    const branch = modifiedBranch(target, modifiedBranchSuffix, baseBranch)
     const { exitCode } = await exec("git", ["merge", "--no-ff", "--no-edit", branch], {}, true)
     if (exitCode !== 0) {
       const { stdout: status } = await exec("git", ["status"], {}, true)
@@ -166,4 +173,7 @@ const output = async ({ exec }: Exec, { defaultBranch }: Params): Promise<string
   return stdout
 }
 
-const modifiedBranch = (branch: string, modifiedBranchSuffix: string): string => `${branch}${modifiedBranchSuffix}`
+const oldModifiedBranch = (branch: string, modifiedBranchSuffix: string): string => `${branch}${modifiedBranchSuffix}`
+
+const modifiedBranch = (branch: string, modifiedBranchSuffix: string, baseBranch: string): string =>
+  `${branch}${modifiedBranchSuffix}-${baseBranch}`
