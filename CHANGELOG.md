@@ -1,5 +1,13 @@
 # Changelog
 
+## [Unreleased](https://github.com/yykamei/merge-branches-managed-on-issue/tree/HEAD)
+
+[Full Changelog](https://github.com/yykamei/merge-branches-managed-on-issue/compare/v0.5.4...HEAD)
+
+**Breaking changes:**
+
+- Suffix baseBranch to modified branches [\#198](https://github.com/yykamei/merge-branches-managed-on-issue/pull/198) ([yykamei](https://github.com/yykamei))
+
 ## [v0.5.4](https://github.com/yykamei/merge-branches-managed-on-issue/tree/v0.5.4) (2021-12-13)
 
 [Full Changelog](https://github.com/yykamei/merge-branches-managed-on-issue/compare/v0.5.3...v0.5.4)
