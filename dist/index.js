@@ -21006,12 +21006,14 @@ const merge = (params) => git_awaiter(void 0, void 0, void 0, function* () {
     yield pushBaseBranch(exec, params);
     return yield output(exec, params);
 });
-const deleteBranch = (target, { workingDirectory, shell, modifiedBranchSuffix, baseBranch, }) => git_awaiter(void 0, void 0, void 0, function* () {
+const deleteBranch = (target, { workingDirectory, shell, modifiedBranchSuffix, baseBranches, }) => git_awaiter(void 0, void 0, void 0, function* () {
     const exec = buildExec({ workingDirectory, shell });
-    const branch = modifiedBranch(target, modifiedBranchSuffix, baseBranch);
     const oldBranch = oldModifiedBranch(target, modifiedBranchSuffix);
-    yield exec.exec("git", ["push", "--delete", "origin", branch], {}, true);
     yield exec.exec("git", ["push", "--delete", "origin", oldBranch], {}, true);
+    for (const baseBranch of baseBranches) {
+        const branch = modifiedBranch(target, modifiedBranchSuffix, baseBranch);
+        yield exec.exec("git", ["push", "--delete", "origin", branch], {}, true);
+    }
 });
 const configureGit = ({ exec }) => git_awaiter(void 0, void 0, void 0, function* () {
     // TODO: `name` and `email` should be configurable.
@@ -21213,14 +21215,16 @@ const handleIssueComment = ({ token, issueNumber, commentPrefix }) => run_awaite
         throw e;
     }
 });
-const handleDelete = ({ token, issueNumber, workingDirectory, shell, inputsParamBaseBranch, modifiedBranchSuffix, }) => run_awaiter(void 0, void 0, void 0, function* () {
+const handleDelete = ({ token, issueNumber, workingDirectory, shell, modifiedBranchSuffix }) => run_awaiter(void 0, void 0, void 0, function* () {
     const payload = github.context.payload;
     if (payload.ref_type !== "branch") {
         return;
     }
     const branch = payload.ref.replace("refs/heads/", "");
     const { issue } = yield fetchData({ token, issueNumber });
-    yield deleteBranch(branch, { workingDirectory, shell, modifiedBranchSuffix, baseBranch: inputsParamBaseBranch });
+    const result = parse(issue.body).mergedBranches;
+    const baseBranches = Object.keys(result);
+    yield deleteBranch(branch, { workingDirectory, shell, modifiedBranchSuffix, baseBranches });
     const newBody = remove(issue.body, branch);
     yield updateIssue(issue, newBody, token);
 });
