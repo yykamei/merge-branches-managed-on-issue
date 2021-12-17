@@ -8,6 +8,10 @@
 
 - Suffix baseBranch to modified branches [\#198](https://github.com/yykamei/merge-branches-managed-on-issue/pull/198) ([yykamei](https://github.com/yykamei))
 
+**Fixed bugs:**
+
+- Fix deleteBranches to delete all modified branches [\#208](https://github.com/yykamei/merge-branches-managed-on-issue/pull/208) ([yykamei](https://github.com/yykamei))
+
 **Merged pull requests:**
 
 - Bump jest from 27.4.3 to 27.4.5 [\#203](https://github.com/yykamei/merge-branches-managed-on-issue/pull/203) ([dependabot[bot]](https://github.com/apps/dependabot))
