@@ -307,7 +307,7 @@ describe("run", () => {
         workingDirectory: "/foo",
         shell: ["bash", "-eo", "pipefail"],
         modifiedBranchSuffix: ".modified",
-        baseBranch: "base-branch",
+        baseBranches: ["staging", "strawberry"],
       })
       const newBody = `This is a markdown body.
 

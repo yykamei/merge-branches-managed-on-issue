@@ -49,14 +49,16 @@ export const deleteBranch = async (
     workingDirectory,
     shell,
     modifiedBranchSuffix,
-    baseBranch,
-  }: Pick<Params, "workingDirectory" | "shell" | "modifiedBranchSuffix" | "baseBranch">
+    baseBranches,
+  }: Pick<Params, "workingDirectory" | "shell" | "modifiedBranchSuffix"> & { readonly baseBranches: string[] }
 ): Promise<void> => {
   const exec = buildExec({ workingDirectory, shell })
-  const branch = modifiedBranch(target, modifiedBranchSuffix, baseBranch)
   const oldBranch = oldModifiedBranch(target, modifiedBranchSuffix)
-  await exec.exec("git", ["push", "--delete", "origin", branch], {}, true)
   await exec.exec("git", ["push", "--delete", "origin", oldBranch], {}, true)
+  for (const baseBranch of baseBranches) {
+    const branch = modifiedBranch(target, modifiedBranchSuffix, baseBranch)
+    await exec.exec("git", ["push", "--delete", "origin", branch], {}, true)
+  }
 }
 
 const configureGit = async ({ exec }: Exec): Promise<void> => {

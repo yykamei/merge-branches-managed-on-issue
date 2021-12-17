@@ -123,21 +123,16 @@ const handleIssueComment = async ({ token, issueNumber, commentPrefix }: Inputs)
   }
 }
 
-const handleDelete = async ({
-  token,
-  issueNumber,
-  workingDirectory,
-  shell,
-  inputsParamBaseBranch,
-  modifiedBranchSuffix,
-}: Inputs) => {
+const handleDelete = async ({ token, issueNumber, workingDirectory, shell, modifiedBranchSuffix }: Inputs) => {
   const payload = context.payload as DeleteEvent
   if (payload.ref_type !== "branch") {
     return
   }
   const branch = payload.ref.replace("refs/heads/", "")
   const { issue } = await fetchData({ token, issueNumber })
-  await deleteBranch(branch, { workingDirectory, shell, modifiedBranchSuffix, baseBranch: inputsParamBaseBranch })
+  const result = parse(issue.body).mergedBranches
+  const baseBranches = Object.keys(result)
+  await deleteBranch(branch, { workingDirectory, shell, modifiedBranchSuffix, baseBranches })
   const newBody = remove(issue.body, branch)
   await updateIssue(issue, newBody, token)
 }
