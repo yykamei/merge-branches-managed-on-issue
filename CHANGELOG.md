@@ -16,6 +16,7 @@
 
 - Bump @types/node from 17.0.0 to 17.0.4 [\#220](https://github.com/yykamei/merge-branches-managed-on-issue/pull/220) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump @vercel/ncc from 0.33.0 to 0.33.1 [\#218](https://github.com/yykamei/merge-branches-managed-on-issue/pull/218) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump @typescript-eslint/parser from 5.7.0 to 5.8.0 [\#217](https://github.com/yykamei/merge-branches-managed-on-issue/pull/217) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump eslint from 8.4.1 to 8.5.0 [\#216](https://github.com/yykamei/merge-branches-managed-on-issue/pull/216) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump @octokit/webhooks-types from 4.17.1 to 5.0.0 [\#215](https://github.com/yykamei/merge-branches-managed-on-issue/pull/215) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump typescript from 4.5.3 to 4.5.4 [\#205](https://github.com/yykamei/merge-branches-managed-on-issue/pull/205) ([dependabot[bot]](https://github.com/apps/dependabot))
