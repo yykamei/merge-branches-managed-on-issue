@@ -1,6 +1,6 @@
 {
   "name": "merge-branches-managed-on-issue",
-  "version": "0.5.4",
+  "version": "0.5.5",
   "description": "Merge branches managed on an issue",
   "main": "dist/index.js",
   "scripts": {
