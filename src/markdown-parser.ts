@@ -180,6 +180,7 @@ const tableToTargetBranch = (node: any): TargetBranch[] => {
     let pull: string | null = null
     const extras: any = {}
 
+    console.log(row)
     row.forEach((v: any, idx: number) => {
       if (isBranch(headers[idx])) {
         if (v == null) {

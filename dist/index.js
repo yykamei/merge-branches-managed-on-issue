@@ -20833,6 +20833,7 @@ const tableToTargetBranch = (node) => {
         let author = null;
         let pull = null;
         const extras = {};
+        console.log(row);
         row.forEach((v, idx) => {
             if (isBranch(headers[idx])) {
                 if (v == null) {
