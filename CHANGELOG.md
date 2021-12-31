@@ -7,6 +7,8 @@
 **Merged pull requests:**
 
 - Bump @octokit/webhooks-types from 5.0.0 to 5.1.0 [\#230](https://github.com/yykamei/merge-branches-managed-on-issue/pull/230) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump @typescript-eslint/parser from 5.8.0 to 5.8.1 [\#229](https://github.com/yykamei/merge-branches-managed-on-issue/pull/229) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump @types/jest from 27.0.3 to 27.4.0 [\#227](https://github.com/yykamei/merge-branches-managed-on-issue/pull/227) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump @types/node from 17.0.4 to 17.0.5 [\#226](https://github.com/yykamei/merge-branches-managed-on-issue/pull/226) ([dependabot[bot]](https://github.com/apps/dependabot))
 
 ## [v0.5.5](https://github.com/yykamei/merge-branches-managed-on-issue/tree/v0.5.5) (2021-12-24)
