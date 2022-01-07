@@ -8,6 +8,7 @@
 
 - Bump @typescript-eslint/parser from 5.8.1 to 5.9.0 [\#240](https://github.com/yykamei/merge-branches-managed-on-issue/pull/240) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump jest from 27.4.5 to 27.4.7 [\#239](https://github.com/yykamei/merge-branches-managed-on-issue/pull/239) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump @octokit/webhooks-types from 5.1.0 to 5.2.0 [\#238](https://github.com/yykamei/merge-branches-managed-on-issue/pull/238) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump @typescript-eslint/eslint-plugin from 5.8.1 to 5.9.0 [\#236](https://github.com/yykamei/merge-branches-managed-on-issue/pull/236) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump @octokit/webhooks-types from 5.0.0 to 5.1.0 [\#230](https://github.com/yykamei/merge-branches-managed-on-issue/pull/230) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump @typescript-eslint/parser from 5.8.0 to 5.8.1 [\#229](https://github.com/yykamei/merge-branches-managed-on-issue/pull/229) ([dependabot[bot]](https://github.com/apps/dependabot))
