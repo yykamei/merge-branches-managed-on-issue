@@ -1,22 +1,5 @@
 # Changelog
 
-## [Unreleased](https://github.com/yykamei/merge-branches-managed-on-issue/tree/HEAD)
-
-[Full Changelog](https://github.com/yykamei/merge-branches-managed-on-issue/compare/v0.5.5...HEAD)
-
-**Merged pull requests:**
-
-- Bump @typescript-eslint/parser from 5.8.1 to 5.9.0 [\#240](https://github.com/yykamei/merge-branches-managed-on-issue/pull/240) ([dependabot[bot]](https://github.com/apps/dependabot))
-- Bump jest from 27.4.5 to 27.4.7 [\#239](https://github.com/yykamei/merge-branches-managed-on-issue/pull/239) ([dependabot[bot]](https://github.com/apps/dependabot))
-- Bump @octokit/webhooks-types from 5.1.0 to 5.2.0 [\#238](https://github.com/yykamei/merge-branches-managed-on-issue/pull/238) ([dependabot[bot]](https://github.com/apps/dependabot))
-- Bump @types/node from 17.0.5 to 17.0.8 [\#237](https://github.com/yykamei/merge-branches-managed-on-issue/pull/237) ([dependabot[bot]](https://github.com/apps/dependabot))
-- Bump @typescript-eslint/eslint-plugin from 5.8.1 to 5.9.0 [\#236](https://github.com/yykamei/merge-branches-managed-on-issue/pull/236) ([dependabot[bot]](https://github.com/apps/dependabot))
-- Bump @octokit/webhooks-types from 5.0.0 to 5.1.0 [\#230](https://github.com/yykamei/merge-branches-managed-on-issue/pull/230) ([dependabot[bot]](https://github.com/apps/dependabot))
-- Bump @typescript-eslint/parser from 5.8.0 to 5.8.1 [\#229](https://github.com/yykamei/merge-branches-managed-on-issue/pull/229) ([dependabot[bot]](https://github.com/apps/dependabot))
-- Bump @typescript-eslint/eslint-plugin from 5.8.0 to 5.8.1 [\#228](https://github.com/yykamei/merge-branches-managed-on-issue/pull/228) ([dependabot[bot]](https://github.com/apps/dependabot))
-- Bump @types/jest from 27.0.3 to 27.4.0 [\#227](https://github.com/yykamei/merge-branches-managed-on-issue/pull/227) ([dependabot[bot]](https://github.com/apps/dependabot))
-- Bump @types/node from 17.0.4 to 17.0.5 [\#226](https://github.com/yykamei/merge-branches-managed-on-issue/pull/226) ([dependabot[bot]](https://github.com/apps/dependabot))
-
 ## [v0.5.5](https://github.com/yykamei/merge-branches-managed-on-issue/tree/v0.5.5) (2021-12-24)
 
 [Full Changelog](https://github.com/yykamei/merge-branches-managed-on-issue/compare/v0.5.4...v0.5.5)
