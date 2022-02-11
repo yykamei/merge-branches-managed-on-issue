@@ -6,6 +6,7 @@
 
 **Merged pull requests:**
 
+- Bump jest from 27.4.7 to 27.5.1 [\#282](https://github.com/yykamei/merge-branches-managed-on-issue/pull/282) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump eslint from 8.7.0 to 8.8.0 [\#276](https://github.com/yykamei/merge-branches-managed-on-issue/pull/276) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump @types/node from 17.0.13 to 17.0.14 [\#275](https://github.com/yykamei/merge-branches-managed-on-issue/pull/275) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump @typescript-eslint/eslint-plugin from 5.10.1 to 5.10.2 [\#274](https://github.com/yykamei/merge-branches-managed-on-issue/pull/274) ([dependabot[bot]](https://github.com/apps/dependabot))
