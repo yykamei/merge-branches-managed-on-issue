@@ -6,6 +6,7 @@
 
 **Merged pull requests:**
 
+- Bump ts-node from 10.4.0 to 10.5.0 [\#283](https://github.com/yykamei/merge-branches-managed-on-issue/pull/283) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump jest from 27.4.7 to 27.5.1 [\#282](https://github.com/yykamei/merge-branches-managed-on-issue/pull/282) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump eslint from 8.7.0 to 8.8.0 [\#276](https://github.com/yykamei/merge-branches-managed-on-issue/pull/276) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump @types/node from 17.0.13 to 17.0.14 [\#275](https://github.com/yykamei/merge-branches-managed-on-issue/pull/275) ([dependabot[bot]](https://github.com/apps/dependabot))
