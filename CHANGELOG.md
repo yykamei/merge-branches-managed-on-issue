@@ -8,6 +8,7 @@
 
 - Bump @typescript-eslint/eslint-plugin from 5.10.2 to 5.11.0 [\#286](https://github.com/yykamei/merge-branches-managed-on-issue/pull/286) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump @types/node from 17.0.14 to 17.0.17 [\#285](https://github.com/yykamei/merge-branches-managed-on-issue/pull/285) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump @typescript-eslint/parser from 5.10.2 to 5.11.0 [\#284](https://github.com/yykamei/merge-branches-managed-on-issue/pull/284) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump ts-node from 10.4.0 to 10.5.0 [\#283](https://github.com/yykamei/merge-branches-managed-on-issue/pull/283) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump jest from 27.4.7 to 27.5.1 [\#282](https://github.com/yykamei/merge-branches-managed-on-issue/pull/282) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump eslint from 8.7.0 to 8.8.0 [\#276](https://github.com/yykamei/merge-branches-managed-on-issue/pull/276) ([dependabot[bot]](https://github.com/apps/dependabot))
