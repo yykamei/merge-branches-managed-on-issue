@@ -1,5 +1,13 @@
 # Changelog
 
+## [Unreleased](https://github.com/yykamei/merge-branches-managed-on-issue/tree/HEAD)
+
+[Full Changelog](https://github.com/yykamei/merge-branches-managed-on-issue/compare/v0.5.7...HEAD)
+
+**Merged pull requests:**
+
+- Bump @typescript-eslint/parser from 5.11.0 to 5.12.0 [\#296](https://github.com/yykamei/merge-branches-managed-on-issue/pull/296) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## [v0.5.7](https://github.com/yykamei/merge-branches-managed-on-issue/tree/v0.5.7) (2022-02-11)
 
 [Full Changelog](https://github.com/yykamei/merge-branches-managed-on-issue/compare/v0.5.6...v0.5.7)
