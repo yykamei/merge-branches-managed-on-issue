@@ -10,6 +10,7 @@
 - Bump eslint from 8.8.0 to 8.9.0 [\#295](https://github.com/yykamei/merge-branches-managed-on-issue/pull/295) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump @types/node from 17.0.17 to 17.0.18 [\#294](https://github.com/yykamei/merge-branches-managed-on-issue/pull/294) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump @typescript-eslint/eslint-plugin from 5.11.0 to 5.12.0 [\#293](https://github.com/yykamei/merge-branches-managed-on-issue/pull/293) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump @vercel/ncc from 0.33.1 to 0.33.3 [\#292](https://github.com/yykamei/merge-branches-managed-on-issue/pull/292) ([dependabot[bot]](https://github.com/apps/dependabot))
 
 ## [v0.5.7](https://github.com/yykamei/merge-branches-managed-on-issue/tree/v0.5.7) (2022-02-11)
 
