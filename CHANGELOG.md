@@ -6,6 +6,7 @@
 
 **Merged pull requests:**
 
+- Bump node-fetch from 2.6.1 to 2.6.7 [\#307](https://github.com/yykamei/merge-branches-managed-on-issue/pull/307) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump @types/node from 17.0.18 to 17.0.21 [\#306](https://github.com/yykamei/merge-branches-managed-on-issue/pull/306) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump @typescript-eslint/eslint-plugin from 5.12.0 to 5.12.1 [\#305](https://github.com/yykamei/merge-branches-managed-on-issue/pull/305) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump @types/jest from 27.4.0 to 27.4.1 [\#304](https://github.com/yykamei/merge-branches-managed-on-issue/pull/304) ([dependabot[bot]](https://github.com/apps/dependabot))
