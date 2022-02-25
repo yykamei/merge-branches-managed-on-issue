@@ -1,5 +1,13 @@
 # Changelog
 
+## [Unreleased](https://github.com/yykamei/merge-branches-managed-on-issue/tree/HEAD)
+
+[Full Changelog](https://github.com/yykamei/merge-branches-managed-on-issue/compare/v0.5.8...HEAD)
+
+**Breaking changes:**
+
+- Use node16 [\#315](https://github.com/yykamei/merge-branches-managed-on-issue/pull/315) ([yykamei](https://github.com/yykamei))
+
 ## [v0.5.8](https://github.com/yykamei/merge-branches-managed-on-issue/tree/v0.5.8) (2022-02-24)
 
 [Full Changelog](https://github.com/yykamei/merge-branches-managed-on-issue/compare/v0.5.7...v0.5.8)
