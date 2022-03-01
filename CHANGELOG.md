@@ -8,6 +8,10 @@
 
 - Use node16 [\#315](https://github.com/yykamei/merge-branches-managed-on-issue/pull/315) ([yykamei](https://github.com/yykamei))
 
+**Merged pull requests:**
+
+- Bump actions/setup-python from 2 to 3 [\#318](https://github.com/yykamei/merge-branches-managed-on-issue/pull/318) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## [v0.5.8](https://github.com/yykamei/merge-branches-managed-on-issue/tree/v0.5.8) (2022-02-24)
 
 [Full Changelog](https://github.com/yykamei/merge-branches-managed-on-issue/compare/v0.5.7...v0.5.8)
@@ -197,7 +201,7 @@
 
 **Merged pull requests:**
 
-- Add CodeSee architecture diagram workflow to repository [\#73](https://github.com/yykamei/merge-branches-managed-on-issue/pull/73) ([codesee-architecture-diagrams[bot]](https://github.com/apps/codesee-architecture-diagrams))
+- Add CodeSee architecture diagram workflow to repository [\#73](https://github.com/yykamei/merge-branches-managed-on-issue/pull/73) ([codesee-maps[bot]](https://github.com/apps/codesee-maps))
 - Bump @types/node from 16.7.10 to 16.9.2 [\#69](https://github.com/yykamei/merge-branches-managed-on-issue/pull/69) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump @octokit/webhooks-types from 4.4.0 to 4.7.0 [\#67](https://github.com/yykamei/merge-branches-managed-on-issue/pull/67) ([dependabot[bot]](https://github.com/apps/dependabot))
 
