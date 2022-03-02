@@ -10,6 +10,7 @@
 
 **Merged pull requests:**
 
+- Bump actions/checkout from 2 to 3 [\#320](https://github.com/yykamei/merge-branches-managed-on-issue/pull/320) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump actions/setup-python from 2 to 3 [\#318](https://github.com/yykamei/merge-branches-managed-on-issue/pull/318) ([dependabot[bot]](https://github.com/apps/dependabot))
 
 ## [v0.5.8](https://github.com/yykamei/merge-branches-managed-on-issue/tree/v0.5.8) (2022-02-24)
