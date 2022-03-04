@@ -10,6 +10,7 @@
 
 **Merged pull requests:**
 
+- Bump eslint-config-prettier from 8.4.0 to 8.5.0 [\#328](https://github.com/yykamei/merge-branches-managed-on-issue/pull/328) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump @typescript-eslint/parser from 5.12.1 to 5.13.0 [\#327](https://github.com/yykamei/merge-branches-managed-on-issue/pull/327) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump actions/checkout from 2 to 3 [\#320](https://github.com/yykamei/merge-branches-managed-on-issue/pull/320) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump actions/setup-python from 2 to 3 [\#318](https://github.com/yykamei/merge-branches-managed-on-issue/pull/318) ([dependabot[bot]](https://github.com/apps/dependabot))
