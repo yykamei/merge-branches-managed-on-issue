@@ -14,6 +14,7 @@
 - Bump @typescript-eslint/parser from 5.12.1 to 5.13.0 [\#327](https://github.com/yykamei/merge-branches-managed-on-issue/pull/327) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump typescript from 4.5.5 to 4.6.2 [\#326](https://github.com/yykamei/merge-branches-managed-on-issue/pull/326) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump @typescript-eslint/eslint-plugin from 5.12.1 to 5.13.0 [\#324](https://github.com/yykamei/merge-branches-managed-on-issue/pull/324) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump ts-node from 10.5.0 to 10.6.0 [\#323](https://github.com/yykamei/merge-branches-managed-on-issue/pull/323) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump actions/checkout from 2 to 3 [\#320](https://github.com/yykamei/merge-branches-managed-on-issue/pull/320) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump actions/setup-python from 2 to 3 [\#318](https://github.com/yykamei/merge-branches-managed-on-issue/pull/318) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump actions/setup-node from 2 to 3 [\#317](https://github.com/yykamei/merge-branches-managed-on-issue/pull/317) ([dependabot[bot]](https://github.com/apps/dependabot))
