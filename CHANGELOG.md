@@ -10,6 +10,7 @@
 
 **Merged pull requests:**
 
+- Bump @octokit/webhooks-types from 5.5.0 to 5.5.1 [\#344](https://github.com/yykamei/merge-branches-managed-on-issue/pull/344) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump @typescript-eslint/eslint-plugin from 5.13.0 to 5.14.0 [\#338](https://github.com/yykamei/merge-branches-managed-on-issue/pull/338) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump ts-node from 10.6.0 to 10.7.0 [\#337](https://github.com/yykamei/merge-branches-managed-on-issue/pull/337) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump @typescript-eslint/parser from 5.13.0 to 5.14.0 [\#336](https://github.com/yykamei/merge-branches-managed-on-issue/pull/336) ([dependabot[bot]](https://github.com/apps/dependabot))
