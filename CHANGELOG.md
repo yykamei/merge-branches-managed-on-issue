@@ -10,6 +10,7 @@
 
 **Merged pull requests:**
 
+- Bump typescript from 4.6.2 to 4.6.3 [\#357](https://github.com/yykamei/merge-branches-managed-on-issue/pull/357) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump @actions/exec from 1.1.0 to 1.1.1 [\#349](https://github.com/yykamei/merge-branches-managed-on-issue/pull/349) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump @typescript-eslint/parser from 5.14.0 to 5.15.0 [\#348](https://github.com/yykamei/merge-branches-managed-on-issue/pull/348) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump @typescript-eslint/eslint-plugin from 5.14.0 to 5.15.0 [\#347](https://github.com/yykamei/merge-branches-managed-on-issue/pull/347) ([dependabot[bot]](https://github.com/apps/dependabot))
