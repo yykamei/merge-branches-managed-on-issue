@@ -1,5 +1,13 @@
 # Changelog
 
+## [Unreleased](https://github.com/yykamei/merge-branches-managed-on-issue/tree/HEAD)
+
+[Full Changelog](https://github.com/yykamei/merge-branches-managed-on-issue/compare/v0.5.9...HEAD)
+
+**Merged pull requests:**
+
+- Bump eslint from 8.11.0 to 8.12.0 [\#370](https://github.com/yykamei/merge-branches-managed-on-issue/pull/370) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## [v0.5.9](https://github.com/yykamei/merge-branches-managed-on-issue/tree/v0.5.9) (2022-03-25)
 
 [Full Changelog](https://github.com/yykamei/merge-branches-managed-on-issue/compare/v0.5.8...v0.5.9)
