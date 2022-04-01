@@ -1,5 +1,17 @@
 # Changelog
 
+## [Unreleased](https://github.com/yykamei/merge-branches-managed-on-issue/tree/HEAD)
+
+[Full Changelog](https://github.com/yykamei/merge-branches-managed-on-issue/compare/v0.5.9...HEAD)
+
+**Merged pull requests:**
+
+- Bump minimist from 1.2.5 to 1.2.6 [\#372](https://github.com/yykamei/merge-branches-managed-on-issue/pull/372) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump eslint from 8.11.0 to 8.12.0 [\#370](https://github.com/yykamei/merge-branches-managed-on-issue/pull/370) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump @typescript-eslint/eslint-plugin from 5.16.0 to 5.17.0 [\#368](https://github.com/yykamei/merge-branches-managed-on-issue/pull/368) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump prettier from 2.6.0 to 2.6.1 [\#367](https://github.com/yykamei/merge-branches-managed-on-issue/pull/367) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump @typescript-eslint/parser from 5.16.0 to 5.17.0 [\#366](https://github.com/yykamei/merge-branches-managed-on-issue/pull/366) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## [v0.5.9](https://github.com/yykamei/merge-branches-managed-on-issue/tree/v0.5.9) (2022-03-25)
 
 [Full Changelog](https://github.com/yykamei/merge-branches-managed-on-issue/compare/v0.5.8...v0.5.9)
