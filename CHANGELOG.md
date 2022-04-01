@@ -8,6 +8,7 @@
 
 - Bump minimist from 1.2.5 to 1.2.6 [\#372](https://github.com/yykamei/merge-branches-managed-on-issue/pull/372) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump eslint from 8.11.0 to 8.12.0 [\#370](https://github.com/yykamei/merge-branches-managed-on-issue/pull/370) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump @actions/github from 5.0.0 to 5.0.1 [\#369](https://github.com/yykamei/merge-branches-managed-on-issue/pull/369) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump @typescript-eslint/eslint-plugin from 5.16.0 to 5.17.0 [\#368](https://github.com/yykamei/merge-branches-managed-on-issue/pull/368) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump prettier from 2.6.0 to 2.6.1 [\#367](https://github.com/yykamei/merge-branches-managed-on-issue/pull/367) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump @typescript-eslint/parser from 5.16.0 to 5.17.0 [\#366](https://github.com/yykamei/merge-branches-managed-on-issue/pull/366) ([dependabot[bot]](https://github.com/apps/dependabot))
