@@ -6,6 +6,7 @@
 
 **Merged pull requests:**
 
+- Bump actions/setup-java from 2 to 3 [\#384](https://github.com/yykamei/merge-branches-managed-on-issue/pull/384) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump @typescript-eslint/eslint-plugin from 5.17.0 to 5.18.0 [\#380](https://github.com/yykamei/merge-branches-managed-on-issue/pull/380) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump @typescript-eslint/parser from 5.17.0 to 5.18.0 [\#379](https://github.com/yykamei/merge-branches-managed-on-issue/pull/379) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump prettier from 2.6.1 to 2.6.2 [\#378](https://github.com/yykamei/merge-branches-managed-on-issue/pull/378) ([dependabot[bot]](https://github.com/apps/dependabot))
