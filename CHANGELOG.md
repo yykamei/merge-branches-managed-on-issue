@@ -1,5 +1,20 @@
 # Changelog
 
+## [Unreleased](https://github.com/yykamei/merge-branches-managed-on-issue/tree/HEAD)
+
+[Full Changelog](https://github.com/yykamei/merge-branches-managed-on-issue/compare/v0.5.11...HEAD)
+
+**Merged pull requests:**
+
+- Bump @typescript-eslint/parser from 5.26.0 to 5.27.0 [\#436](https://github.com/yykamei/merge-branches-managed-on-issue/pull/436) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump @typescript-eslint/eslint-plugin from 5.26.0 to 5.27.0 [\#435](https://github.com/yykamei/merge-branches-managed-on-issue/pull/435) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump @types/node from 17.0.35 to 17.0.38 [\#434](https://github.com/yykamei/merge-branches-managed-on-issue/pull/434) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump @typescript-eslint/parser from 5.25.0 to 5.26.0 [\#433](https://github.com/yykamei/merge-branches-managed-on-issue/pull/433) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump ts-node from 10.7.0 to 10.8.0 [\#432](https://github.com/yykamei/merge-branches-managed-on-issue/pull/432) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump @vercel/ncc from 0.33.4 to 0.34.0 [\#431](https://github.com/yykamei/merge-branches-managed-on-issue/pull/431) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump typescript from 4.6.4 to 4.7.2 [\#430](https://github.com/yykamei/merge-branches-managed-on-issue/pull/430) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump @typescript-eslint/eslint-plugin from 5.25.0 to 5.26.0 [\#429](https://github.com/yykamei/merge-branches-managed-on-issue/pull/429) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## [v0.5.11](https://github.com/yykamei/merge-branches-managed-on-issue/tree/v0.5.11) (2022-05-21)
 
 [Full Changelog](https://github.com/yykamei/merge-branches-managed-on-issue/compare/v0.5.10...v0.5.11)
