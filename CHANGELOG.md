@@ -6,6 +6,11 @@
 
 **Merged pull requests:**
 
+- Bump eslint from 8.19.0 to 8.20.0 [\#477](https://github.com/yykamei/merge-branches-managed-on-issue/pull/477) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump @typescript-eslint/eslint-plugin from 5.30.6 to 5.30.7 [\#476](https://github.com/yykamei/merge-branches-managed-on-issue/pull/476) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump @types/node from 18.0.4 to 18.0.6 [\#475](https://github.com/yykamei/merge-branches-managed-on-issue/pull/475) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump @octokit/webhooks-types from 6.2.3 to 6.2.4 [\#474](https://github.com/yykamei/merge-branches-managed-on-issue/pull/474) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump @typescript-eslint/parser from 5.30.6 to 5.30.7 [\#473](https://github.com/yykamei/merge-branches-managed-on-issue/pull/473) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump @types/node from 18.0.3 to 18.0.4 [\#471](https://github.com/yykamei/merge-branches-managed-on-issue/pull/471) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump @typescript-eslint/eslint-plugin from 5.30.5 to 5.30.6 [\#470](https://github.com/yykamei/merge-branches-managed-on-issue/pull/470) ([dependabot[bot]](https://github.com/apps/dependabot))
 - Bump ts-node from 10.8.2 to 10.9.1 [\#469](https://github.com/yykamei/merge-branches-managed-on-issue/pull/469) ([dependabot[bot]](https://github.com/apps/dependabot))
