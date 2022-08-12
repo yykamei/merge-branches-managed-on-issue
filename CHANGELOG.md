@@ -1,5 +1,17 @@
 # Changelog
 
+## [Unreleased](https://github.com/yykamei/merge-branches-managed-on-issue/tree/HEAD)
+
+[Full Changelog](https://github.com/yykamei/merge-branches-managed-on-issue/compare/v0.5.13...HEAD)
+
+**Merged pull requests:**
+
+- Bump @typescript-eslint/parser from 5.32.0 to 5.33.0 [\#491](https://github.com/yykamei/merge-branches-managed-on-issue/pull/491) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump @typescript-eslint/eslint-plugin from 5.32.0 to 5.33.0 [\#490](https://github.com/yykamei/merge-branches-managed-on-issue/pull/490) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump @types/node from 18.6.4 to 18.7.1 [\#489](https://github.com/yykamei/merge-branches-managed-on-issue/pull/489) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump @octokit/webhooks-types from 6.2.4 to 6.3.5 [\#488](https://github.com/yykamei/merge-branches-managed-on-issue/pull/488) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump @actions/core from 1.9.0 to 1.9.1 [\#487](https://github.com/yykamei/merge-branches-managed-on-issue/pull/487) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## [v0.5.13](https://github.com/yykamei/merge-branches-managed-on-issue/tree/v0.5.13) (2022-08-08)
 
 [Full Changelog](https://github.com/yykamei/merge-branches-managed-on-issue/compare/v0.5.12...v0.5.13)
