@@ -18,7 +18,7 @@
     "@actions/github": "^5.1.1",
     "remark-gfm": "^1.0.0",
     "remark-parse": "^9.0.0",
-    "remark-stringify": "^9.0.1",
+    "remark-stringify": "^10.0.2",
     "unified": "^9.2.2",
     "unist-builder": "^2.0.3"
   },
