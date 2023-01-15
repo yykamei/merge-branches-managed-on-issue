@@ -1,5 +1,34 @@
 # Changelog
 
+## [v0.5.15](https://github.com/yykamei/merge-branches-managed-on-issue/tree/v0.5.15) (2023-01-15)
+
+[Full Changelog](https://github.com/yykamei/merge-branches-managed-on-issue/compare/v0.5.14...v0.5.15)
+
+**Merged pull requests:**
+
+- Bump @typescript-eslint/eslint-plugin from 5.48.0 to 5.48.1 [\#585](https://github.com/yykamei/merge-branches-managed-on-issue/pull/585) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump eslint from 8.31.0 to 8.32.0 [\#584](https://github.com/yykamei/merge-branches-managed-on-issue/pull/584) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump prettier from 2.8.2 to 2.8.3 [\#583](https://github.com/yykamei/merge-branches-managed-on-issue/pull/583) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump @typescript-eslint/parser from 5.48.0 to 5.48.1 [\#582](https://github.com/yykamei/merge-branches-managed-on-issue/pull/582) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump @typescript-eslint/parser from 5.47.1 to 5.48.0 [\#581](https://github.com/yykamei/merge-branches-managed-on-issue/pull/581) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump @typescript-eslint/eslint-plugin from 5.47.1 to 5.48.0 [\#580](https://github.com/yykamei/merge-branches-managed-on-issue/pull/580) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump eslint-config-prettier from 8.5.0 to 8.6.0 [\#579](https://github.com/yykamei/merge-branches-managed-on-issue/pull/579) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump prettier from 2.8.1 to 2.8.2 [\#578](https://github.com/yykamei/merge-branches-managed-on-issue/pull/578) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump json5 from 2.2.1 to 2.2.3 [\#577](https://github.com/yykamei/merge-branches-managed-on-issue/pull/577) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump @types/node from 18.11.17 to 18.11.18 [\#576](https://github.com/yykamei/merge-branches-managed-on-issue/pull/576) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump @typescript-eslint/eslint-plugin from 5.47.0 to 5.47.1 [\#575](https://github.com/yykamei/merge-branches-managed-on-issue/pull/575) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump @octokit/webhooks-types from 6.8.0 to 6.9.0 [\#574](https://github.com/yykamei/merge-branches-managed-on-issue/pull/574) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump eslint from 8.30.0 to 8.31.0 [\#573](https://github.com/yykamei/merge-branches-managed-on-issue/pull/573) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump @typescript-eslint/parser from 5.47.0 to 5.47.1 [\#572](https://github.com/yykamei/merge-branches-managed-on-issue/pull/572) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump @typescript-eslint/eslint-plugin from 5.46.1 to 5.47.0 [\#571](https://github.com/yykamei/merge-branches-managed-on-issue/pull/571) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump eslint from 8.29.0 to 8.30.0 [\#570](https://github.com/yykamei/merge-branches-managed-on-issue/pull/570) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump @typescript-eslint/parser from 5.46.1 to 5.47.0 [\#569](https://github.com/yykamei/merge-branches-managed-on-issue/pull/569) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump @typescript-eslint/eslint-plugin from 5.46.0 to 5.46.1 [\#568](https://github.com/yykamei/merge-branches-managed-on-issue/pull/568) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump @octokit/webhooks-types from 6.7.0 to 6.8.0 [\#567](https://github.com/yykamei/merge-branches-managed-on-issue/pull/567) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump @vercel/ncc from 0.34.0 to 0.36.0 [\#566](https://github.com/yykamei/merge-branches-managed-on-issue/pull/566) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump @types/node from 18.11.13 to 18.11.17 [\#565](https://github.com/yykamei/merge-branches-managed-on-issue/pull/565) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump @typescript-eslint/parser from 5.46.0 to 5.46.1 [\#564](https://github.com/yykamei/merge-branches-managed-on-issue/pull/564) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## [v0.5.14](https://github.com/yykamei/merge-branches-managed-on-issue/tree/v0.5.14) (2022-12-13)
 
 [Full Changelog](https://github.com/yykamei/merge-branches-managed-on-issue/compare/v0.5.13...v0.5.14)
