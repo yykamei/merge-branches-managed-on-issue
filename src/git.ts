@@ -50,7 +50,7 @@ export const deleteBranch = async (
     shell,
     modifiedBranchSuffix,
     baseBranches,
-  }: Pick<Params, "workingDirectory" | "shell" | "modifiedBranchSuffix"> & { readonly baseBranches: string[] }
+  }: Pick<Params, "workingDirectory" | "shell" | "modifiedBranchSuffix"> & { readonly baseBranches: string[] },
 ): Promise<void> => {
   const exec = buildExec({ workingDirectory, shell })
   const oldBranch = oldModifiedBranch(target, modifiedBranchSuffix)
@@ -86,7 +86,7 @@ const mergeUpstream = async (
   { exec, script }: Exec,
   dest: string,
   src: string,
-  beforeMerge?: string | null
+  beforeMerge?: string | null,
 ): Promise<void> => {
   await exec("git", ["checkout", src])
   if (beforeMerge != null) {
@@ -101,7 +101,7 @@ const mergeUpstream = async (
   const { exitCode } = await exec("git", ["merge", "--no-ff", "--no-edit", src], {}, true)
   if (exitCode !== 0) {
     core.warning(
-      `We failed to merge the upstream "${src}" to "${dest}". We're about to recreate "${dest}" from "${src}".`
+      `We failed to merge the upstream "${src}" to "${dest}". We're about to recreate "${dest}" from "${src}".`,
     )
     await exec("git", ["merge", "--abort"])
     await exec("git", ["checkout", src])
@@ -129,7 +129,7 @@ const runAfterMerge = async ({ exec, script }: Exec, { baseBranch, afterMerge }:
 
 const mergeTargets = async (
   { exec }: Exec,
-  { defaultBranch, baseBranch, targetBranches, modifiedBranchSuffix }: Params
+  { defaultBranch, baseBranch, targetBranches, modifiedBranchSuffix }: Params,
 ) => {
   await exec("git", ["checkout", baseBranch])
   for (const target of targetBranches) {

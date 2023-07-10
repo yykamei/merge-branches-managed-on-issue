@@ -16,7 +16,7 @@ describe("getInputs", () => {
           "before-merge": `echo OK
 ls -al
 date`,
-        }[name] as any)
+        })[name] as any,
     )
   })
 
@@ -52,7 +52,7 @@ date`,
     beforeEach(() => {
       getInput = jest
         .spyOn(core, "getInput")
-        .mockImplementation((name) => ({ token: "my-secret", "issue-number": "89", "before-merge": "" }[name] as any))
+        .mockImplementation((name) => ({ token: "my-secret", "issue-number": "89", "before-merge": "" })[name] as any)
     })
 
     it("creates an instance of Inputs with beforeMerge being null", () => {
@@ -83,7 +83,7 @@ date`,
             token: "my-secret",
             "issue-number": "89",
             path: "../../etc",
-          }[name] as any)
+          })[name] as any,
       )
     })
 

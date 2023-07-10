@@ -27,7 +27,7 @@ query($owner: String!, $repo: String!, $issueNumber: Int!) {
     }
   }
 }`,
-    { owner, repo, issueNumber }
+    { owner, repo, issueNumber },
   )
 
   core.debug(`Finish fetchData() with this response:\n${result}`)
@@ -62,7 +62,7 @@ query($owner: String!, $repo: String!, $number: Int!) {
     }
   }
 }`,
-    { owner, repo, number }
+    { owner, repo, number },
   )
 
   core.debug(`Finish fetchPull() with this response:\n${result}`)
@@ -85,7 +85,7 @@ mutation($id: ID!, $body: String!) {
     }
   }
 }`,
-    { id: issue.id, body }
+    { id: issue.id, body },
   )
 }
 
@@ -102,7 +102,7 @@ mutation($id: ID!, $body: String!) {
     }
   }
 }`,
-    { id: commentId, body }
+    { id: commentId, body },
   )
 }
 

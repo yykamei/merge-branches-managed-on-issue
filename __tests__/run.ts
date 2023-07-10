@@ -71,7 +71,7 @@ describe("run", () => {
         await run()
       } catch (e: any) {
         expect(e.message).toEqual(
-          '"base-branch" and "force" must be configured as inputs of the workflow_dispatch event in your GitHub workflow'
+          '"base-branch" and "force" must be configured as inputs of the workflow_dispatch event in your GitHub workflow',
         )
       }
     })
@@ -82,7 +82,7 @@ describe("run", () => {
         await run()
       } catch (e: any) {
         expect(e.message).toEqual(
-          '"base-branch" and "force" must be configured as inputs of the workflow_dispatch event in your GitHub workflow'
+          '"base-branch" and "force" must be configured as inputs of the workflow_dispatch event in your GitHub workflow',
         )
       }
     })
@@ -131,7 +131,7 @@ describe("run", () => {
           body: "## staging\n|branch|author|pr|!|\n|-|-|-|-|\n|b1||||\n",
         },
         newBody,
-        "token"
+        "token",
       )
     })
 
@@ -186,7 +186,7 @@ describe("run", () => {
           body: "## staging\n|branch|author|pr|!|\n|-|-|-|-|\n|b1||||\n",
         },
         newBody,
-        "token"
+        "token",
       )
       expect(updateComment).toHaveBeenCalledWith("1239", "✅ /mbmi append-to staging", "token")
     })
@@ -226,7 +226,7 @@ describe("run", () => {
           body: "## staging\n|branch|author|pr|!|\n|-|-|-|-|\n|b1||||\n",
         },
         newBody,
-        "token"
+        "token",
       )
       expect(updateComment).toHaveBeenCalledWith("1239", "✅ /mbmi remove-from staging", "token")
     })
@@ -268,7 +268,7 @@ describe("run", () => {
         expect(updateComment).toHaveBeenCalledWith(
           "1239",
           '⚠️ Failed to execute "append-to". Edit this comment again.\n\n/mbmi append-to staging',
-          "token"
+          "token",
         )
       }
     })

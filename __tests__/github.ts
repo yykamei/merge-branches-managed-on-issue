@@ -49,7 +49,7 @@ query($owner: String!, $repo: String!, $issueNumber: Int!) {
     }
   }
 }`,
-        { owner: "foo", repo: "bar", issueNumber: 832 }
+        { owner: "foo", repo: "bar", issueNumber: 832 },
       )
       expect(result).toStrictEqual({
         issue: {
@@ -100,7 +100,7 @@ query($owner: String!, $repo: String!, $number: Int!) {
     }
   }
 }`,
-        { owner: "foo", repo: "bar", number: 64 }
+        { owner: "foo", repo: "bar", number: 64 },
       )
       expect(result).toStrictEqual({
         pull: {
@@ -135,7 +135,7 @@ mutation($id: ID!, $body: String!) {
     }
   }
 }`,
-        { id: "MDU6SXNzdWU5ODM3OTQwMDc=", body: "special description" }
+        { id: "MDU6SXNzdWU5ODM3OTQwMDc=", body: "special description" },
       )
     })
   })
@@ -159,7 +159,7 @@ mutation($id: ID!, $body: String!) {
     }
   }
 }`,
-        { id: "id!", body: "special description" }
+        { id: "id!", body: "special description" },
       )
     })
   })

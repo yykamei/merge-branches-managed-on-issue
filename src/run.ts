@@ -41,7 +41,7 @@ const handleWorkflowDispatch = async ({
 
   if (payload.inputs == null || !(inputsParamBaseBranch in payload.inputs) || !(inputsParamForce in payload.inputs)) {
     throw new Error(
-      `"${inputsParamBaseBranch}" and "${inputsParamForce}" must be configured as inputs of the workflow_dispatch event in your GitHub workflow`
+      `"${inputsParamBaseBranch}" and "${inputsParamForce}" must be configured as inputs of the workflow_dispatch event in your GitHub workflow`,
     )
   }
   const baseBranch = payload.inputs[inputsParamBaseBranch] as string
@@ -117,7 +117,7 @@ const handleIssueComment = async ({ token, issueNumber, commentPrefix }: Inputs)
     await updateComment(
       payload.comment.node_id,
       `⚠️ Failed to execute "${action}". Edit this comment again.\n\n${payload.comment.body}`,
-      token
+      token,
     )
     throw e
   }
