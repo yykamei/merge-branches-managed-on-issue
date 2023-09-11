@@ -41,5 +41,5 @@ outputs:
   diffstat:
     description: The output of git-diff(1) with `--stat` between the default branch and the head of the merged branch.
 runs:
-  using: node16
+  using: node20
   main: dist/index.js
