@@ -30,13 +30,14 @@ Create a GitHub issue and write its body like this:
 
 The heading of the markdown means the name of "base branch", which will include merge commits from listed in the markdown table. In this case, `add-button` and `add-special` will be merged into `staging`, and `add-button` will be merged into `production-ready`.
 
-**IMPORTANT: the markdown table must have `branch` in its headers.**
+> [!Important]
+> **The markdown table must have `branch` in its headers.**
 
 After creating an issue, configure this tool with the following workflow:
 
 ```yaml
 name: Merge Branches Managed on Issue
-concurrency: merge_branches # This might be required to prevent multiple jobs from running  at the same time
+concurrency: merge_branches # This might be required to prevent multiple jobs from running at the same time
 on:
   workflow_dispatch:
     inputs:
@@ -66,7 +67,7 @@ jobs:
           issue-number: 1234 # <== This is the previously created issue's number
 ```
 
-If you want to avoid predicatable conflicts, put your scripts in `before-merge` and/or `after-merge`. This is an example of these parameters. This case considers YOUR-PRIVATE-GEM will be always conflicted among developers, so it first changes `Gemfile` and `Gemfile.lock` to the same state before merging, and then it makes the merged branch (`staging`) refer to its namesake of YOUR-PRIVATE-GEM.
+If you want to avoid predictable conflicts, put your scripts in `before-merge` and/or `after-merge`. This is an example of these parameters. This case considers YOUR-PRIVATE-GEM will be always conflicted among developers, so it first changes `Gemfile` and `Gemfile.lock` to the same state before merging, and then it makes the merged branch (`staging`) refer to its namesake of YOUR-PRIVATE-GEM.
 
 ```yaml
 name: Merge Branches Managed on Issue
@@ -140,7 +141,7 @@ These are all available inputs.
 
 ## Append or remove a branch through comments
 
-You can append or remove a branch to/from the markdown table thrugh pull request comments.
+You can append or remove a branch to/from the markdown table through pull request comments.
 For example, you're opening a pull request `#431` whose head branch is `add/special-feature`, and your GitHub account name is `octocat`.
 At this point, you can append your branch by just posting a comment on the pull request like this:
 
