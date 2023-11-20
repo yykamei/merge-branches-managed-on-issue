@@ -30,8 +30,8 @@ Create a GitHub issue and write its body like this:
 
 The heading of the markdown means the name of "base branch", which will include merge commits from listed in the markdown table. In this case, `add-button` and `add-special` will be merged into `staging`, and `add-button` will be merged into `production-ready`.
 
-> Important
-> **The markdown table must have `branch` in its headers.**
+> [!Important]
+> The markdown table must have `branch` in its headers.
 
 After creating an issue, configure this tool with the following workflow:
 
