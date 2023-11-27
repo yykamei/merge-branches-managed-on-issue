@@ -44075,11 +44075,11 @@ const getInputs = () => {
         issueNumber: Number((0,core.getInput)("issue-number", { required: true })),
         workingDirectory: resolvedWorkingDirectory(),
         shell: getShell(),
-        beforeMerge: (0,core.getInput)("before-merge") || null,
-        afterMerge: (0,core.getInput)("after-merge") || null,
-        inputsParamBaseBranch: (0,core.getInput)("inputs-param-base-branch") || "base-branch",
-        inputsParamForce: (0,core.getInput)("inputs-param-force") || "force",
-        modifiedBranchSuffix: (0,core.getInput)("modified-branch-suffix") || ".modified",
+        beforeMerge: (0,core.getInput)("before-merge") || null, // NOTE: Make the value `null` if it seems falsy.
+        afterMerge: (0,core.getInput)("after-merge") || null, // NOTE: Make the value `null` if it seems falsy.
+        inputsParamBaseBranch: (0,core.getInput)("inputs-param-base-branch") || "base-branch", // NOTE: Make the value `null` if it seems falsy.
+        inputsParamForce: (0,core.getInput)("inputs-param-force") || "force", // NOTE: Make the value `null` if it seems falsy.
+        modifiedBranchSuffix: (0,core.getInput)("modified-branch-suffix") || ".modified", // NOTE: Make the value `null` if it seems falsy.
         commentPrefix: (0,core.getInput)("comment-prefix") || "/mbmi", // NOTE: Make the value `null` if it seems falsy.
     };
 };
