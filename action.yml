@@ -32,6 +32,9 @@ inputs:
     description: The GitHub token used to create an authenticated client
     required: false
     default: ${{ github.token }}
+  ignore:
+    description: The list of files or directories to ignore.example) "example/, example.txt"
+    required: false
 branding:
   icon: git-merge
   color: red

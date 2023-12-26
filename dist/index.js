@@ -44081,6 +44081,7 @@ const getInputs = () => {
         inputsParamForce: (0,core.getInput)("inputs-param-force") || "force", // NOTE: Make the value `null` if it seems falsy.
         modifiedBranchSuffix: (0,core.getInput)("modified-branch-suffix") || ".modified", // NOTE: Make the value `null` if it seems falsy.
         commentPrefix: (0,core.getInput)("comment-prefix") || "/mbmi", // NOTE: Make the value `null` if it seems falsy.
+        ignore: (0,core.getInput)("ignore") || null,
     };
 };
 const resolvedWorkingDirectory = () => {
@@ -44513,12 +44514,12 @@ var git_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argu
 
 
 const merge = (params) => git_awaiter(void 0, void 0, void 0, function* () {
-    const { workingDirectory, shell, beforeMerge, baseBranch, defaultBranch, targetBranches, modifiedBranchSuffix, force = false, } = params;
+    const { workingDirectory, shell, beforeMerge, baseBranch, defaultBranch, targetBranches, modifiedBranchSuffix, force = false, ignore, } = params;
     const exec = buildExec({ workingDirectory, shell });
     yield configureGit(exec);
-    yield prepareBranch(exec, baseBranch, defaultBranch, force);
+    yield prepareBranch(exec, baseBranch, defaultBranch, force, ignore);
     for (const target of targetBranches) {
-        yield prepareBranch(exec, modifiedBranch(target, modifiedBranchSuffix, baseBranch), target, force);
+        yield prepareBranch(exec, modifiedBranch(target, modifiedBranchSuffix, baseBranch), target, force, ignore);
         yield mergeUpstream(exec, modifiedBranch(target, modifiedBranchSuffix, baseBranch), target, beforeMerge);
     }
     yield runBeforeMerge(exec, params);
@@ -44541,10 +44542,15 @@ const configureGit = ({ exec }) => git_awaiter(void 0, void 0, void 0, function*
     yield exec("git", ["config", "user.name", "github-actions"]);
     yield exec("git", ["config", "user.email", "github-actions@github.com"]);
 });
-const prepareBranch = ({ exec }, dest, src, force) => git_awaiter(void 0, void 0, void 0, function* () {
+const prepareBranch = ({ exec }, dest, src, force, ignore) => git_awaiter(void 0, void 0, void 0, function* () {
     const { stdout: targetCheck } = yield exec("git", ["branch", "--remotes", "--list", `origin/${dest}`]);
     if (targetCheck.trim().length === 0) {
         yield exec("git", ["checkout", "-b", dest, `origin/${src}`]);
+        if (ignore) {
+          yield exec("git", ["rm", "-r", ignore])
+          yield exec("git", ["add", "."])
+          yield exec("git", ["commit", "-m", "Delete ignore_files"])
+        }
         yield exec("git", ["push", "origin", dest]);
     }
     else {
@@ -44589,7 +44595,7 @@ const runAfterMerge = ({ exec, script }, { baseBranch, afterMerge }) => git_awai
         yield script(afterMerge, { CURRENT_BRANCH: baseBranch, BASE_BRANCH: baseBranch });
     }
 });
-const mergeTargets = ({ exec }, { defaultBranch, baseBranch, targetBranches, modifiedBranchSuffix }) => git_awaiter(void 0, void 0, void 0, function* () {
+const mergeTargets = ({ exec }, { defaultBranch, baseBranch, targetBranches, modifiedBranchSuffix, ignore }) => git_awaiter(void 0, void 0, void 0, function* () {
     yield exec("git", ["checkout", baseBranch]);
     for (const target of targetBranches) {
         const branch = modifiedBranch(target, modifiedBranchSuffix, baseBranch);
@@ -44666,7 +44672,7 @@ const run = () => run_awaiter(void 0, void 0, void 0, function* () {
             throw new Error(`This action does not support the event "${github.context.eventName}"`);
     }
 });
-const handleWorkflowDispatch = ({ token, issueNumber, workingDirectory, shell, beforeMerge, afterMerge, inputsParamBaseBranch, inputsParamForce, modifiedBranchSuffix, }) => run_awaiter(void 0, void 0, void 0, function* () {
+const handleWorkflowDispatch = ({ token, issueNumber, workingDirectory, shell, beforeMerge, afterMerge, inputsParamBaseBranch, inputsParamForce, modifiedBranchSuffix, ignore }) => run_awaiter(void 0, void 0, void 0, function* () {
     const payload = github.context.payload;
     core.debug(`We got the workflow_dispatch event with this payload: ${payload}.`);
     if (payload.inputs == null || !(inputsParamBaseBranch in payload.inputs) || !(inputsParamForce in payload.inputs)) {
@@ -44690,6 +44696,7 @@ const handleWorkflowDispatch = ({ token, issueNumber, workingDirectory, shell, b
         modifiedBranchSuffix,
         defaultBranch,
         force,
+        ignore,
     });
 });
 const handleIssues = ({ issueNumber, token }) => run_awaiter(void 0, void 0, void 0, function* () {
