@@ -44081,6 +44081,7 @@ const getInputs = () => {
         inputsParamForce: (0,core.getInput)("inputs-param-force") || "force", // NOTE: Make the value `null` if it seems falsy.
         modifiedBranchSuffix: (0,core.getInput)("modified-branch-suffix") || ".modified", // NOTE: Make the value `null` if it seems falsy.
         commentPrefix: (0,core.getInput)("comment-prefix") || "/mbmi", // NOTE: Make the value `null` if it seems falsy.
+        ignore: (0,core.getInput)("ignore") || null, // NOTE: Make the value `null` if it seems falsy.
     };
 };
 const resolvedWorkingDirectory = () => {
@@ -44513,13 +44514,13 @@ var git_awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argu
 
 
 const merge = (params) => git_awaiter(void 0, void 0, void 0, function* () {
-    const { workingDirectory, shell, beforeMerge, baseBranch, defaultBranch, targetBranches, modifiedBranchSuffix, force = false, } = params;
+    const { workingDirectory, shell, beforeMerge, baseBranch, defaultBranch, targetBranches, modifiedBranchSuffix, force = false, ignore, } = params;
     const exec = buildExec({ workingDirectory, shell });
     yield configureGit(exec);
-    yield prepareBranch(exec, baseBranch, defaultBranch, force);
+    yield prepareBranch(exec, baseBranch, defaultBranch, force, ignore);
     for (const target of targetBranches) {
-        yield prepareBranch(exec, modifiedBranch(target, modifiedBranchSuffix, baseBranch), target, force);
-        yield mergeUpstream(exec, modifiedBranch(target, modifiedBranchSuffix, baseBranch), target, beforeMerge);
+        yield prepareBranch(exec, modifiedBranch(target, modifiedBranchSuffix, baseBranch), target, force, ignore);
+        yield mergeUpstream(exec, modifiedBranch(target, modifiedBranchSuffix, baseBranch), target, beforeMerge, ignore);
     }
     yield runBeforeMerge(exec, params);
     yield mergeTargets(exec, params);
@@ -44541,10 +44542,15 @@ const configureGit = ({ exec }) => git_awaiter(void 0, void 0, void 0, function*
     yield exec("git", ["config", "user.name", "github-actions"]);
     yield exec("git", ["config", "user.email", "github-actions@github.com"]);
 });
-const prepareBranch = ({ exec }, dest, src, force) => git_awaiter(void 0, void 0, void 0, function* () {
+const prepareBranch = ({ exec }, dest, src, force, ignore) => git_awaiter(void 0, void 0, void 0, function* () {
     const { stdout: targetCheck } = yield exec("git", ["branch", "--remotes", "--list", `origin/${dest}`]);
     if (targetCheck.trim().length === 0) {
         yield exec("git", ["checkout", "-b", dest, `origin/${src}`]);
+        if (ignore != null) {
+            exec("git", ["rm", "-r", ignore]);
+            exec("git", ["add", "."]);
+            exec("git", ["commit", "-m", "Delete ignore_files"]);
+        }
         yield exec("git", ["push", "origin", dest]);
     }
     else {
@@ -44555,7 +44561,7 @@ const prepareBranch = ({ exec }, dest, src, force) => git_awaiter(void 0, void 0
         yield exec("git", ["push", "--force", "origin", dest]);
     }
 });
-const mergeUpstream = ({ exec, script }, dest, src, beforeMerge) => git_awaiter(void 0, void 0, void 0, function* () {
+const mergeUpstream = ({ exec, script }, dest, src, beforeMerge, ignore) => git_awaiter(void 0, void 0, void 0, function* () {
     yield exec("git", ["checkout", src]);
     if (beforeMerge != null) {
         yield script(beforeMerge, { CURRENT_BRANCH: src, BASE_BRANCH: src });
@@ -44571,6 +44577,11 @@ const mergeUpstream = ({ exec, script }, dest, src, beforeMerge) => git_awaiter(
         yield exec("git", ["checkout", src]);
         yield exec("git", ["branch", "-D", dest]);
         yield exec("git", ["checkout", "-b", dest]);
+        if (ignore != null) {
+            exec("git", ["rm", "-r", ignore]);
+            exec("git", ["add", "."]);
+            exec("git", ["commit", "-m", "Delete ignore_files"]);
+        }
         yield exec("git", ["push", "--force", "origin", dest]);
     }
     else {
