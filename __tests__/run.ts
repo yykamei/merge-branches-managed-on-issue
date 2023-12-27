@@ -63,6 +63,7 @@ describe("run", () => {
         modifiedBranchSuffix: ".modified",
         defaultBranch: "main",
         force: false,
+        ignore: null,
       })
     })
 

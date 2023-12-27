@@ -35,6 +35,7 @@ const handleWorkflowDispatch = async ({
   inputsParamBaseBranch,
   inputsParamForce,
   modifiedBranchSuffix,
+  ignore,
 }: Inputs) => {
   const payload = context.payload as WorkflowDispatchEvent
   core.debug(`We got the workflow_dispatch event with this payload: ${payload}.`)
@@ -65,6 +66,7 @@ const handleWorkflowDispatch = async ({
     modifiedBranchSuffix,
     defaultBranch,
     force,
+    ignore,
   })
 }
 
