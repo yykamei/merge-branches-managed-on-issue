@@ -12,6 +12,7 @@ export interface Inputs {
   readonly inputsParamForce: string
   readonly modifiedBranchSuffix: string
   readonly commentPrefix: string
+  readonly ignore: string | null
 }
 
 export const getInputs = (): Inputs => {
@@ -26,6 +27,7 @@ export const getInputs = (): Inputs => {
     inputsParamForce: getInput("inputs-param-force") || "force", // NOTE: Make the value `null` if it seems falsy.
     modifiedBranchSuffix: getInput("modified-branch-suffix") || ".modified", // NOTE: Make the value `null` if it seems falsy.
     commentPrefix: getInput("comment-prefix") || "/mbmi", // NOTE: Make the value `null` if it seems falsy.
+    ignore: getInput("ignore") || null, // NOTE: Make the value `null` if it seems falsy.
   }
 }
 

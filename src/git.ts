@@ -13,6 +13,7 @@ interface Params {
   readonly force?: boolean
   readonly beforeMerge?: string | null
   readonly afterMerge?: string | null
+  readonly ignore?: string | null
 }
 
 export const merge = async (params: Params): Promise<string> => {
@@ -25,14 +26,15 @@ export const merge = async (params: Params): Promise<string> => {
     targetBranches,
     modifiedBranchSuffix,
     force = false,
+    ignore,
   } = params
   const exec = buildExec({ workingDirectory, shell })
 
   await configureGit(exec)
-  await prepareBranch(exec, baseBranch, defaultBranch, force)
+  await prepareBranch(exec, baseBranch, defaultBranch, force, ignore)
   for (const target of targetBranches) {
-    await prepareBranch(exec, modifiedBranch(target, modifiedBranchSuffix, baseBranch), target, force)
-    await mergeUpstream(exec, modifiedBranch(target, modifiedBranchSuffix, baseBranch), target, beforeMerge)
+    await prepareBranch(exec, modifiedBranch(target, modifiedBranchSuffix, baseBranch), target, force, ignore)
+    await mergeUpstream(exec, modifiedBranch(target, modifiedBranchSuffix, baseBranch), target, beforeMerge, ignore)
   }
 
   await runBeforeMerge(exec, params)
@@ -67,10 +69,21 @@ const configureGit = async ({ exec }: Exec): Promise<void> => {
   await exec("git", ["config", "user.email", "github-actions@github.com"])
 }
 
-const prepareBranch = async ({ exec }: Exec, dest: string, src: string, force: boolean): Promise<void> => {
+const prepareBranch = async (
+  { exec }: Exec,
+  dest: string,
+  src: string,
+  force: boolean,
+  ignore?: string | null,
+): Promise<void> => {
   const { stdout: targetCheck } = await exec("git", ["branch", "--remotes", "--list", `origin/${dest}`])
   if (targetCheck.trim().length === 0) {
     await exec("git", ["checkout", "-b", dest, `origin/${src}`])
+    if (ignore != null) {
+      exec("git", ["rm", "-r", ignore])
+      exec("git", ["add", "."])
+      exec("git", ["commit", "-m", "Delete ignore_files"])
+    }
     await exec("git", ["push", "origin", dest])
   } else {
     await exec("git", ["checkout", dest])
@@ -87,6 +100,7 @@ const mergeUpstream = async (
   dest: string,
   src: string,
   beforeMerge?: string | null,
+  ignore?: string | null,
 ): Promise<void> => {
   await exec("git", ["checkout", src])
   if (beforeMerge != null) {
@@ -107,6 +121,11 @@ const mergeUpstream = async (
     await exec("git", ["checkout", src])
     await exec("git", ["branch", "-D", dest])
     await exec("git", ["checkout", "-b", dest])
+    if (ignore != null) {
+      exec("git", ["rm", "-r", ignore])
+      exec("git", ["add", "."])
+      exec("git", ["commit", "-m", "Delete ignore_files"])
+    }
     await exec("git", ["push", "--force", "origin", dest])
   } else {
     await exec("git", ["push", "origin", dest])

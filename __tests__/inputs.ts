@@ -16,6 +16,7 @@ describe("getInputs", () => {
           "before-merge": `echo OK
 ls -al
 date`,
+          ignore: "example/",
         })[name] as any,
     )
   })
@@ -32,6 +33,7 @@ date`,
     expect(inputs.inputsParamForce).toStrictEqual("force")
     expect(inputs.modifiedBranchSuffix).toStrictEqual(".modified")
     expect(inputs.commentPrefix).toStrictEqual("/mbmi")
+    expect(inputs.ignore).toStrictEqual("example/")
   })
 
   it("calls getInput()", () => {
@@ -46,6 +48,7 @@ date`,
     expect(getInput).toHaveBeenCalledWith("inputs-param-force")
     expect(getInput).toHaveBeenCalledWith("modified-branch-suffix")
     expect(getInput).toHaveBeenCalledWith("comment-prefix")
+    expect(getInput).toHaveBeenCalledWith("ignore")
   })
 
   describe("when before-merge is not set", () => {

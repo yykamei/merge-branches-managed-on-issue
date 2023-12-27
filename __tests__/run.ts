@@ -19,6 +19,7 @@ describe("run", () => {
       inputsParamForce: "force",
       modifiedBranchSuffix: ".modified",
       commentPrefix: "/mbmi",
+      ignore: null,
     }))
   })
 

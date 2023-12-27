@@ -44520,7 +44520,7 @@ const merge = (params) => git_awaiter(void 0, void 0, void 0, function* () {
     yield prepareBranch(exec, baseBranch, defaultBranch, force, ignore);
     for (const target of targetBranches) {
         yield prepareBranch(exec, modifiedBranch(target, modifiedBranchSuffix, baseBranch), target, force, ignore);
-        yield mergeUpstream(exec, modifiedBranch(target, modifiedBranchSuffix, baseBranch), target, beforeMerge);
+        yield mergeUpstream(exec, modifiedBranch(target, modifiedBranchSuffix, baseBranch), target, beforeMerge, ignore);
     }
     yield runBeforeMerge(exec, params);
     yield mergeTargets(exec, params);
@@ -44546,7 +44546,7 @@ const prepareBranch = ({ exec }, dest, src, force, ignore) => git_awaiter(void 0
     const { stdout: targetCheck } = yield exec("git", ["branch", "--remotes", "--list", `origin/${dest}`]);
     if (targetCheck.trim().length === 0) {
         yield exec("git", ["checkout", "-b", dest, `origin/${src}`]);
-        if (ignore) {
+        if (ignore != null) {
           yield exec("git", ["rm", "-r", ignore])
           yield exec("git", ["add", "."])
           yield exec("git", ["commit", "-m", "Delete ignore_files"])
@@ -44561,7 +44561,7 @@ const prepareBranch = ({ exec }, dest, src, force, ignore) => git_awaiter(void 0
         yield exec("git", ["push", "--force", "origin", dest]);
     }
 });
-const mergeUpstream = ({ exec, script }, dest, src, beforeMerge) => git_awaiter(void 0, void 0, void 0, function* () {
+const mergeUpstream = ({ exec, script }, dest, src, beforeMerge, ignore) => git_awaiter(void 0, void 0, void 0, function* () {
     yield exec("git", ["checkout", src]);
     if (beforeMerge != null) {
         yield script(beforeMerge, { CURRENT_BRANCH: src, BASE_BRANCH: src });
@@ -44577,6 +44577,11 @@ const mergeUpstream = ({ exec, script }, dest, src, beforeMerge) => git_awaiter(
         yield exec("git", ["checkout", src]);
         yield exec("git", ["branch", "-D", dest]);
         yield exec("git", ["checkout", "-b", dest]);
+        if (ignore != null) {
+          yield exec("git", ["rm", "-r", ignore])
+          yield exec("git", ["add", "."])
+          yield exec("git", ["commit", "-m", "Delete ignore_files"])
+        }
         yield exec("git", ["push", "--force", "origin", dest]);
     }
     else {
