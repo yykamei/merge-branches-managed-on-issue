@@ -44677,7 +44677,7 @@ const run = () => run_awaiter(void 0, void 0, void 0, function* () {
             throw new Error(`This action does not support the event "${github.context.eventName}"`);
     }
 });
-const handleWorkflowDispatch = ({ token, issueNumber, workingDirectory, shell, beforeMerge, afterMerge, inputsParamBaseBranch, inputsParamForce, modifiedBranchSuffix, }) => run_awaiter(void 0, void 0, void 0, function* () {
+const handleWorkflowDispatch = ({ token, issueNumber, workingDirectory, shell, beforeMerge, afterMerge, inputsParamBaseBranch, inputsParamForce, modifiedBranchSuffix, ignore, }) => run_awaiter(void 0, void 0, void 0, function* () {
     const payload = github.context.payload;
     core.debug(`We got the workflow_dispatch event with this payload: ${payload}.`);
     if (payload.inputs == null || !(inputsParamBaseBranch in payload.inputs) || !(inputsParamForce in payload.inputs)) {
@@ -44701,6 +44701,7 @@ const handleWorkflowDispatch = ({ token, issueNumber, workingDirectory, shell, b
         modifiedBranchSuffix,
         defaultBranch,
         force,
+        ignore,
     });
 });
 const handleIssues = ({ issueNumber, token }) => run_awaiter(void 0, void 0, void 0, function* () {
