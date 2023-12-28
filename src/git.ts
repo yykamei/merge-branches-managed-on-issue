@@ -80,9 +80,9 @@ const prepareBranch = async (
   if (targetCheck.trim().length === 0) {
     await exec("git", ["checkout", "-b", dest, `origin/${src}`])
     if (ignore != null) {
-      exec("git", ["rm", "-r", ignore])
-      exec("git", ["add", "."])
-      exec("git", ["commit", "-m", "Delete ignore_files"])
+      await exec("git", ["rm", "-r", ignore])
+      await exec("git", ["add", "."])
+      await exec("git", ["commit", "-m", "Delete ignore_files"])
     }
     await exec("git", ["push", "origin", dest])
   } else {
@@ -122,9 +122,9 @@ const mergeUpstream = async (
     await exec("git", ["branch", "-D", dest])
     await exec("git", ["checkout", "-b", dest])
     if (ignore != null) {
-      exec("git", ["rm", "-r", ignore])
-      exec("git", ["add", "."])
-      exec("git", ["commit", "-m", "Delete ignore_files"])
+      await exec("git", ["rm", "-r", ignore])
+      await exec("git", ["add", "."])
+      await exec("git", ["commit", "-m", "Delete ignore_files"])
     }
     await exec("git", ["push", "--force", "origin", dest])
   } else {

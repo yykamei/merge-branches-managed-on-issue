@@ -44547,9 +44547,9 @@ const prepareBranch = ({ exec }, dest, src, force, ignore) => git_awaiter(void 0
     if (targetCheck.trim().length === 0) {
         yield exec("git", ["checkout", "-b", dest, `origin/${src}`]);
         if (ignore != null) {
-            exec("git", ["rm", "-r", ignore]);
-            exec("git", ["add", "."]);
-            exec("git", ["commit", "-m", "Delete ignore_files"]);
+            yield exec("git", ["rm", "-r", ignore]);
+            yield exec("git", ["add", "."]);
+            yield exec("git", ["commit", "-m", "Delete ignore_files"]);
         }
         yield exec("git", ["push", "origin", dest]);
     }
@@ -44578,9 +44578,9 @@ const mergeUpstream = ({ exec, script }, dest, src, beforeMerge, ignore) => git_
         yield exec("git", ["branch", "-D", dest]);
         yield exec("git", ["checkout", "-b", dest]);
         if (ignore != null) {
-            exec("git", ["rm", "-r", ignore]);
-            exec("git", ["add", "."]);
-            exec("git", ["commit", "-m", "Delete ignore_files"]);
+            yield exec("git", ["rm", "-r", ignore]);
+            yield exec("git", ["add", "."]);
+            yield exec("git", ["commit", "-m", "Delete ignore_files"]);
         }
         yield exec("git", ["push", "--force", "origin", dest]);
     }
