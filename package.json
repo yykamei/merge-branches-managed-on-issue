@@ -23,7 +23,7 @@
     "unist-builder": "^2.0.3"
   },
   "devDependencies": {
-    "@octokit/webhooks-types": "^7.3.2",
+    "@octokit/webhooks-types": "^7.4.0",
     "@types/jest": "^29.5.12",
     "@types/node": "^20.11.28",
     "@types/unist": "^3.0.2",
