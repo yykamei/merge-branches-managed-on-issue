@@ -45182,7 +45182,7 @@ query($owner: String!, $repo: String!, $issueNumber: Int!) {
         defaultBranch: result.repository.defaultBranchRef.name,
     };
 });
-const fetchPull = (_b) => __awaiter(void 0, [_b], void 0, function* ({ token, number, }) {
+const fetchPull = (_a) => __awaiter(void 0, [_a], void 0, function* ({ token, number, }) {
     core.debug("Start fetchPull()");
     const { owner, repo } = github.context.repo;
     const octokit = (0,github.getOctokit)(token);
@@ -45578,12 +45578,12 @@ const deleteBranch = (target_1, _a) => git_awaiter(void 0, [target_1, _a], void 
         yield exec.exec("git", ["push", "--delete", "origin", branch], {}, true);
     }
 });
-const configureGit = (_b) => git_awaiter(void 0, [_b], void 0, function* ({ exec }) {
+const configureGit = (_a) => git_awaiter(void 0, [_a], void 0, function* ({ exec }) {
     // TODO: `name` and `email` should be configurable.
     yield exec("git", ["config", "user.name", "github-actions"]);
     yield exec("git", ["config", "user.email", "github-actions@github.com"]);
 });
-const prepareBranch = (_c, dest_1, src_1, force_1) => git_awaiter(void 0, [_c, dest_1, src_1, force_1], void 0, function* ({ exec }, dest, src, force) {
+const prepareBranch = (_a, dest_1, src_1, force_1) => git_awaiter(void 0, [_a, dest_1, src_1, force_1], void 0, function* ({ exec }, dest, src, force) {
     const { stdout: targetCheck } = yield exec("git", ["branch", "--remotes", "--list", `origin/${dest}`]);
     if (targetCheck.trim().length === 0) {
         yield exec("git", ["checkout", "-b", dest, `origin/${src}`]);
@@ -45597,7 +45597,7 @@ const prepareBranch = (_c, dest_1, src_1, force_1) => git_awaiter(void 0, [_c, d
         yield exec("git", ["push", "--force", "origin", dest]);
     }
 });
-const mergeUpstream = (_d, dest_2, src_2, beforeMerge_1) => git_awaiter(void 0, [_d, dest_2, src_2, beforeMerge_1], void 0, function* ({ exec, script }, dest, src, beforeMerge) {
+const mergeUpstream = (_a, dest_1, src_1, beforeMerge_1) => git_awaiter(void 0, [_a, dest_1, src_1, beforeMerge_1], void 0, function* ({ exec, script }, dest, src, beforeMerge) {
     yield exec("git", ["checkout", src]);
     if (beforeMerge != null) {
         yield script(beforeMerge, { CURRENT_BRANCH: src, BASE_BRANCH: src });
@@ -45619,19 +45619,19 @@ const mergeUpstream = (_d, dest_2, src_2, beforeMerge_1) => git_awaiter(void 0, 
         yield exec("git", ["push", "origin", dest]);
     }
 });
-const runBeforeMerge = (_e, _f) => git_awaiter(void 0, [_e, _f], void 0, function* ({ exec, script }, { baseBranch, beforeMerge }) {
+const runBeforeMerge = (_a, _b) => git_awaiter(void 0, [_a, _b], void 0, function* ({ exec, script }, { baseBranch, beforeMerge }) {
     if (beforeMerge != null) {
         yield exec("git", ["checkout", baseBranch]);
         yield script(beforeMerge, { CURRENT_BRANCH: baseBranch, BASE_BRANCH: baseBranch });
     }
 });
-const runAfterMerge = (_g, _h) => git_awaiter(void 0, [_g, _h], void 0, function* ({ exec, script }, { baseBranch, afterMerge }) {
+const runAfterMerge = (_a, _b) => git_awaiter(void 0, [_a, _b], void 0, function* ({ exec, script }, { baseBranch, afterMerge }) {
     if (afterMerge != null) {
         yield exec("git", ["checkout", baseBranch]);
         yield script(afterMerge, { CURRENT_BRANCH: baseBranch, BASE_BRANCH: baseBranch });
     }
 });
-const mergeTargets = (_j, _k) => git_awaiter(void 0, [_j, _k], void 0, function* ({ exec }, { defaultBranch, baseBranch, targetBranches, modifiedBranchSuffix }) {
+const mergeTargets = (_a, _b) => git_awaiter(void 0, [_a, _b], void 0, function* ({ exec }, { defaultBranch, baseBranch, targetBranches, modifiedBranchSuffix }) {
     yield exec("git", ["checkout", baseBranch]);
     for (const target of targetBranches) {
         const branch = modifiedBranch(target, modifiedBranchSuffix, baseBranch);
@@ -45665,11 +45665,11 @@ After pushing the merge commit, Run this workflow again 💪
         }
     }
 });
-const pushBaseBranch = (_l, _m) => git_awaiter(void 0, [_l, _m], void 0, function* ({ exec }, { baseBranch }) {
+const pushBaseBranch = (_a, _b) => git_awaiter(void 0, [_a, _b], void 0, function* ({ exec }, { baseBranch }) {
     yield exec("git", ["checkout", baseBranch]);
     yield exec("git", ["push", "origin", baseBranch]);
 });
-const output = (_o, _p) => git_awaiter(void 0, [_o, _p], void 0, function* ({ exec }, { defaultBranch }) {
+const output = (_a, _b) => git_awaiter(void 0, [_a, _b], void 0, function* ({ exec }, { defaultBranch }) {
     const { stdout } = yield exec("git", ["log", "--merges", "--oneline", `origin/${defaultBranch}...HEAD`]);
     return stdout;
 });
@@ -45734,7 +45734,7 @@ const handleWorkflowDispatch = (_a) => run_awaiter(void 0, [_a], void 0, functio
         force,
     });
 });
-const handleIssues = (_b) => run_awaiter(void 0, [_b], void 0, function* ({ issueNumber, token }) {
+const handleIssues = (_a) => run_awaiter(void 0, [_a], void 0, function* ({ issueNumber, token }) {
     const payload = github.context.payload;
     if (payload.issue.number !== issueNumber) {
         return;
@@ -45743,10 +45743,10 @@ const handleIssues = (_b) => run_awaiter(void 0, [_b], void 0, function* ({ issu
     const newBody = reformat(issue.body);
     yield updateIssue(issue, newBody, token);
 });
-const handleIssueComment = (_c) => run_awaiter(void 0, [_c], void 0, function* ({ token, issueNumber, commentPrefix }) {
-    var _d;
+const handleIssueComment = (_a) => run_awaiter(void 0, [_a], void 0, function* ({ token, issueNumber, commentPrefix }) {
+    var _b;
     const payload = github.context.payload;
-    if (payload.issue.pull_request == null || !((_d = payload.comment.body) === null || _d === void 0 ? void 0 : _d.startsWith(commentPrefix))) {
+    if (payload.issue.pull_request == null || !((_b = payload.comment.body) === null || _b === void 0 ? void 0 : _b.startsWith(commentPrefix))) {
         return;
     }
     const [_prefix, action, baseBranch] = payload.comment.body.split(/\s+/);
@@ -45778,7 +45778,7 @@ const handleIssueComment = (_c) => run_awaiter(void 0, [_c], void 0, function* (
         throw e;
     }
 });
-const handleDelete = (_e) => run_awaiter(void 0, [_e], void 0, function* ({ token, issueNumber, workingDirectory, shell, modifiedBranchSuffix }) {
+const handleDelete = (_a) => run_awaiter(void 0, [_a], void 0, function* ({ token, issueNumber, workingDirectory, shell, modifiedBranchSuffix }) {
     const payload = github.context.payload;
     if (payload.ref_type !== "branch") {
         return;
