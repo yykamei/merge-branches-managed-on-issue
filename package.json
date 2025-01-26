@@ -27,7 +27,7 @@
     "@eslint/js": "^9.18.0",
     "@octokit/webhooks-types": "^7.6.1",
     "@types/jest": "^29.5.14",
-    "@types/node": "^22.10.7",
+    "@types/node": "^22.10.10",
     "@types/unist": "^3.0.3",
     "@typescript-eslint/eslint-plugin": "^8.20.0",
     "@typescript-eslint/parser": "^8.20.0",
