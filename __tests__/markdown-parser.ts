@@ -116,7 +116,7 @@ Hi, it's staging branch.
 |----|
 |test|
 `
-    expect(() => parse(broken).mergedBranches).toThrowError("Branch must exist in the table row")
+    expect(() => parse(broken).mergedBranches).toThrow("Branch must exist in the table row")
   })
 
   it("throws an error because of broken markdown table", () => {
@@ -125,7 +125,7 @@ Hi, it's staging branch.
 |-|-|
 |ok+++++++
 `
-    expect(() => parse(broken).mergedBranches).toThrowError("Branch must exist in the table row")
+    expect(() => parse(broken).mergedBranches).toThrow("Branch must exist in the table row")
   })
 })
 

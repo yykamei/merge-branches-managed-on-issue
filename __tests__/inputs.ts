@@ -71,7 +71,7 @@ date`,
     })
 
     it("throws an error", () => {
-      expect(() => getInputs()).toThrowError("GITHUB_WORKSPACE is not defined")
+      expect(() => getInputs()).toThrow("GITHUB_WORKSPACE is not defined")
     })
   })
 
@@ -88,7 +88,7 @@ date`,
     })
 
     it("throws an error", () => {
-      expect(() => getInputs()).toThrowError('The specified path "../../etc" is not under "/path/to/w"')
+      expect(() => getInputs()).toThrow('The specified path "../../etc" is not under "/path/to/w"')
     })
   })
 })
