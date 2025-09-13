@@ -8,14 +8,11 @@ jobs:
   ci:
     continue-on-error: true
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node: ["20", "22"]
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
         with:
-          node-version: ${{ matrix.node }}
+          node-version: 24
           check-latest: true
           cache: npm
       - run: npm ci
@@ -42,7 +39,7 @@ jobs:
           ref: ${{ github.head_ref }}
       - uses: actions/setup-node@v5
         with:
-          node-version: "20"
+          node-version: 24
           check-latest: true
           cache: npm
       - run: npm ci
