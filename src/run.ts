@@ -1,11 +1,11 @@
 import * as core from "@actions/core"
 import { context } from "@actions/github"
 import type { DeleteEvent, IssueCommentEvent, IssuesEvent, WorkflowDispatchEvent } from "@octokit/webhooks-types"
+import { deleteBranch, merge } from "./git"
+import { fetchData, fetchPull, updateComment, updateIssue } from "./github"
 import type { Inputs } from "./inputs"
 import { getInputs } from "./inputs"
-import { fetchData, fetchPull, updateComment, updateIssue } from "./github"
 import { append, parse, reformat, remove } from "./markdown-parser"
-import { deleteBranch, merge } from "./git"
 
 export const run = async (): Promise<void> => {
   const inputs = getInputs()

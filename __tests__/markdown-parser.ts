@@ -1,5 +1,5 @@
-import { append, parse, remove } from "../src/markdown-parser"
 import * as core from "@actions/core"
+import { append, parse, remove } from "../src/markdown-parser"
 
 describe("parse", () => {
   beforeAll(() => {

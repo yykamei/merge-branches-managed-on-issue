@@ -2,10 +2,10 @@
  * This module is responsible for wrapping Exec commands.
  */
 
+import * as fs from "node:fs"
+import * as os from "node:os"
+import path from "node:path"
 import { exec } from "@actions/exec"
-import * as fs from "fs"
-import * as os from "os"
-import path from "path"
 import type { Inputs } from "./inputs"
 
 export interface Exec {

@@ -6,7 +6,9 @@ describe("getInputs", () => {
 
   beforeEach(() => {
     jest.spyOn(core, "debug").mockImplementation(jest.fn)
-    Object.defineProperty(process, "env", { value: { GITHUB_WORKSPACE: "/path/to/w" } })
+    Object.defineProperty(process, "env", {
+      value: { GITHUB_WORKSPACE: "/path/to/w" },
+    })
     getInput = jest.spyOn(core, "getInput").mockImplementation(
       (name) =>
         ({

@@ -1,5 +1,5 @@
+import * as path from "node:path"
 import { getInput } from "@actions/core"
-import * as path from "path"
 
 export interface Inputs {
   readonly token: string

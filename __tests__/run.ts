@@ -1,9 +1,9 @@
 import * as core from "@actions/core"
 import { context } from "@actions/github"
-import { run } from "../src/run"
-import * as inputs from "../src/inputs"
-import * as github from "../src/github"
 import * as git from "../src/git"
+import * as github from "../src/github"
+import * as inputs from "../src/inputs"
+import { run } from "../src/run"
 
 describe("run", () => {
   beforeAll(() => {

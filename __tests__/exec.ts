@@ -1,4 +1,4 @@
-import * as os from "os"
+import * as os from "node:os"
 import { buildExec } from "../src/exec"
 
 describe("buildExec", () => {
@@ -30,7 +30,7 @@ describe("buildExec", () => {
   })
 
   describe("script", () => {
-    let { script } = buildExec({ workingDirectory: os.tmpdir(), shell: ["bash", "-e"] })
+    const { script } = buildExec({ workingDirectory: os.tmpdir(), shell: ["bash", "-e"] })
 
     it("successfully runs the source", async () => {
       const result = await script(`X=(a b c d e)

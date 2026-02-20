@@ -1,6 +1,6 @@
 import * as core from "@actions/core"
-import { buildExec } from "./exec"
 import type { Exec } from "./exec"
+import { buildExec } from "./exec"
 import type { Inputs } from "./inputs"
 
 interface Params {
