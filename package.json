@@ -15,11 +15,11 @@
     "@actions/core": "^3.0.0",
     "@actions/exec": "^3.0.0",
     "@actions/github": "^9.0.0",
-    "remark-gfm": "^1.0.0",
-    "remark-parse": "^9.0.0",
-    "remark-stringify": "^9.0.1",
-    "unified": "^9.2.2",
-    "unist-builder": "^2.0.3"
+    "remark-gfm": "^4.0.1",
+    "remark-parse": "^11.0.0",
+    "remark-stringify": "^11.0.0",
+    "unified": "^11.0.5",
+    "unist-builder": "^4.0.0"
   },
   "devDependencies": {
     "@biomejs/biome": "2.4.4",
