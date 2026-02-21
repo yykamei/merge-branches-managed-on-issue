@@ -174,12 +174,12 @@ export default {
   // A map from regular expressions to paths to transformers
   transform: {
     "^.+\\.tsx?$": "ts-jest",
-    "node_modules/(@actions|@octokit|universal-user-agent|before-after-hook)/.+\\.js$": "ts-jest",
+    "node_modules/.+\\.js$": "ts-jest",
   },
 
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
   transformIgnorePatterns: [
-    "/node_modules/(?!@actions/|@octokit/|universal-user-agent/|before-after-hook/)",
+    "/node_modules/(?!@actions/|@octokit/|universal-user-agent/|before-after-hook/|unified/|remark-.*/|unist-.*/|mdast-.*/|micromark.*/|bail/|devlop/|is-plain-obj/|trough/|vfile.*/|ccount/|escape-string-regexp/|character-entities.*/|decode-named-character-reference/|longest-streak/|markdown-table/|zwitch/|@ungap/)",
     "\\.pnp\\.[^\\/]+$",
   ],
 

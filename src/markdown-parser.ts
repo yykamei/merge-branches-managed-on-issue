@@ -1,13 +1,9 @@
-// We are using the old version of unified, which does not have sufficient typing definitions.
-// So, we explicitly disable `@typescript-eslint/no-explicit-any` to avoid "children does not exist".
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import * as core from "@actions/core"
 import remarkGfm from "remark-gfm"
 import remarkParse from "remark-parse"
 import remarkStringify from "remark-stringify"
-import unified from "unified"
-import u from "unist-builder"
+import { unified } from "unified"
+import { u } from "unist-builder"
 
 interface Parsed {
   readonly mergedBranches: MergedBranches
