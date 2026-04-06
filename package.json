@@ -29,7 +29,7 @@
     "@types/unist": "^3.0.3",
     "@vercel/ncc": "^0.38.4",
     "jest": "^30.3.0",
-    "ts-jest": "^29.4.6",
+    "ts-jest": "^29.4.9",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3"
   }
