@@ -93,7 +93,7 @@ export default {
   // notifyMode: "failure-change",
 
   // A preset that is used as a base for Jest's configuration
-  preset: "ts-jest",
+  // preset: "ts-jest",
 
   // Run tests from one or more projects
   // projects: undefined,
@@ -173,8 +173,8 @@ export default {
 
   // A map from regular expressions to paths to transformers
   transform: {
-    "^.+\\.tsx?$": "ts-jest",
-    "node_modules/.+\\.js$": "ts-jest",
+    "^.+\\.tsx?$": "./jest-swc-transformer.cjs",
+    "node_modules/.+\\.js$": "./jest-swc-transformer.cjs",
   },
 
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation

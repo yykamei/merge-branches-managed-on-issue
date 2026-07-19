@@ -4,7 +4,7 @@
   "description": "Merge branches managed on an issue",
   "main": "dist/index.js",
   "scripts": {
-    "build": "ncc build src/main.ts",
+    "build": "esbuild src/main.ts --bundle --platform=node --outfile=dist/index.js",
     "check": "biome check .",
     "fmt": "biome format --write .",
     "test": "jest"
@@ -24,13 +24,12 @@
   "devDependencies": {
     "@biomejs/biome": "2.5.3",
     "@octokit/webhooks-types": "^7.6.1",
+    "@swc/core": "^1.15.43",
     "@types/jest": "^30.0.0",
     "@types/node": "^26.1.1",
     "@types/unist": "^3.0.3",
-    "@vercel/ncc": "^0.44.1",
+    "esbuild": "^0.28.1",
     "jest": "^30.4.2",
-    "ts-jest": "^29.4.11",
-    "ts-node": "^10.9.2",
-    "typescript": "^6.0.3"
+    "typescript": "^7.0.2"
   }
 }
