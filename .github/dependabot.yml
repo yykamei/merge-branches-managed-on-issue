@@ -10,9 +10,8 @@ updates:
         patterns:
           - "@types/*"
     schedule:
-      interval: weekly
-      day: "sunday"
-      time: "20:30"
+      interval: monthly
+      time: "08:30"
       timezone: Asia/Tokyo
     open-pull-requests-limit: 10
   - package-ecosystem: github-actions
