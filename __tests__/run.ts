@@ -7,8 +7,8 @@ import { run } from "../src/run"
 
 describe("run", () => {
   beforeAll(() => {
-    jest.spyOn(core, "debug").mockImplementation(jest.fn)
-    jest.spyOn(inputs, "getInputs").mockImplementation(() => ({
+    vi.spyOn(core, "debug").mockImplementation(vi.fn)
+    vi.spyOn(inputs, "getInputs").mockImplementation(() => ({
       token: "token",
       issueNumber: 73,
       workingDirectory: "/foo",
@@ -44,11 +44,11 @@ describe("run", () => {
     })
 
     it("calls fetchData and merge", async () => {
-      const fetchData = jest.spyOn(github, "fetchData").mockResolvedValueOnce({
+      const fetchData = vi.spyOn(github, "fetchData").mockResolvedValueOnce({
         issue: { body },
         defaultBranch: "main",
       } as any)
-      const callMerge = jest.spyOn(git, "merge").mockResolvedValueOnce("git-log")
+      const callMerge = vi.spyOn(git, "merge").mockResolvedValueOnce("git-log")
 
       await run()
       expect(fetchData).toHaveBeenCalledWith({ token: "token", issueNumber: 73 })
@@ -89,7 +89,7 @@ describe("run", () => {
 
     it("throws an error because the specified base-branch does not exist in the issue", async () => {
       Object.defineProperty(context, "payload", { value: { inputs: { "base-branch": "something", force: "true" } } })
-      jest.spyOn(github, "fetchData").mockResolvedValueOnce({
+      vi.spyOn(github, "fetchData").mockResolvedValueOnce({
         issue: { body },
         defaultBranch: "main",
       } as any)
@@ -110,13 +110,13 @@ describe("run", () => {
     })
 
     it("succeeds", async () => {
-      const fetchData = jest.spyOn(github, "fetchData").mockResolvedValueOnce({
+      const fetchData = vi.spyOn(github, "fetchData").mockResolvedValueOnce({
         issue: {
           id: "id!",
           body: "## staging\n|branch|author|pr|!|\n|-|-|-|-|\n|b1||||\n",
         },
       } as any)
-      const updateIssue = jest.spyOn(github, "updateIssue").mockResolvedValueOnce(undefined)
+      const updateIssue = vi.spyOn(github, "updateIssue").mockResolvedValueOnce(undefined)
       await run()
       expect(fetchData).toHaveBeenCalledWith({ token: "token", issueNumber: 73 })
       const newBody = `## staging
@@ -156,20 +156,20 @@ describe("run", () => {
         },
       })
 
-      const fetchData = jest.spyOn(github, "fetchData").mockResolvedValueOnce({
+      const fetchData = vi.spyOn(github, "fetchData").mockResolvedValueOnce({
         issue: {
           id: "id!",
           body: "## staging\n|branch|author|pr|!|\n|-|-|-|-|\n|b1||||\n",
         },
       } as any)
-      const fetchPull = jest.spyOn(github, "fetchPull").mockResolvedValueOnce({
+      const fetchPull = vi.spyOn(github, "fetchPull").mockResolvedValueOnce({
         pull: {
           author: { login: "Jack" },
           headRefName: "feat3",
         },
       } as any)
-      const updateIssue = jest.spyOn(github, "updateIssue").mockResolvedValueOnce(undefined)
-      const updateComment = jest.spyOn(github, "updateComment").mockResolvedValueOnce(undefined)
+      const updateIssue = vi.spyOn(github, "updateIssue").mockResolvedValueOnce(undefined)
+      const updateComment = vi.spyOn(github, "updateComment").mockResolvedValueOnce(undefined)
       await run()
       expect(fetchData).toHaveBeenCalledWith({ token: "token", issueNumber: 73 })
       expect(fetchPull).toHaveBeenCalledWith({ token: "token", number: 20 })
@@ -198,20 +198,20 @@ describe("run", () => {
           comment: { node_id: "1239", body: "/mbmi remove-from staging" },
         },
       })
-      const fetchData = jest.spyOn(github, "fetchData").mockResolvedValueOnce({
+      const fetchData = vi.spyOn(github, "fetchData").mockResolvedValueOnce({
         issue: {
           id: "id!",
           body: "## staging\n|branch|author|pr|!|\n|-|-|-|-|\n|b1||||\n",
         },
       } as any)
-      const fetchPull = jest.spyOn(github, "fetchPull").mockResolvedValueOnce({
+      const fetchPull = vi.spyOn(github, "fetchPull").mockResolvedValueOnce({
         pull: {
           author: { login: "J" },
           headRefName: "b1",
         },
       } as any)
-      const updateIssue = jest.spyOn(github, "updateIssue").mockResolvedValueOnce(undefined)
-      const updateComment = jest.spyOn(github, "updateComment").mockResolvedValueOnce(undefined)
+      const updateIssue = vi.spyOn(github, "updateIssue").mockResolvedValueOnce(undefined)
+      const updateComment = vi.spyOn(github, "updateComment").mockResolvedValueOnce(undefined)
       await run()
       expect(fetchData).toHaveBeenCalledWith({ token: "token", issueNumber: 73 })
       expect(fetchPull).toHaveBeenCalledWith({ token: "token", number: 20 })
@@ -260,8 +260,8 @@ describe("run", () => {
         },
       })
 
-      jest.spyOn(github, "fetchData").mockRejectedValueOnce(new Error("!"))
-      const updateComment = jest.spyOn(github, "updateComment").mockResolvedValueOnce(undefined)
+      vi.spyOn(github, "fetchData").mockRejectedValueOnce(new Error("!"))
+      const updateComment = vi.spyOn(github, "updateComment").mockResolvedValueOnce(undefined)
       try {
         await run()
       } catch {
@@ -298,9 +298,9 @@ describe("run", () => {
     })
 
     it("succeeds", async () => {
-      const fetchData = jest.spyOn(github, "fetchData").mockResolvedValueOnce({ issue: { id: "id!", body } } as any)
-      const deleteBranch = jest.spyOn(git, "deleteBranch").mockResolvedValueOnce(undefined)
-      const updateIssue = jest.spyOn(github, "updateIssue").mockResolvedValueOnce(undefined)
+      const fetchData = vi.spyOn(github, "fetchData").mockResolvedValueOnce({ issue: { id: "id!", body } } as any)
+      const deleteBranch = vi.spyOn(git, "deleteBranch").mockResolvedValueOnce(undefined)
+      const updateIssue = vi.spyOn(github, "updateIssue").mockResolvedValueOnce(undefined)
       await run()
       expect(fetchData).toHaveBeenCalledWith({ token: "token", issueNumber: 73 })
       expect(deleteBranch).toHaveBeenCalledWith("feature/add-something", {

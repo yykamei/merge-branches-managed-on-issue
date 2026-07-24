@@ -3,7 +3,7 @@ import { append, parse, remove } from "../src/markdown-parser"
 
 describe("parse", () => {
   beforeAll(() => {
-    jest.spyOn(core, "debug").mockImplementation(jest.fn)
+    vi.spyOn(core, "debug").mockImplementation(vi.fn)
   })
 
   it("parses the basic markdown body", () => {

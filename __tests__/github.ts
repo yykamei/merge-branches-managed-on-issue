@@ -3,20 +3,20 @@ import * as github from "@actions/github"
 import { fetchData, fetchPull, updateComment, updateIssue } from "../src/github"
 
 describe("github", () => {
-  const octokit: any = { graphql: jest.fn() }
+  const octokit: any = { graphql: vi.fn() }
 
   beforeAll(() => {
-    jest.spyOn(core, "debug").mockImplementation(jest.fn)
+    vi.spyOn(core, "debug").mockImplementation(vi.fn)
   })
 
   beforeEach(() => {
-    jest.spyOn(github.context, "repo", "get").mockReturnValue({ owner: "foo", repo: "bar" })
-    jest.spyOn(github, "getOctokit").mockImplementation(() => octokit)
+    vi.spyOn(github.context, "repo", "get").mockReturnValue({ owner: "foo", repo: "bar" })
+    vi.spyOn(github, "getOctokit").mockImplementation(() => octokit)
   })
 
   describe("fetchData", () => {
     it("succeeds to fetch an issue", async () => {
-      jest.spyOn(octokit, "graphql").mockResolvedValueOnce({
+      vi.spyOn(octokit, "graphql").mockResolvedValueOnce({
         repository: {
           issue: {
             id: "id!",
@@ -67,7 +67,7 @@ query($owner: String!, $repo: String!, $issueNumber: Int!) {
 
   describe("fetchPull", () => {
     it("succeeds to fetch a pull request", async () => {
-      jest.spyOn(octokit, "graphql").mockResolvedValueOnce({
+      vi.spyOn(octokit, "graphql").mockResolvedValueOnce({
         repository: {
           pullRequest: {
             id: 812,
@@ -118,7 +118,7 @@ query($owner: String!, $repo: String!, $number: Int!) {
 
   describe("updateIssue", () => {
     it("succeeds to update an issue", async () => {
-      jest.spyOn(octokit, "graphql").mockResolvedValueOnce({
+      vi.spyOn(octokit, "graphql").mockResolvedValueOnce({
         updateIssue: {
           issue: {
             id: "MDU6SXNzdWU5ODM3OTQwMDc=",
@@ -142,7 +142,7 @@ mutation($id: ID!, $body: String!) {
 
   describe("updateComment", () => {
     it("succeeds to update a comment", async () => {
-      jest.spyOn(octokit, "graphql").mockResolvedValueOnce({
+      vi.spyOn(octokit, "graphql").mockResolvedValueOnce({
         updateIssueComment: {
           issueComment: {
             id: "IC_kwDOFTnwI842jmio",

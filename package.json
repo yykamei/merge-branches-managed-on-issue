@@ -7,7 +7,7 @@
     "build": "esbuild src/main.ts --bundle --platform=node --outfile=dist/index.js",
     "check": "biome check .",
     "fmt": "biome format --write .",
-    "test": "jest"
+    "test": "vitest run"
   },
   "author": "Yutaka Kamei",
   "license": "MIT",
@@ -24,12 +24,11 @@
   "devDependencies": {
     "@biomejs/biome": "2.5.5",
     "@octokit/webhooks-types": "^7.6.1",
-    "@swc/core": "^1.15.46",
-    "@types/jest": "^30.0.0",
     "@types/node": "^26.1.1",
     "@types/unist": "^3.0.3",
+    "@vitest/coverage-v8": "^4.1.10",
     "esbuild": "^0.28.1",
-    "jest": "^30.4.2",
-    "typescript": "^7.0.2"
+    "typescript": "^7.0.2",
+    "vitest": "^4.1.10"
   }
 }

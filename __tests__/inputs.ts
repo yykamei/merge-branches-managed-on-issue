@@ -5,11 +5,11 @@ describe("getInputs", () => {
   let getInput: any
 
   beforeEach(() => {
-    jest.spyOn(core, "debug").mockImplementation(jest.fn)
+    vi.spyOn(core, "debug").mockImplementation(vi.fn)
     Object.defineProperty(process, "env", {
       value: { GITHUB_WORKSPACE: "/path/to/w" },
     })
-    getInput = jest.spyOn(core, "getInput").mockImplementation(
+    getInput = vi.spyOn(core, "getInput").mockImplementation(
       (name) =>
         ({
           token: "my-secret",
@@ -52,7 +52,7 @@ date`,
 
   describe("when before-merge is not set", () => {
     beforeEach(() => {
-      getInput = jest
+      getInput = vi
         .spyOn(core, "getInput")
         .mockImplementation((name) => ({ token: "my-secret", "issue-number": "89", "before-merge": "" })[name] as any)
     })
@@ -79,7 +79,7 @@ date`,
 
   describe("when the specified path is not under workspace", () => {
     beforeEach(() => {
-      getInput = jest.spyOn(core, "getInput").mockImplementation(
+      getInput = vi.spyOn(core, "getInput").mockImplementation(
         (name) =>
           ({
             token: "my-secret",
