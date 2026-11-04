@@ -70,7 +70,7 @@ export const buildExec = ({ workingDirectory: cwd, shell }: Params): Exec => {
       if (shell[0]) {
         const prefix = path.join(os.tmpdir(), "custom-")
         const src = path.join(fs.mkdtempSync(prefix), "script")
-        fs.writeFileSync(src, source)
+        fs.writeFileSync(src, source, { mode: 0o600 })
         let exitCode = 0
         try {
           exitCode = await exec(shell[0], [...shell.slice(1), src], options)
