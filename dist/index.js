@@ -24954,7 +24954,7 @@ var buildExec = ({ workingDirectory: cwd, shell }) => {
       if (shell[0]) {
         const prefix = import_node_path.default.join(os4.tmpdir(), "custom-");
         const src = import_node_path.default.join(fs2.mkdtempSync(prefix), "script");
-        fs2.writeFileSync(src, source);
+        fs2.writeFileSync(src, source, { mode: 384 });
         let exitCode = 0;
         try {
           exitCode = await exec(shell[0], [...shell.slice(1), src], options);
