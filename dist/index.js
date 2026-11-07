@@ -24982,6 +24982,9 @@ var merge2 = async (params) => {
     force = false
   } = params;
   const exec2 = buildExec({ workingDirectory, shell });
+  for (const target of targetBranches) {
+    await assertValidBranchName(exec2, target);
+  }
   await configureGit(exec2);
   await prepareBranch(exec2, baseBranch, defaultBranch, force);
   for (const target of targetBranches) {
@@ -25101,6 +25104,15 @@ var pushBaseBranch = async ({ exec: exec2 }, { baseBranch }) => {
 var output = async ({ exec: exec2 }, { defaultBranch }) => {
   const { stdout } = await exec2("git", ["log", "--merges", "--oneline", `origin/${defaultBranch}...HEAD`]);
   return stdout;
+};
+var assertValidBranchName = async ({ exec: exec2 }, name) => {
+  if (name.length === 0 || name.startsWith("-") || name.startsWith("+")) {
+    throw new Error(`The branch name "${name}" is invalid`);
+  }
+  const { exitCode } = await exec2("git", ["check-ref-format", "--allow-onelevel", "--", name], {}, true);
+  if (exitCode !== 0) {
+    throw new Error(`The branch name "${name}" is invalid`);
+  }
 };
 var oldModifiedBranch = (branch, modifiedBranchSuffix) => `${branch}${modifiedBranchSuffix}`;
 var modifiedBranch = (branch, modifiedBranchSuffix, baseBranch) => `${branch}${modifiedBranchSuffix}-${baseBranch}`;
