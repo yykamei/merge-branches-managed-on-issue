@@ -28,6 +28,7 @@ export const merge = async (params: Params): Promise<string> => {
   } = params
   const exec = buildExec({ workingDirectory, shell })
 
+  await assertValidBranchName(exec, baseBranch)
   for (const target of targetBranches) {
     await assertValidBranchName(exec, target)
   }
