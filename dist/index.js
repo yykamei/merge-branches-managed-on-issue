@@ -24982,6 +24982,7 @@ var merge2 = async (params) => {
     force = false
   } = params;
   const exec2 = buildExec({ workingDirectory, shell });
+  await assertValidBranchName(exec2, baseBranch);
   for (const target of targetBranches) {
     await assertValidBranchName(exec2, target);
   }
