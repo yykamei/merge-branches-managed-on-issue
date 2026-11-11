@@ -25005,6 +25005,7 @@ var deleteBranch = async (target, {
   baseBranches
 }) => {
   const exec2 = buildExec({ workingDirectory, shell });
+  await assertValidBranchName(exec2, target);
   const oldBranch = oldModifiedBranch(target, modifiedBranchSuffix);
   await exec2.exec("git", ["push", "--delete", "origin", oldBranch], {}, true);
   for (const baseBranch of baseBranches) {
@@ -37554,7 +37555,6 @@ var tableToTargetBranch = (node2) => {
     let author = null;
     let pull = null;
     const extras = {};
-    console.log(row);
     row.forEach((v, idx) => {
       if (isBranch(headers[idx])) {
         if (v == null) {
