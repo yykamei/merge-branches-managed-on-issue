@@ -58,6 +58,7 @@ export const deleteBranch = async (
   }: Pick<Params, "workingDirectory" | "shell" | "modifiedBranchSuffix"> & { readonly baseBranches: string[] },
 ): Promise<void> => {
   const exec = buildExec({ workingDirectory, shell })
+  await assertValidBranchName(exec, target)
   const oldBranch = oldModifiedBranch(target, modifiedBranchSuffix)
   await exec.exec("git", ["push", "--delete", "origin", oldBranch], {}, true)
   for (const baseBranch of baseBranches) {
