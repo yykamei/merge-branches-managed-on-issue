@@ -25006,6 +25006,9 @@ var deleteBranch = async (target, {
 }) => {
   const exec2 = buildExec({ workingDirectory, shell });
   await assertValidBranchName(exec2, target);
+  for (const baseBranch of baseBranches) {
+    await assertValidBranchName(exec2, baseBranch);
+  }
   const oldBranch = oldModifiedBranch(target, modifiedBranchSuffix);
   await exec2.exec("git", ["push", "--delete", "origin", oldBranch], {}, true);
   for (const baseBranch of baseBranches) {
